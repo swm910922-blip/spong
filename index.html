@@ -3,20 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🧽 梗圖猜謎 🍔</title>
+<title>🧽 梗圖猜謎大亂鬥 🍔</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   [hidden] { display: none !important; }
-
   :root{
-    --yellow:#FFF176;
-    --pink:#FF8A80;
-    --aqua:#80DEEA;
-    --ink:#0E4C5C;
-    --ink-soft:#4E7C88;
-    --shadow:0 5px 0 var(--ink);
+    --yellow:#FFF176; --pink:#FF8A80; --aqua:#80DEEA;
+    --ink:#0E4C5C; --ink-soft:#4E7C88; --shadow:0 5px 0 var(--ink);
   }
-
   html{ -webkit-text-size-adjust:100%; }
   body{
     margin:0; min-height:100vh; color:var(--ink);
@@ -30,8 +24,7 @@
     background-position:0 0, 60px 80px, 100px 40px;
     padding:16px 14px 70px;
   }
-
-  .app{ max-width:820px; margin:0 auto; }
+  .app{ max-width:1000px; margin:0 auto; }
   .topbar{ text-align:center; margin:6px 0 16px; }
   .topbar h1{ margin:0 0 6px; font-size:clamp(1.35rem, 5vw, 2.1rem); color:var(--ink); text-shadow:2px 2px 0 #fff, 5px 5px 0 rgba(255,138,128,.55); }
   .topbar .sub{ margin:0; font-size:.85rem; font-weight:700; color:var(--ink-soft); }
@@ -88,10 +81,11 @@
   .timer-bar span { font-size: 0.9rem; color: var(--ink-soft); }
 
   .battle-status { text-align: center; margin: 10px 0; font-weight: 900; color: #4E7C88; }
-  .battle-scores { display: flex; justify-content: space-around; margin-bottom: 10px; }
-  .battle-score-box { background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 8px 16px; text-align: center; }
-  .battle-score-box .name { font-size: 0.8rem; color: var(--ink-soft); font-weight: 800; }
-  .battle-score-box .score { font-size: 1.8rem; font-weight: 900; color: #E53935; }
+  .battle-scores { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
+  .battle-score-box { background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 6px 12px; text-align: center; min-width: 80px; }
+  .battle-score-box .name { font-size: 0.75rem; color: var(--ink-soft); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+  .battle-score-box .score { font-size: 1.5rem; font-weight: 900; color: #E53935; }
+  .battle-score-box.me { border-color: #E53935; background: #FFFDE7; }
 
   .image-card{ background:#E1F5FE; border:3px solid var(--ink); border-radius:22px; padding:10px; margin-bottom:14px; display:flex; justify-content:center; box-shadow:0 6px 0 var(--ink); }
   #battleImage{ display:block; width:100%; max-width:400px; height:auto; border-radius:14px; background:#fff; border:2px dashed rgba(14,76,92,.25); }
@@ -120,10 +114,16 @@
   .result-comment{ margin:0 0 20px; font-weight:900; font-size:1.02rem; }
   .result-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 
+  .player-list { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 15px 0; }
+  .player-tag { background: #fff; border: 2px solid var(--ink); border-radius: 999px; padding: 4px 12px; font-weight: 900; font-size: 0.85rem; }
+  .player-tag.ready { background: var(--yellow); }
+
   @media (max-width:480px){
     body{ padding:12px 10px 60px; }
     .btn{ padding:11px 16px; font-size:.9rem; }
     .preview-box{ height:140px; }
+    .battle-score-box { padding: 4px 8px; min-width: 60px; }
+    .battle-score-box .score { font-size: 1.2rem; }
   }
 </style>
 </head>
@@ -131,8 +131,8 @@
 
 <div class="app">
   <header class="topbar">
-    <h1>🧽 梗圖猜謎 🍔</h1>
-    <p class="sub">自己出題，和朋友即時連線對戰！</p>
+    <h1>🧽 梗圖猜謎大亂鬥 🍔</h1>
+    <p class="sub">自己出題，和朋友即時連線對戰！（支援 6-12 人）</p>
   </header>
 
   <nav class="tabs">
@@ -146,7 +146,10 @@
       <!-- 大廳 -->
       <div id="lobbyView" class="empty-state">
         <h2 style="margin-top:0;">👥 多人對戰大廳</h2>
-        <p>建立房間，或輸入朋友的房間號碼加入！</p>
+        <p>輸入你的暱稱，建立房間或加入朋友的房間！</p>
+        <div style="margin: 15px 0;">
+          <input type="text" id="playerNameInput" placeholder="請輸入你的暱稱（例如：海綿寶寶）" maxlength="8" style="width: 80%; max-width: 300px; padding: 12px; font-size: 1rem; border: 3px solid var(--ink); border-radius: 14px; font-weight: 800; text-align: center;" />
+        </div>
         <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
           <button class="btn primary" id="createRoomBtn" type="button">➕ 建立房間</button>
           <button class="btn aqua" id="joinRoomBtn" type="button">🔑 加入房間</button>
@@ -154,17 +157,15 @@
         <div id="roomInfo" style="margin-top:20px; display:none;">
           <p style="font-size:0.85rem; color:#4E7C88;">房間號碼：</p>
           <h3 id="roomCodeDisplay" style="font-size:2.2rem; letter-spacing:4px; color:#E53935;">----</h3>
-          <p id="roomStatus" style="font-weight:900; color:#4E7C88;">等待對手加入中...</p>
+          <p id="roomStatus" style="font-weight:900; color:#4E7C88;">等待玩家加入中...</p>
+          <div id="lobbyPlayerList" class="player-list"></div>
           <button class="btn primary" id="startBattleBtn" type="button" style="margin-top:15px; display:none;">🚀 開始對戰</button>
         </div>
       </div>
 
       <!-- 對戰畫面 -->
       <div id="battleView" hidden>
-        <div class="battle-scores">
-          <div class="battle-score-box"><div class="name">🧑 你</div><div class="score" id="myBattleScore">0</div></div>
-          <div class="battle-score-box"><div class="name">👤 對手</div><div class="score" id="opponentBattleScore">0</div></div>
-        </div>
+        <div class="battle-scores" id="battleScores"></div>
         <div class="battle-status" id="battleStatus">準備開始...</div>
         <div class="timer-bar" id="timerDisplay">⏱ 15 <span>秒</span></div>
         <div class="image-card"><img id="battleImage" alt="題目圖片" /></div>
@@ -189,6 +190,7 @@
         <button class="btn danger" id="clearAllBtn" type="button">🗑 清空題庫</button>
         <input type="file" id="importInput" accept=".json,application/json" hidden />
       </div>
+      <p style="font-size:0.8rem; color:#4E7C88; margin-top:0;">💡 所有題目都會自動儲存到雲端，換裝置也能讀取！</p>
       <div id="questionList" class="q-list"></div>
     </section>
   </main>
@@ -233,6 +235,7 @@
 
 <div id="toast" class="toast"></div>
 
+<!-- ============ 主程式：題庫管理與 UI ============ -->
 <script>
 (function () {
   'use strict';
@@ -246,11 +249,58 @@
     }[c]));
   }
 
-  const STORAGE_KEY = 'spongebob_meme_quiz_v1';
   let questions = [];
   let editingId = null;
   let tempImage = '';
   let toastTimer = null;
+  let dbRef = null;
+  let db = null;
+
+  window.addEventListener('firebase-ready', (e) => {
+    db = e.detail.db;
+    dbRef = e.detail.ref;
+    loadQuestionsFromCloud();
+  });
+
+  function toast(msg) {
+    const el = $('#toast'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2300);
+  }
+
+  function switchView(name) {
+    $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
+    $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function loadQuestionsFromCloud() {
+    if (!db || !dbRef) return;
+    try {
+      const snapshot = await dbRef.get();
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        questions = Object.values(data).map(normalizeQuestion).filter(Boolean);
+      } else {
+        questions = [];
+      }
+      renderManageList();
+    } catch (err) {
+      console.error('讀取雲端題庫失敗:', err);
+      toast('⚠️ 無法讀取雲端題庫，請檢查網路或 Firebase 權限');
+    }
+  }
+
+  async function saveQuestionsToCloud() {
+    if (!db || !dbRef) return;
+    try {
+      const data = {};
+      questions.forEach(q => { data[q.id] = q; });
+      await dbRef.set(data);
+    } catch (err) {
+      console.error('儲存雲端題庫失敗:', err);
+      toast('⚠️ 儲存失敗！圖片可能太大，建議改用圖片網址');
+    }
+  }
 
   function normalizeQuestion(raw) {
     if (!raw || typeof raw !== 'object') return null;
@@ -264,35 +314,26 @@
     return { id: raw.id || uid(), image, answers, hint: raw.hint ? String(raw.hint) : '', explanation: raw.explanation ? String(raw.explanation) : '' };
   }
 
-  function loadQuestions() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) { const data = JSON.parse(raw); if (Array.isArray(data)) { return data.map(normalizeQuestion).filter(Boolean); } }
-    } catch (e) { console.warn(e); }
-    return [];
-  }
-
-  function saveQuestions() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(questions)); return true; }
-    catch (e) { toast('⚠️ 儲存失敗！圖片可能太大'); return false; }
-  }
-
-  function toast(msg) {
-    const el = $('#toast'); el.textContent = msg; el.classList.add('show');
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2300);
-  }
-
-  function switchView(name) {
-    $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
-    $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  /* ========== 管理題庫 ========== */
   function renderManageList() {
     const list = $('#questionList');
-    if (!questions.length) { list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>'; return; }
-    list.innerHTML = questions.map((q, i) => '<div class="q-item"><img src="' + escapeHtml(q.image) + '" alt="" /><div class="q-info"><div class="q-idx">第 ' + (i + 1) + ' 題</div><div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' + (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') + '</div><div class="q-actions"><button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button><button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button></div></div>').join('');
+    if (!questions.length) {
+      list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>';
+      return;
+    }
+    list.innerHTML = questions.map((q, i) =>
+      '<div class="q-item">' +
+        '<img src="' + escapeHtml(q.image) + '" alt="" />' +
+        '<div class="q-info">' +
+          '<div class="q-idx">第 ' + (i + 1) + ' 題</div>' +
+          '<div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' +
+          (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') +
+        '</div>' +
+        '<div class="q-actions">' +
+          '<button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button>' +
+          '<button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button>' +
+        '</div>' +
+      '</div>'
+    ).join('');
   }
 
   function setPreview(src) {
@@ -306,21 +347,32 @@
     editingId = id || null;
     $('#modalTitle').textContent = id ? '編輯題目' : '新增題目';
     $('#fileInput').value = ''; $('#urlInput').value = ''; $('#answersInput').value = ''; $('#hintInput').value = ''; $('#explainInput').value = '';
-    if (id) { const q = questions.find(x => x.id === id); if (q) { setPreview(q.image); $('#answersInput').value = q.answers.join(', '); $('#hintInput').value = q.hint || ''; $('#explainInput').value = q.explanation || ''; } }
-    else setPreview('');
+    if (id) {
+      const q = questions.find(x => x.id === id);
+      if (q) { setPreview(q.image); $('#answersInput').value = q.answers.join(', '); $('#hintInput').value = q.hint || ''; $('#explainInput').value = q.explanation || ''; }
+    } else setPreview('');
     $('#modalBackdrop').hidden = false; document.body.style.overflow = 'hidden';
   }
 
-  function closeModal() { $('#modalBackdrop').hidden = true; document.body.style.overflow = ''; editingId = null; }
+  function closeModal() {
+    $('#modalBackdrop').hidden = true; document.body.style.overflow = ''; editingId = null;
+  }
 
-  function saveQuestion() {
+  async function saveQuestion() {
     const answers = $('#answersInput').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
     if (!tempImage) { toast('請先選擇圖片或輸入圖片網址'); return; }
     if (!answers.length) { toast('請至少輸入一個正確答案'); return; }
     const data = { id: editingId || uid(), image: tempImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
-    if (editingId) { const i = questions.findIndex(q => q.id === editingId); if (i > -1) questions[i] = data; else questions.push(data); }
-    else questions.push(data);
-    saveQuestions(); renderManageList(); closeModal(); toast(editingId ? '✅ 題目已更新！' : '✅ 題目已新增！');
+    if (editingId) {
+      const i = questions.findIndex(q => q.id === editingId);
+      if (i > -1) questions[i] = data; else questions.push(data);
+    } else {
+      questions.push(data);
+    }
+    await saveQuestionsToCloud();
+    renderManageList();
+    closeModal();
+    toast(editingId ? '✅ 題目已更新（雲端）！' : '✅ 題目已新增（雲端）！');
   }
 
   function exportJSON() {
@@ -333,25 +385,30 @@
 
   function importJSON(file) {
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
       try {
         const data = JSON.parse(reader.result);
         if (!Array.isArray(data)) throw new Error('格式錯誤');
         const cleaned = data.map(normalizeQuestion).filter(Boolean);
         if (!cleaned.length) throw new Error('找不到有效題目');
         if (!confirm('即將匯入 ' + cleaned.length + ' 題，並覆蓋目前的題庫，確定嗎？')) return;
-        questions = cleaned; saveQuestions(); renderManageList(); toast('📥 匯入成功！');
+        questions = cleaned;
+        await saveQuestionsToCloud();
+        renderManageList();
+        toast('📥 匯入成功！');
       } catch (e) { alert('匯入失敗：' + e.message); }
     };
     reader.readAsText(file);
   }
 
-  function clearAll() {
+  async function clearAll() {
     if (!confirm('確定要清空所有題目嗎？此動作無法復原。')) return;
-    questions = []; saveQuestions(); renderManageList(); toast('🗑 已清空題庫');
+    questions = [];
+    await saveQuestionsToCloud();
+    renderManageList();
+    toast('🗑 已清空題庫');
   }
 
-  /* ========== 事件綁定 ========== */
   function bindEvents() {
     $$('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
     $('#addBtn').addEventListener('click', () => openModal(null));
@@ -359,13 +416,16 @@
     $('#clearAllBtn').addEventListener('click', clearAll);
     $('#importBtn').addEventListener('click', () => $('#importInput').click());
     $('#importInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ''; });
-    $('#questionList').addEventListener('click', e => {
+    $('#questionList').addEventListener('click', async (e) => {
       const btn = e.target.closest('button[data-act]'); if (!btn) return;
       const id = btn.dataset.id;
       if (btn.dataset.act === 'edit') openModal(id);
       if (btn.dataset.act === 'del') {
         if (!confirm('確定要刪除嗎？')) return;
-        questions = questions.filter(x => x.id !== id); saveQuestions(); renderManageList(); toast('🗑 已刪除');
+        questions = questions.filter(x => x.id !== id);
+        await saveQuestionsToCloud();
+        renderManageList();
+        toast('🗑 已刪除');
       }
     });
     $('#closeModalBtn').addEventListener('click', closeModal);
@@ -385,18 +445,14 @@
   }
 
   function init() {
-    questions = loadQuestions();
-    renderManageList();
     bindEvents();
+    renderManageList();
   }
-
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
 
-<!-- =========================================================
-     Firebase 多人同步競爭邏輯
-========================================================= -->
+<!-- ============ Firebase 模組（支援 6-12 人） ============ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -413,10 +469,11 @@
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
+  const questionsRef = ref(db, 'global_questions');
 
-  function getQuestions() {
-    try { return JSON.parse(localStorage.getItem('spongebob_meme_quiz_v1')) || []; } catch(e) { return []; }
-  }
+  window.dispatchEvent(new CustomEvent('firebase-ready', {
+    detail: { db, ref: questionsRef }
+  }));
 
   const $ = sel => document.querySelector(sel);
   const lobbyView = $('#lobbyView');
@@ -425,9 +482,12 @@
   const roomInfo = $('#roomInfo');
   const roomCodeDisplay = $('#roomCodeDisplay');
   const roomStatus = $('#roomStatus');
+  const lobbyPlayerList = $('#lobbyPlayerList');
   const createRoomBtn = $('#createRoomBtn');
   const joinRoomBtn = $('#joinRoomBtn');
   const startBattleBtn = $('#startBattleBtn');
+  const playerNameInput = $('#playerNameInput');
+  const battleScores = $('#battleScores');
   const battleImage = $('#battleImage');
   const battleAnswerInput = $('#battleAnswerInput');
   const battleSubmitBtn = $('#battleSubmitBtn');
@@ -436,17 +496,17 @@
   const nextBattleBtn = $('#nextBattleBtn');
   const timerDisplay = $('#timerDisplay');
   const battleStatus = $('#battleStatus');
-  const myBattleScore = $('#myBattleScore');
-  const opponentBattleScore = $('#opponentBattleScore');
 
   let currentRoomCode = null;
-  let currentRole = null;
+  let myPlayerId = null;
+  let myName = '玩家';
   let roomListener = null;
   let timerInterval = null;
   let currentQuestionIndex = -1;
   let currentQuestionData = null;
   let hasAnsweredThisRound = false;
   let battleQuestions = [];
+  let currentPlayers = {}; // 用於即時顯示分數
 
   function generateRoomCode() {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -454,9 +514,23 @@
     return code;
   }
 
+  function getPlayerId() {
+    if (!myPlayerId) myPlayerId = 'player_' + Math.random().toString(36).substr(2, 9);
+    return myPlayerId;
+  }
+
+  function getPlayerName() {
+    const name = playerNameInput.value.trim();
+    if (name) myName = name;
+    return myName;
+  }
+
   // 建立房間
   createRoomBtn.addEventListener('click', async () => {
+    const name = getPlayerName();
+    if (!name) { alert('請先輸入你的暱稱！'); return; }
     const code = generateRoomCode();
+    const playerId = getPlayerId();
     const roomRef = ref(db, 'rooms/' + code);
     try {
       await set(roomRef, {
@@ -464,15 +538,16 @@
         status: 'waiting',
         currentQuestion: 0,
         questionStartTime: 0,
-        players: { host: { joinedAt: Date.now(), score: 0, answered: false } }
+        players: {
+          [playerId]: { name: name, joinedAt: Date.now(), score: 0, answered: false }
+        }
       });
       currentRoomCode = code;
-      currentRole = 'host';
       roomCodeDisplay.textContent = code;
       roomInfo.style.display = 'block';
       createRoomBtn.disabled = true;
       joinRoomBtn.disabled = true;
-      roomStatus.textContent = '等待對手加入中...';
+      roomStatus.textContent = '等待玩家加入中...';
       startBattleBtn.style.display = 'none';
       listenToRoom(roomRef);
     } catch (err) { alert('建立房間失敗：' + err.message); }
@@ -480,6 +555,8 @@
 
   // 加入房間
   joinRoomBtn.addEventListener('click', async () => {
+    const name = getPlayerName();
+    if (!name) { alert('請先輸入你的暱稱！'); return; }
     const code = prompt('請輸入 5 位數房間號碼：');
     if (!code) return;
     const upperCode = code.toUpperCase();
@@ -488,15 +565,17 @@
       const snapshot = await get(roomRef);
       if (!snapshot.exists()) { alert('找不到這個房間'); return; }
       const data = snapshot.val();
-      if (data.players && Object.keys(data.players).length >= 2) { alert('房間已滿'); return; }
+      const playerCount = data.players ? Object.keys(data.players).length : 0;
+      if (playerCount >= 12) { alert('房間已滿（上限 12 人）'); return; }
+
+      const playerId = getPlayerId();
       await update(ref(db, 'rooms/' + upperCode + '/players'), {
-        guest: { joinedAt: Date.now(), score: 0, answered: false }
+        [playerId]: { name: name, joinedAt: Date.now(), score: 0, answered: false }
       });
       currentRoomCode = upperCode;
-      currentRole = 'guest';
       roomCodeDisplay.textContent = upperCode;
       roomInfo.style.display = 'block';
-      roomStatus.textContent = '✅ 成功加入！等待房主開始...';
+      roomStatus.textContent = '✅ 成功加入！等待開始...';
       createRoomBtn.disabled = true;
       joinRoomBtn.disabled = true;
       startBattleBtn.style.display = 'none';
@@ -510,40 +589,35 @@
     roomListener = onValue(roomRef, (snapshot) => {
       const data = snapshot.val();
       if (!data) return;
+      currentPlayers = data.players || {};
 
+      // 大廳狀態
       if (data.status === 'waiting') {
-        const count = data.players ? Object.keys(data.players).length : 0;
-        if (count >= 2) {
-          roomStatus.textContent = '✅ 對手已加入！可以開始對戰了！';
-          // 關鍵修正：不管是誰，只要滿 2 人就顯示按鈕
-          startBattleBtn.style.display = 'inline-block';
-        } else {
-          roomStatus.textContent = '等待對手加入中...';
-          startBattleBtn.style.display = 'none';
-        }
         lobbyView.hidden = false;
         battleView.hidden = true;
         battleResult.hidden = true;
+
+        const playerCount = Object.keys(currentPlayers).length;
+        roomStatus.textContent = '目前 ' + playerCount + ' 人（上限 12 人）';
+        startBattleBtn.style.display = 'inline-block';
+        startBattleBtn.disabled = playerCount < 1;
+
+        // 顯示玩家列表
+        lobbyPlayerList.innerHTML = Object.values(currentPlayers).map(p =>
+          '<span class="player-tag">' + p.name + '</span>'
+        ).join('');
       }
 
-      if (data.status === 'playing') {
+      // 遊戲開始
+      if (data.status === 'playing' || data.status === 'showing_answer') {
         lobbyView.hidden = true;
         battleView.hidden = false;
         battleResult.hidden = true;
 
-        if (data.players) {
-          myBattleScore.textContent = data.players[currentRole] ? data.players[currentRole].score : 0;
-          const oppRole = currentRole === 'host' ? 'guest' : 'host';
-          opponentBattleScore.textContent = data.players[oppRole] ? data.players[oppRole].score : 0;
-        }
+        // 更新分數
+        renderBattleScores(currentPlayers);
 
-        // 從雲端讀取題目
-        if (data.questions && data.questions.length) {
-          battleQuestions = data.questions;
-        } else if (!battleQuestions.length) {
-          // 如果雲端沒有，嘗試從本地讀取
-          battleQuestions = getQuestions();
-        }
+        if (data.questions && data.questions.length) battleQuestions = data.questions;
 
         if (data.currentQuestion !== currentQuestionIndex && data.currentQuestion < battleQuestions.length) {
           currentQuestionIndex = data.currentQuestion;
@@ -587,54 +661,83 @@
             battleFeedback.className = 'feedback show ok';
             battleFeedback.innerHTML = '<div class="fb-head">📢 正確答案</div><div class="fb-line">' + currentQuestionData.answers.join(' / ') + '</div>' + (currentQuestionData.explanation ? '<div class="fb-line"><span class="tag">解說</span>' + currentQuestionData.explanation + '</div>' : '');
           }
-          // 任何人都可以點下一題（不限房主）
           nextBattleBtn.hidden = false;
           nextBattleBtn.textContent = (currentQuestionIndex + 1 >= battleQuestions.length) ? '🏁 查看結果' : '下一題 ▶';
         }
+      }
 
-        if (data.status === 'finished') {
+      // 遊戲結束
+      if (data.status === 'finished') {
+        if (timerInterval) clearInterval(timerInterval);
+        lobbyView.hidden = true;
+        battleView.hidden = true;
+        battleResult.hidden = false;
+
+        const sorted = Object.values(currentPlayers).sort((a, b) => b.score - a.score);
+        const myScore = currentPlayers[myPlayerId] ? currentPlayers[myPlayerId].score : 0;
+        const myRank = sorted.findIndex(p => p.name === myName) + 1;
+
+        let resultHTML = '<h2 class="result-title">🏁 大亂鬥結束！</h2>';
+        resultHTML += '<div class="result-score">' + myScore + '<span>分</span></div>';
+        resultHTML += '<p class="result-line">你的排名：第 ' + myRank + ' 名 / 共 ' + sorted.length + ' 人</p>';
+        resultHTML += '<div style="text-align:left; max-width:300px; margin: 15px auto;">';
+        sorted.forEach((p, i) => {
+          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '🏅';
+          resultHTML += '<div style="display:flex; justify-content:space-between; padding:5px 10px; font-weight:800; background:' + (p.name === myName ? '#FFFDE7' : 'transparent') + '; border-radius:8px;"><span>' + medal + ' ' + p.name + '</span><span>' + p.score + ' 分</span></div>';
+        });
+        resultHTML += '</div>';
+        resultHTML += '<div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳</button></div>';
+        battleResult.innerHTML = resultHTML;
+
+        $('#backToLobbyBtn').addEventListener('click', () => {
+          if (roomListener) roomListener();
           if (timerInterval) clearInterval(timerInterval);
-          lobbyView.hidden = true;
-          battleView.hidden = true;
-          battleResult.hidden = false;
-          const myScore = data.players[currentRole] ? data.players[currentRole].score : 0;
-          const oppRole = currentRole === 'host' ? 'guest' : 'host';
-          const oppScore = data.players[oppRole] ? data.players[oppRole].score : 0;
-          let resultText = myScore > oppScore ? '🏆 你贏了！' : myScore < oppScore ? '😢 你輸了...' : '🤝 平手！';
-          battleResult.innerHTML = '<h2 class="result-title">🏁 對戰結束</h2><div class="result-score">' + myScore + '<span>分</span></div><p class="result-line">對手：' + oppScore + ' 分</p><p class="result-comment">' + resultText + '</p><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳</button></div>';
-          $('#backToLobbyBtn').addEventListener('click', () => {
-            if (roomListener) roomListener();
-            if (timerInterval) clearInterval(timerInterval);
-            lobbyView.hidden = false; battleView.hidden = true; battleResult.hidden = true;
-            createRoomBtn.disabled = false; joinRoomBtn.disabled = false;
-            roomInfo.style.display = 'none'; startBattleBtn.style.display = 'none';
-            currentRoomCode = null; currentRole = null; currentQuestionIndex = -1;
-            if (currentRoomCode) remove(ref(db, 'rooms/' + currentRoomCode));
-          });
-        }
+          lobbyView.hidden = false; battleView.hidden = true; battleResult.hidden = true;
+          createRoomBtn.disabled = false; joinRoomBtn.disabled = false;
+          roomInfo.style.display = 'none'; startBattleBtn.style.display = 'none';
+          currentRoomCode = null; currentQuestionIndex = -1; currentPlayers = {};
+          if (currentRoomCode) remove(ref(db, 'rooms/' + currentRoomCode));
+        });
       }
     });
   }
 
-  // 開始對戰（不限房主）
+  // 渲染對戰分數板
+  function renderBattleScores(players) {
+    battleScores.innerHTML = Object.entries(players).map(([id, p]) => {
+      const isMe = id === myPlayerId;
+      return '<div class="battle-score-box' + (isMe ? ' me' : '') + '"><div class="name">' + (isMe ? '🧑 ' : '') + p.name + '</div><div class="score">' + p.score + '</div></div>';
+    }).join('');
+  }
+
+  // 開始對戰：從雲端題庫拉取題目
   startBattleBtn.addEventListener('click', async () => {
     if (!currentRoomCode) return;
-    const localQuestions = getQuestions();
-    if (!localQuestions.length) { alert('題庫是空的！請先到「管理題庫」新增題目。'); return; }
-    for (let i = localQuestions.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [localQuestions[i], localQuestions[j]] = [localQuestions[j], localQuestions[i]];
-    }
-    await update(ref(db, 'rooms/' + currentRoomCode), {
-      status: 'playing',
-      currentQuestion: 0,
-      questionStartTime: Date.now() + 3000,
-      questions: localQuestions
-    });
+    try {
+      const snapshot = await questionsRef.get();
+      if (!snapshot.exists()) { alert('雲端題庫是空的！請先到「管理題庫」新增題目。'); return; }
+      const data = snapshot.val();
+      let localQuestions = Object.values(data).map(q => ({
+        id: q.id || 'q' + Date.now(),
+        image: q.image, answers: q.answers, hint: q.hint || '', explanation: q.explanation || ''
+      }));
+      if (!localQuestions.length) { alert('雲端題庫是空的！'); return; }
+
+      for (let i = localQuestions.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [localQuestions[i], localQuestions[j]] = [localQuestions[j], localQuestions[i]];
+      }
+      await update(ref(db, 'rooms/' + currentRoomCode), {
+        status: 'playing',
+        currentQuestion: 0,
+        questionStartTime: Date.now() + 3000,
+        questions: localQuestions
+      });
+    } catch (err) { alert('讀取雲端題庫失敗：' + err.message); }
   });
 
   // 提交答案
-  battleAnswerForm.addEventListener('submit', async (e) => {
+   battleAnswerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!currentRoomCode || hasAnsweredThisRound || battleAnswerInput.disabled) return;
     const val = battleAnswerInput.value.trim();
@@ -643,22 +746,34 @@
     battleAnswerInput.disabled = true;
     battleSubmitBtn.disabled = true;
 
-    const ok = checkAnswer(val, currentQuestionData.answers);
-    if (ok) {
-      const myScoreRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + currentRole + '/score');
-      const snapshot = await get(myScoreRef);
-      const currentScore = snapshot.val() || 0;
-      await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + currentRole), {
-        score: currentScore + 10,
-        answered: true
-      });
+    // 計算分數（0 ~ 10 分）
+    const gained = calcScore(val, currentQuestionData.answers);
+
+    // 寫入分數到雲端
+    const myScoreRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId + '/score');
+    const snapshot = await get(myScoreRef);
+    const currentScore = snapshot.val() || 0;
+    await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId), {
+      score: currentScore + gained,
+      answered: true
+    });
+
+    // 顯示回饋訊息
+    if (gained >= 10) {
       battleFeedback.className = 'feedback show ok';
-      battleFeedback.innerHTML = '<div class="fb-head">🎉 答對了！+10 分</div>';
+      battleFeedback.innerHTML = '<div class="fb-head">🎉 完全正確！+10 分</div>';
+    } else if (gained > 0) {
+      battleFeedback.className = 'feedback show ok';
+      battleFeedback.innerHTML =
+        '<div class="fb-head">🟡 部分正確！+' + gained + ' 分</div>' +
+        '<div class="fb-line"><span class="tag">相似度</span>與答案約 ' + (gained * 10) + '% 吻合</div>' +
+        '<div class="fb-line"><span class="tag">小提示</span>完全命中答案可以拿滿 10 分！</div>';
     } else {
       battleFeedback.className = 'feedback show no';
-      battleFeedback.innerHTML = '<div class="fb-head">❌ 答錯了</div>';
+      battleFeedback.innerHTML = '<div class="fb-head">❌ 答錯了（0 分）</div>';
     }
 
+    // 檢查是否所有人都答題了，是的話進入公開答案階段
     const roomSnapshot = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
     const players = roomSnapshot.val();
     const allAnswered = Object.values(players).every(p => p.answered);
@@ -678,20 +793,62 @@
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
       updates['rooms/' + currentRoomCode + '/currentQuestion'] = nextIdx;
       updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now() + 3000;
-      updates['rooms/' + currentRoomCode + '/players/host/answered'] = false;
-      updates['rooms/' + currentRoomCode + '/players/guest/answered'] = false;
+      // 重置所有玩家的答題狀態
+      const playersSnapshot = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
+      const players = playersSnapshot.val();
+      Object.keys(players).forEach(id => {
+        updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false;
+      });
       await update(ref(db), updates);
     }
   });
-
   function normalize(str) {
     return String(str == null ? '' : str).toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
   }
-  function checkAnswer(input, answers) {
+
+  // 計算輸入答案與標準答案的相似度（0 ~ 1 之間）
+  function calcSimilarity(input, answers) {
     const n = normalize(input);
-    if (!n) return false;
-    return answers.some(a => { const na = normalize(a); return na && (n === na || n.includes(na)); });
+    if (!n) return 0;
+
+    let best = 0;
+    for (const ans of answers) {
+      const na = normalize(ans);
+      if (!na) continue;
+
+      let sim = 0;
+      if (n === na) {
+        // 完全吻合
+        sim = 1;
+      } else if (n.includes(na)) {
+        // 輸入包含完整標準答案（例如答案「章魚哥」，你輸入「這是章魚哥吧」）
+        sim = 0.9;
+      } else if (na.includes(n)) {
+        // 只輸入標準答案的一部分（例如答案「章魚哥」，你輸入「章魚」）
+        sim = 0.6 * (n.length / na.length);
+      } else {
+        // 計算最長公共子字串，作為模糊相似度
+        let lcs = 0;
+        for (let i = 0; i < n.length; i++) {
+          for (let j = 0; j < na.length; j++) {
+            let k = 0;
+            while (i + k < n.length && j + k < na.length && n[i + k] === na[j + k]) k++;
+            if (k > lcs) lcs = k;
+          }
+        }
+        sim = 0.5 * (lcs / Math.max(n.length, na.length));
+      }
+      if (sim > best) best = sim;
+    }
+
+    return best;
   }
+
+  // 根據相似度比例換算分數（滿分 10 分）
+  function calcScore(input, answers) {
+    return Math.round(10 * calcSimilarity(input, answers));
+  }
+
 
 })();
 </script>
