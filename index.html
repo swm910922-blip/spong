@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🧽海綿梗圖大猜謎 🍔</title>
+<title>🧽 海綿梗圖大猜謎 🍔</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -59,7 +59,7 @@
   .field input[type=file]{ font-size:.8rem; padding:9px; border-radius:12px; border:2.5px dashed rgba(14,76,92,.45); background:#F7FEFF; }
   .preview-box{ width:100%; height:172px; border-radius:14px; border:2.5px dashed rgba(14,76,92,.35); background:#E1F5FE; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .preview-box img{ max-width:100%; max-height:100%; object-fit:contain; }
-  #previewPlaceholder{ color:#8FAEB8; font-size:.82rem; font-weight:800; }
+  #previewPlaceholder, #answerPreviewPlaceholder{ color:#8FAEB8; font-size:.82rem; font-weight:800; }
   .modal-foot{ display:flex; gap:10px; justify-content:flex-end; padding:14px 18px; border-top:3px solid rgba(14,76,92,.14); }
   .icon-btn{ border:none; background:transparent; font-size:1.1rem; font-weight:900; color:var(--ink); cursor:pointer; padding:4px 9px; border-radius:9px; }
   .toast{ position:fixed; left:50%; bottom:26px; z-index:300; transform:translateX(-50%) translateY(16px); background:var(--ink); color:#fff; font-weight:900; font-size:.88rem; padding:12px 22px; border-radius:999px; max-width:90vw; text-align:center; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; }
@@ -98,13 +98,9 @@
   #statusBox.ok { background: #E8F5E9; color: #2E7D32; }
   #statusBox.err { background: #FFEBEE; color: #C62828; }
   #statusBox.info { background: #FFFDE7; color: #7A6A00; }
-
-  /* 角色選擇按鈕 */
   .role-btn{ padding: 22px 36px !important; font-size: 1.05rem !important; }
-  /* 監控面板 */
   .monitor-panel{ background:#fff; border:3px solid var(--ink); border-radius:18px; padding:18px; box-shadow:0 4px 0 var(--ink); }
   .submit-count{ text-align:center; font-size:1.3rem; font-weight:900; color:#E53935; margin:10px 0; }
-  /* 公布答案頁：玩家答案卡 */
   .reveal-card{ display:flex; align-items:center; gap:12px; background:#F7FEFF; border:2.5px solid rgba(14,76,92,.35); border-radius:14px; padding:12px; margin-bottom:10px; flex-wrap:wrap; }
   .reveal-card .who{ font-weight:900; font-size:1rem; min-width:80px; }
   .reveal-card .ans{ flex:1 1 120px; color:var(--ink-soft); font-weight:800; word-break:break-word; }
@@ -131,7 +127,6 @@
   </nav>
 
   <main>
-    <!-- ============ 多人對戰 ============ -->
     <section id="view-multiplayer" class="view active">
 
       <!-- 1. 角色選擇 -->
@@ -156,7 +151,7 @@
           <h3 id="hostRoomCode" style="font-size:2.6rem; letter-spacing:6px; color:#E53935; margin:10px 0;">-----</h3>
           <p id="hostRoomStatus" style="font-weight:900; color:#4E7C88;">等待玩家加入...</p>
           <div id="hostLobbyPlayers" class="player-list"></div>
-                   <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
             <label style="font-weight:900; color:#2E6B7A;">🎲 本場題數：</label>
             <input type="number" id="questionCountInput" min="1" max="50" value="10" style="width:90px; padding:10px; font-size:1.1rem; font-weight:900; text-align:center; border:3px solid var(--ink); border-radius:12px; color:#E53935;" />
             <span style="font-weight:800; color:#4E7C88; font-size:0.85rem;">（最多 50 題）</span>
@@ -191,10 +186,8 @@
       <div id="battleView" hidden>
         <div class="battle-scores" id="battleScores"></div>
         <div class="battle-status" id="battleStatus"></div>
-
         <div class="image-card"><img id="battleImage" alt="題目圖片" /></div>
 
-        <!-- 玩家作答區 -->
         <div id="playerAnswerArea" hidden>
           <div class="timer-bar" id="playerTimerDisplay">⏱ 60 <span>秒</span></div>
           <form id="playerAnswerForm" class="answer-row" autocomplete="off">
@@ -204,7 +197,6 @@
           <div id="playerAnswerStatus" class="feedback"></div>
         </div>
 
-        <!-- 主持人監控區 -->
         <div id="hostMonitorArea" hidden>
           <div class="monitor-panel">
             <h3 style="margin-top:0; text-align:center;">📊 監控面板</h3>
@@ -215,9 +207,9 @@
         </div>
       </div>
 
-      <!-- 6. 公布答案畫面（全體） -->
+      <!-- 6. 公布答案畫面 -->
       <div id="revealView" hidden>
-        <div class="image-card"><img id="revealImage" alt="題目圖片" /></div>
+        <div class="image-card"><img id="revealImage" alt="答案圖片" /></div>
 
         <div style="background:#E8F5E9; border:3px solid #2E7D32; border-radius:18px; padding:18px; margin-bottom:15px;">
           <div style="font-size:0.85rem; font-weight:900; color:#2E7D32; margin-bottom:5px;">✅ 標準答案</div>
@@ -246,7 +238,7 @@
 
     </section>
 
-    <!-- ============ 管理題庫 ============ -->
+    <!-- 管理題庫 -->
     <section id="view-manage" class="view">
       <div class="toolbar">
         <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
@@ -270,7 +262,6 @@
     </div>
     <div class="modal-body">
       <div class="field">
-              <div class="field">
         <span class="field-label">📷 題目圖片（出題時顯示）</span>
         <div class="preview-box" id="previewBox">
           <img id="previewImg" alt="預覽" hidden />
@@ -312,7 +303,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD1wowbwxt56vCI5jwfV7jmqYgnB9mdzr4",
@@ -352,11 +343,12 @@
     $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
   }
 
-  /* ================= 題庫管理（保持不變） ================= */
+  /* ================= 題庫管理 ================= */
   let questions = [];
   let editingId = null;
-   let tempImage = '';
+  let tempImage = '';
   let tempAnswerImage = '';
+
   async function loadQuestions() {
     try {
       const snap = await get(questionsRef);
@@ -376,12 +368,15 @@
   }
   function renderManageList() {
     const list = $('#questionList');
-    if (!questions.length) { list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>'; return; }
+    if (!questions.length) {
+      list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>';
+      return;
+    }
     list.innerHTML = questions.map((q, i) =>
       '<div class="q-item"><img src="' + escapeHtml(q.image) + '" alt="" /><div class="q-info"><div class="q-idx">第 ' + (i+1) + ' 題</div><div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' + (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') + '</div><div class="q-actions"><button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button><button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button></div></div>'
     ).join('');
   }
- function setPreview(src) {
+  function setPreview(src) {
     tempImage = src || '';
     const img = $('#previewImg'), ph = $('#previewPlaceholder');
     if (tempImage) { img.src = tempImage; img.hidden = false; ph.hidden = true; }
@@ -393,11 +388,12 @@
     if (tempAnswerImage) { img.src = tempAnswerImage; img.hidden = false; ph.hidden = true; }
     else { img.hidden = true; img.removeAttribute('src'); ph.hidden = false; }
   }
-    function openModal(id) {
+  function openModal(id) {
     editingId = id || null;
     $('#modalTitle').textContent = id ? '編輯題目' : '新增題目';
-    $('#fileInput').value = ''; $('#urlInput').value = ''; $('#answersInput').value = ''; $('#hintInput').value = ''; $('#explainInput').value = '';
+    $('#fileInput').value = ''; $('#urlInput').value = '';
     $('#answerFileInput').value = ''; $('#answerUrlInput').value = '';
+    $('#answersInput').value = ''; $('#hintInput').value = ''; $('#explainInput').value = '';
     if (id) {
       const q = questions.find(x => x.id === id);
       if (q) {
@@ -418,9 +414,18 @@
     const answers = $('#answersInput').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
     if (!tempImage) { toast('請先選擇圖片或輸入圖片網址'); return; }
     if (!answers.length) { toast('請至少輸入一個正確答案'); return; }
-       const data = { id: editingId || uid(), image: tempImage, answerImage: tempAnswerImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
-    if (editingId) { const i = questions.findIndex(q => q.id === editingId); if (i > -1) questions[i] = data; else questions.push(data); }
-    else questions.push(data);
+    const data = {
+      id: editingId || uid(),
+      image: tempImage,
+      answerImage: tempAnswerImage,
+      answers,
+      hint: $('#hintInput').value.trim(),
+      explanation: $('#explainInput').value.trim()
+    };
+    if (editingId) {
+      const i = questions.findIndex(q => q.id === editingId);
+      if (i > -1) questions[i] = data; else questions.push(data);
+    } else questions.push(data);
     await saveQuestions();
     renderManageList(); closeModal();
     toast(editingId ? '✅ 題目已更新！' : '✅ 題目已新增！');
@@ -450,8 +455,8 @@
     reader.readAsText(file);
   }
 
-  /* ================= 多人對戰（角色版） ================= */
-  let myRole = null;              // 'host' | 'player'
+  /* ================= 多人對戰 ================= */
+  let myRole = null;
   let myPlayerId = null;
   let myName = '玩家';
   let currentRoomCode = null;
@@ -464,10 +469,6 @@
   let timerInterval = null;
   let questionStartTime = 0;
 
-  function getPid(prefix) {
-    if (!myPlayerId) myPlayerId = (prefix || 'p_') + Math.random().toString(36).slice(2, 11);
-    return myPlayerId;
-  }
   function genCode() {
     const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let s = ''; for (let i = 0; i < 5; i++) s += c[Math.floor(Math.random() * c.length)];
@@ -535,7 +536,8 @@
         name: myName,
         joinedAt: Date.now(),
         roundScores: {},
-        total: 0
+        total: 0,
+        currentAnswer: ''
       });
       setStatus('✅ 已加入房間！', 'ok');
       $('#playerSetupView').hidden = true;
@@ -589,29 +591,30 @@
   }
 
   /* ===== 主持人：開始遊戲 ===== */
-       let arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
+  $('#hostStartBtn').addEventListener('click', async () => {
+    if (!currentRoomCode) return;
+    try {
+      const snap = await get(questionsRef);
+      if (!snap.exists()) { alert('雲端題庫是空的！請先到「管理題庫」新增題目'); return; }
+      let arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
       if (!arr.length) { alert('雲端題庫是空的！'); return; }
 
-      // 讀取主持人選的題數
       let wantCount = parseInt($('#questionCountInput').value, 10);
       if (isNaN(wantCount) || wantCount < 1) wantCount = 10;
       if (wantCount > 50) wantCount = 50;
 
-      // 先洗牌
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      // 只取前 N 題（題庫不足 N 題時就出全部）
       arr = arr.slice(0, wantCount);
-      // 重置所有玩家分數
+
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
       updates['rooms/' + currentRoomCode + '/currentQuestion'] = 0;
       updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now();
       updates['rooms/' + currentRoomCode + '/questions'] = arr;
-      const pIds = Object.keys(currentPlayers);
-      pIds.forEach(id => {
+      Object.keys(currentPlayers).forEach(id => {
         updates['rooms/' + currentRoomCode + '/players/' + id + '/roundScores'] = {};
         updates['rooms/' + currentRoomCode + '/players/' + id + '/total'] = 0;
         updates['rooms/' + currentRoomCode + '/players/' + id + '/currentAnswer'] = '';
@@ -620,13 +623,13 @@
       toast('🎲 本場共 ' + arr.length + ' 題');
     } catch (err) { alert('開始失敗：' + err.message); }
   });
+
   /* ===== 答題階段 ===== */
   function renderPlaying(data) {
     showOnly('battleView');
     currentQuestions = data.questions || [];
     questionStartTime = data.questionStartTime || Date.now();
 
-    // 進入新題目
     if (data.currentQuestion !== currentQuestionIndex) {
       currentQuestionIndex = data.currentQuestion;
       currentQuestionData = currentQuestions[currentQuestionIndex];
@@ -644,15 +647,12 @@
       }
     }
 
-    // 分數板
     renderScores(currentPlayers);
 
-    // 角色分流
     if (myRole === 'player') {
       $('#playerAnswerArea').hidden = false;
       $('#hostMonitorArea').hidden = true;
 
-      // 玩家倒數
       if (timerInterval) clearInterval(timerInterval);
       const endTime = questionStartTime + 60000;
       const tick = () => {
@@ -667,9 +667,7 @@
       };
       tick();
       timerInterval = setInterval(tick, 300);
-
     } else {
-      // 主持人：監控
       $('#playerAnswerArea').hidden = true;
       $('#hostMonitorArea').hidden = false;
 
@@ -713,6 +711,29 @@
     }
   });
 
+  /* ===== 自動評分 ===== */
+  function normalize(str) {
+    return String(str == null ? '' : str)
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
+  }
+  function calcScore(input, answers) {
+    const n = normalize(input);
+    if (!n) return 0;
+    let best = 0;
+    for (const a of answers) {
+      const na = normalize(a);
+      if (!na) continue;
+      let sim = 0;
+      if (n === na) sim = 1;
+      else if (n.includes(na) && n.length <= na.length * 2) sim = 0.9;
+      else if (na.includes(n) && n.length >= na.length * 0.6) sim = 0.6 + 0.3 * (n.length / na.length);
+      if (sim > best) best = sim;
+    }
+    return Math.round(10 * best);
+  }
+
   /* ===== 主持人：公布答案 ===== */
   $('#hostRevealBtn').addEventListener('click', async () => {
     if (!currentRoomCode || myRole !== 'host') return;
@@ -720,7 +741,6 @@
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'revealing';
 
-      // 🎯 自動評分：讀取每位玩家的答案，用 calcScore 算出分數
       const q = currentQuestionData;
       if (q && Array.isArray(q.answers) && q.answers.length) {
         Object.entries(currentPlayers).forEach(([id, p]) => {
@@ -757,7 +777,6 @@
       $('#revealExplanationWrap').hidden = true;
     }
 
-    // 玩家答案 + 分數
     const list = Object.entries(currentPlayers);
     $('#revealPlayerList').innerHTML = list.map(([id, p]) => {
       const myAnswer = p.currentAnswer || '';
@@ -778,7 +797,6 @@
       '</div>';
     }).join('');
 
-    // 主持人控制
     if (myRole === 'host') {
       $('#hostRevealControls').hidden = false;
       $('#hostHintText').hidden = false;
@@ -790,7 +808,7 @@
     }
   }
 
-  /* ===== 主持人調整分數（事件代理） ===== */
+  /* ===== 主持人調整分數 ===== */
   $('#revealPlayerList').addEventListener('click', async (e) => {
     if (myRole !== 'host') return;
     const btn = e.target.closest('button[data-act]');
@@ -916,7 +934,7 @@
     }).join('');
   }
 
-  /* ===== 事件綁定（題庫） ===== */
+  /* ===== 題庫事件綁定 ===== */
   $$('.tab').forEach(t => t.addEventListener('click', () => switchView(t.dataset.view)));
   $('#addBtn').addEventListener('click', () => openModal(null));
   $('#exportBtn').addEventListener('click', exportJSON);
@@ -925,7 +943,9 @@
     questions = []; await saveQuestions(); renderManageList(); toast('🗑 已清空');
   });
   $('#importBtn').addEventListener('click', () => $('#importInput').click());
-  $('#importInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ''; });
+  $('#importInput').addEventListener('change', e => {
+    const f = e.target.files[0]; if (f) importJSON(f); e.target.value = '';
+  });
   $('#questionList').addEventListener('click', async (e) => {
     const btn = e.target.closest('button[data-act]'); if (!btn) return;
     const id = btn.dataset.id;
@@ -939,19 +959,23 @@
   $('#closeModalBtn').addEventListener('click', closeModal);
   $('#cancelBtn').addEventListener('click', closeModal);
   $('#saveBtn').addEventListener('click', saveQuestion);
-  $('#modalBackdrop').addEventListener('click', e => { if (e.target === $('#modalBackdrop')) closeModal(); });
+  $('#modalBackdrop').addEventListener('click', e => {
+    if (e.target === $('#modalBackdrop')) closeModal();
+  });
   $('#fileInput').addEventListener('change', e => {
-    const f = e.target.files[0]; if (!f || !f.type.startsWith('image/')) { toast('請選擇圖片'); return; }
+    const f = e.target.files[0];
+    if (!f || !f.type.startsWith('image/')) { toast('請選擇圖片'); return; }
     const r = new FileReader();
     r.onload = ev => { setPreview(ev.target.result); $('#urlInput').value = ''; };
     r.readAsDataURL(f);
   });
-    $('#urlInput').addEventListener('input', e => {
+  $('#urlInput').addEventListener('input', e => {
     const v = e.target.value.trim();
     if (v) { $('#fileInput').value = ''; setPreview(v); } else setPreview('');
   });
   $('#answerFileInput').addEventListener('change', e => {
-    const f = e.target.files[0]; if (!f || !f.type.startsWith('image/')) { toast('請選擇圖片'); return; }
+    const f = e.target.files[0];
+    if (!f || !f.type.startsWith('image/')) { toast('請選擇圖片'); return; }
     const r = new FileReader();
     r.onload = ev => { setAnswerPreview(ev.target.result); $('#answerUrlInput').value = ''; };
     r.readAsDataURL(f);
@@ -960,32 +984,6 @@
     const v = e.target.value.trim();
     if (v) { $('#answerFileInput').value = ''; setAnswerPreview(v); } else setAnswerPreview('');
   });
-  /* ===== 自動評分（答案相似度 0~10 分） ===== */
-  function normalize(str) {
-    return String(str == null ? '' : str)
-      .toLowerCase()
-      .replace(/\s+/g, '')
-      .replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
-  }
-  function calcScore(input, answers) {
-    const n = normalize(input);
-    if (!n) return 0;
-    let best = 0;
-    for (const a of answers) {
-      const na = normalize(a);
-      if (!na) continue;
-      let sim = 0;
-      if (n === na) {
-        sim = 1;                                       // 完全吻合 → 10 分
-      } else if (n.includes(na) && n.length <= na.length * 2) {
-        sim = 0.9;                                     // 包含完整答案且長度合理 → 9 分
-      } else if (na.includes(n) && n.length >= na.length * 0.6) {
-        sim = 0.6 + 0.3 * (n.length / na.length);      // 部分吻合 → 6~9 分
-      }
-      if (sim > best) best = sim;
-    }
-    return Math.round(10 * best);
-  }
 
   /* ===== 啟動 ===== */
   loadQuestions();
