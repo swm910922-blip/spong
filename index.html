@@ -156,6 +156,11 @@
           <h3 id="hostRoomCode" style="font-size:2.6rem; letter-spacing:6px; color:#E53935; margin:10px 0;">-----</h3>
           <p id="hostRoomStatus" style="font-weight:900; color:#4E7C88;">等待玩家加入...</p>
           <div id="hostLobbyPlayers" class="player-list"></div>
+                   <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
+            <label style="font-weight:900; color:#2E6B7A;">🎲 本場題數：</label>
+            <input type="number" id="questionCountInput" min="1" max="50" value="10" style="width:90px; padding:10px; font-size:1.1rem; font-weight:900; text-align:center; border:3px solid var(--ink); border-radius:12px; color:#E53935;" />
+            <span style="font-weight:800; color:#4E7C88; font-size:0.85rem;">（最多 50 題）</span>
+          </div>
           <button class="btn primary" id="hostStartBtn" type="button" style="margin-top:15px;" disabled>🚀 開始遊戲</button>
         </div>
       </div>
@@ -584,15 +589,13 @@
   }
 
   /* ===== 主持人：開始遊戲 ===== */
-  const QUESTIONS_PER_GAME = 10; // 每場遊戲抽幾題
-
-  $('#hostStartBtn').addEventListener('click', async () => {
-    if (!currentRoomCode) return;
-    try {
-      const snap = await get(questionsRef);
-      if (!snap.exists()) { alert('雲端題庫是空的！請先到「管理題庫」新增題目'); return; }
-      let arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
+       let arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
       if (!arr.length) { alert('雲端題庫是空的！'); return; }
+
+      // 讀取主持人選的題數
+      let wantCount = parseInt($('#questionCountInput').value, 10);
+      if (isNaN(wantCount) || wantCount < 1) wantCount = 10;
+      if (wantCount > 50) wantCount = 50;
 
       // 先洗牌
       for (let i = arr.length - 1; i > 0; i--) {
@@ -600,8 +603,7 @@
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
       // 只取前 N 題（題庫不足 N 題時就出全部）
-      arr = arr.slice(0, QUESTIONS_PER_GAME);
-
+      arr = arr.slice(0, wantCount);
       // 重置所有玩家分數
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
