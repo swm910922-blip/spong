@@ -584,14 +584,23 @@
   }
 
   /* ===== 主持人：開始遊戲 ===== */
+  const QUESTIONS_PER_GAME = 10; // 每場遊戲抽幾題
+
   $('#hostStartBtn').addEventListener('click', async () => {
     if (!currentRoomCode) return;
     try {
       const snap = await get(questionsRef);
       if (!snap.exists()) { alert('雲端題庫是空的！請先到「管理題庫」新增題目'); return; }
-      const arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
+      let arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
       if (!arr.length) { alert('雲端題庫是空的！'); return; }
-      for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
+
+      // 先洗牌
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      // 只取前 N 題（題庫不足 N 題時就出全部）
+      arr = arr.slice(0, QUESTIONS_PER_GAME);
 
       // 重置所有玩家分數
       const updates = {};
@@ -606,9 +615,9 @@
         updates['rooms/' + currentRoomCode + '/players/' + id + '/currentAnswer'] = '';
       });
       await update(ref(db), updates);
+      toast('🎲 本場共 ' + arr.length + ' 題');
     } catch (err) { alert('開始失敗：' + err.message); }
   });
-
   /* ===== 答題階段 ===== */
   function renderPlaying(data) {
     showOnly('battleView');
