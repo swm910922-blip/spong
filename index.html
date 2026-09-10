@@ -7,10 +7,7 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  :root{
-    --yellow:#FFF176; --pink:#FF8A80; --aqua:#80DEEA;
-    --ink:#0E4C5C; --ink-soft:#4E7C88;
-  }
+  :root{ --yellow:#FFF176; --pink:#FF8A80; --aqua:#80DEEA; --ink:#0E4C5C; --ink-soft:#4E7C88; }
   body{
     margin:0; min-height:100vh; color:var(--ink);
     font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,sans-serif;
@@ -141,7 +138,7 @@
       <div id="battleView" hidden>
         <div class="battle-scores" id="battleScores"></div>
         <div class="battle-status" id="battleStatus">準備開始...</div>
-        <div class="timer-bar" id="timerDisplay">⏱ 15 <span>秒</span></div>
+        <div class="timer-bar" id="timerDisplay">⏱ 60 <span>秒</span></div>
         <div class="image-card"><img id="battleImage" alt="題目圖片" /></div>
         <form id="battleAnswerForm" class="answer-row" autocomplete="off">
           <input id="battleAnswerInput" type="text" placeholder="輸入你的答案…" />
@@ -208,7 +205,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD1wowbwxt56vCI5jwfV7jmqYgnB9mdzr4",
@@ -223,6 +220,8 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
   const questionsRef = ref(db, 'global_questions');
+
+  const QUESTION_TIME = 60000; // 每題 60 秒
 
   const $ = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
@@ -337,6 +336,7 @@
   let roomListener = null, timerInterval = null;
   let currentQuestionIndex = -1, currentQuestionData = null;
   let hasAnsweredThisRound = false, battleQuestions = [], currentPlayers = {};
+  let timerTriggered = false; // 避免重複觸發時間到
 
   function genCode() {
     const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -413,6 +413,7 @@
       if (!data) return;
       currentPlayers = data.players || {};
 
+      // 等待大廳
       if (data.status === 'waiting') {
         $('#lobbyView').hidden = false; $('#battleView').hidden = true; $('#battleResult').hidden = true;
         const n = Object.keys(currentPlayers).length;
@@ -421,36 +422,51 @@
         $('#lobbyPlayerList').innerHTML = Object.values(currentPlayers).map(p => '<span class="player-tag">' + escapeHtml(p.name) + '</span>').join('');
       }
 
+      // 對戰中
       if (data.status === 'playing' || data.status === 'showing_answer') {
         $('#lobbyView').hidden = true; $('#battleView').hidden = false; $('#battleResult').hidden = true;
         renderScores(currentPlayers);
         if (data.questions && data.questions.length) battleQuestions = data.questions;
 
+        // 進入新題目
         if (data.currentQuestion !== currentQuestionIndex && data.currentQuestion < battleQuestions.length) {
           currentQuestionIndex = data.currentQuestion;
           currentQuestionData = battleQuestions[currentQuestionIndex];
           if (!currentQuestionData) return;
           hasAnsweredThisRound = false;
+          timerTriggered = false;
           $('#battleAnswerInput').value = ''; $('#battleAnswerInput').disabled = false;
           $('#battleSubmitBtn').disabled = false;
           $('#battleFeedback').className = 'feedback'; $('#battleFeedback').innerHTML = '';
           $('#nextBattleBtn').hidden = true;
           $('#battleImage').src = currentQuestionData.image;
           $('#battleStatus').textContent = '第 ' + (currentQuestionIndex + 1) + ' / ' + battleQuestions.length + ' 題';
-          $('#timerDisplay').textContent = '⏱ 15 秒';
+          $('#timerDisplay').innerHTML = '⏱ 60 <span>秒</span>';
+
           if (timerInterval) clearInterval(timerInterval);
-          const end = (data.questionStartTime || Date.now()) + 15000;
+          const startTime = data.questionStartTime || Date.now();
+          const endTime = startTime + QUESTION_TIME;
           timerInterval = setInterval(() => {
-            const left = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+            const left = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
             $('#timerDisplay').innerHTML = '⏱ ' + left + ' <span>秒</span>';
             if (left <= 0) {
               clearInterval(timerInterval);
               $('#timerDisplay').textContent = '⏱ 時間到！';
               $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
+              // 時間到 → 若還在 playing，自動進入公布答案
+              if (!timerTriggered) {
+                timerTriggered = true;
+                get(ref(db, 'rooms/' + currentRoomCode)).then(s => {
+                  if (s.exists() && s.val().status === 'playing') {
+                    update(ref(db, 'rooms/' + currentRoomCode), { status: 'showing_answer' });
+                  }
+                });
+              }
             }
           }, 200);
         }
 
+        // 公布答案
         if (data.status === 'showing_answer') {
           if (timerInterval) clearInterval(timerInterval);
           $('#timerDisplay').textContent = '⏱ 時間到！';
@@ -464,6 +480,7 @@
         }
       }
 
+      // 遊戲結束
       if (data.status === 'finished') {
         if (timerInterval) clearInterval(timerInterval);
         $('#lobbyView').hidden = true; $('#battleView').hidden = true; $('#battleResult').hidden = false;
@@ -480,17 +497,38 @@
           const bg = p.id === myPlayerId ? '#FFFDE7' : 'transparent';
           html += '<div style="display:flex; justify-content:space-between; padding:5px 10px; font-weight:800; background:' + bg + '; border-radius:8px;"><span>' + medal + ' ' + escapeHtml(p.name) + '</span><span>' + p.score + ' 分</span></div>';
         });
-        html += '</div><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳</button></div>';
+        html += '</div><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳（保留房間）</button></div>';
         $('#battleResult').innerHTML = html;
-        $('#backToLobbyBtn').addEventListener('click', () => {
-          if (roomListener) roomListener();
-          if (timerInterval) clearInterval(timerInterval);
-          $('#lobbyView').hidden = false; $('#battleView').hidden = true; $('#battleResult').hidden = true;
-          $('#createRoomBtn').disabled = false; $('#joinRoomBtn').disabled = false;
-          $('#roomInfo').style.display = 'none'; $('#startBattleBtn').style.display = 'none';
-          setStatus('', '');
-          if (currentRoomCode) remove(ref(db, 'rooms/' + currentRoomCode));
-          currentRoomCode = null; currentQuestionIndex = -1; currentPlayers = {};
+
+        $('#backToLobbyBtn').addEventListener('click', async () => {
+          if (!currentRoomCode) return;
+          try {
+            // 重置房間狀態為 waiting，玩家分數歸零、答題狀態歸零
+            const updates = {};
+            updates['rooms/' + currentRoomCode + '/status'] = 'waiting';
+            updates['rooms/' + currentRoomCode + '/currentQuestion'] = 0;
+            updates['rooms/' + currentRoomCode + '/questionStartTime'] = 0;
+            updates['rooms/' + currentRoomCode + '/questions'] = null;
+            const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
+            const players = pSnap.val() || {};
+            Object.keys(players).forEach(id => {
+              updates['rooms/' + currentRoomCode + '/players/' + id + '/score'] = 0;
+              updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false;
+            });
+            await update(ref(db), updates);
+            // 本地重置
+            currentQuestionIndex = -1;
+            battleQuestions = [];
+            hasAnsweredThisRound = false;
+            timerTriggered = false;
+            $('#battleResult').hidden = true;
+            $('#lobbyView').hidden = false;
+            $('#battleView').hidden = true;
+            setStatus('✅ 已回到大廳，可以再玩一場！', 'ok');
+          } catch (err) {
+            console.error('回大廳失敗:', err);
+            setStatus('❌ 回大廳失敗：' + err.message, 'err');
+          }
         });
       }
     });
@@ -512,31 +550,39 @@
       let list = Object.values(data).filter(q => q && q.image && q.answers && q.answers.length);
       if (!list.length) { setStatus('❌ 雲端題庫是空的', 'err'); return; }
       for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
+      timerTriggered = false;
       await update(ref(db, 'rooms/' + currentRoomCode), {
-        status: 'playing', currentQuestion: 0, questionStartTime: Date.now() + 3000, questions: list
+        status: 'playing', currentQuestion: 0, questionStartTime: Date.now(), questions: list
       });
     } catch (err) { setStatus('❌ 開始失敗：' + err.message, 'err'); }
   });
 
+  /* ===== 嚴格的答案比對（0 ~ 10 分） ===== */
+  function normalize(str) {
+    return String(str == null ? '' : str)
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
+  }
   function calcScore(input, answers) {
-    const n = String(input || '').toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
+    const n = normalize(input);
     if (!n) return 0;
     let best = 0;
     for (const a of answers) {
-      const na = String(a || '').toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
+      const na = normalize(a);
       if (!na) continue;
       let sim = 0;
-      if (n === na) sim = 1;
-      else if (n.includes(na)) sim = 0.9;
-      else if (na.includes(n)) sim = 0.6 * (n.length / na.length);
-      else {
-        let lcs = 0;
-        for (let i = 0; i < n.length; i++) for (let j = 0; j < na.length; j++) {
-          let k = 0; while (i + k < n.length && j + k < na.length && n[i + k] === na[j + k]) k++;
-          if (k > lcs) lcs = k;
-        }
-        sim = 0.5 * (lcs / Math.max(n.length, na.length));
+      if (n === na) {
+        // 完全吻合 → 10 分
+        sim = 1;
+      } else if (n.includes(na) && n.length <= na.length * 2) {
+        // 輸入包含完整答案，且長度不超過答案 2 倍 → 9 分
+        sim = 0.9;
+      } else if (na.includes(n) && n.length >= na.length * 0.6) {
+        // 輸入是答案的一部分，且長度至少為答案的 60% → 6~9 分
+        sim = 0.6 + 0.3 * (n.length / na.length);
       }
+      // 其他狀況一律 0 分
       if (sim > best) best = sim;
     }
     return Math.round(10 * best);
@@ -557,10 +603,18 @@
     await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId), { score: cur + gained, answered: true });
 
     const fb = $('#battleFeedback');
-    if (gained >= 10) { fb.className = 'feedback show ok'; fb.innerHTML = '<div class="fb-head">🎉 完全正確！+10 分</div>'; }
-    else if (gained > 0) { fb.className = 'feedback show ok'; fb.innerHTML = '<div class="fb-head">🟡 部分正確！+' + gained + ' 分</div><div class="fb-line"><span class="tag">相似度</span>與答案約 ' + (gained * 10) + '% 吻合</div>'; }
-    else { fb.className = 'feedback show no'; fb.innerHTML = '<div class="fb-head">❌ 答錯了（0 分）</div>'; }
+    if (gained >= 10) {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<div class="fb-head">🎉 完全正確！+10 分</div>';
+    } else if (gained > 0) {
+      fb.className = 'feedback show ok';
+      fb.innerHTML = '<div class="fb-head">🟡 部分正確！+' + gained + ' 分</div><div class="fb-line"><span class="tag">相似度</span>與答案約 ' + (gained * 10) + '% 吻合</div>';
+    } else {
+      fb.className = 'feedback show no';
+      fb.innerHTML = '<div class="fb-head">❌ 答錯了（0 分）</div>';
+    }
 
+    // 所有人都答題 → 提前公布答案
     const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
     const players = pSnap.val();
     if (Object.values(players).every(p => p.answered)) {
@@ -577,7 +631,7 @@
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
       updates['rooms/' + currentRoomCode + '/currentQuestion'] = next;
-      updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now() + 3000;
+      updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now();
       const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
       Object.keys(pSnap.val()).forEach(id => { updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false; });
       await update(ref(db), updates);
@@ -621,7 +675,7 @@
 
   /* ===== 啟動 ===== */
   loadQuestions();
-  console.log('✅ 遊戲已啟動，Firebase 已連線');
+  console.log('✅ 遊戲已啟動，每題時間：' + (QUESTION_TIME / 1000) + ' 秒');
 </script>
 </body>
 </html>
