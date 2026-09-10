@@ -680,7 +680,25 @@
   $('#hostRevealBtn').addEventListener('click', async () => {
     if (!currentRoomCode || myRole !== 'host') return;
     try {
-      await update(ref(db, 'rooms/' + currentRoomCode), { status: 'revealing' });
+      const updates = {};
+      updates['rooms/' + currentRoomCode + '/status'] = 'revealing';
+
+      // 🎯 自動評分：讀取每位玩家的答案，用 calcScore 算出分數
+      const q = currentQuestionData;
+      if (q && Array.isArray(q.answers) && q.answers.length) {
+        Object.entries(currentPlayers).forEach(([id, p]) => {
+          const ans = p.currentAnswer || '';
+          const auto = calcScore(ans, q.answers);
+          const roundScores = p.roundScores || {};
+          roundScores[currentQuestionIndex] = auto;
+          const total = Object.values(roundScores).reduce((a, b) => a + (Number(b) || 0), 0);
+          updates['rooms/' + currentRoomCode + '/players/' + id + '/roundScores'] = roundScores;
+          updates['rooms/' + currentRoomCode + '/players/' + id + '/total'] = total;
+        });
+      }
+
+      await update(ref(db), updates);
+      toast('✅ 已自動評分，可再手動微調');
     } catch (err) { alert('公布失敗：' + err.message); }
   });
 
@@ -895,6 +913,32 @@
     const v = e.target.value.trim();
     if (v) { $('#fileInput').value = ''; setPreview(v); } else setPreview('');
   });
+  /* ===== 自動評分（答案相似度 0~10 分） ===== */
+  function normalize(str) {
+    return String(str == null ? '' : str)
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
+  }
+  function calcScore(input, answers) {
+    const n = normalize(input);
+    if (!n) return 0;
+    let best = 0;
+    for (const a of answers) {
+      const na = normalize(a);
+      if (!na) continue;
+      let sim = 0;
+      if (n === na) {
+        sim = 1;                                       // 完全吻合 → 10 分
+      } else if (n.includes(na) && n.length <= na.length * 2) {
+        sim = 0.9;                                     // 包含完整答案且長度合理 → 9 分
+      } else if (na.includes(n) && n.length >= na.length * 0.6) {
+        sim = 0.6 + 0.3 * (n.length / na.length);      // 部分吻合 → 6~9 分
+      }
+      if (sim > best) best = sim;
+    }
+    return Math.round(10 * best);
+  }
 
   /* ===== 啟動 ===== */
   loadQuestions();
