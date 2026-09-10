@@ -41,7 +41,7 @@
   .q-ans{ font-weight:900; font-size:.95rem; }
   .q-hint{ font-size:.74rem; color:var(--ink-soft); }
   .q-actions{ display:flex; gap:8px; }
-  .btn{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px 20px; cursor:pointer; box-shadow:0 4px 0 var(--ink); }
+  .btn{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px 20px; cursor:pointer; box-shadow:0 4px 0 var(--ink); transition: transform .08s, box-shadow .08s; }
   .btn:active{ transform:translateY(4px); box-shadow:0 0 0 var(--ink); }
   .btn:disabled{ opacity:.45; cursor:not-allowed; }
   .btn.primary{ background:var(--yellow); }
@@ -53,7 +53,7 @@
   .modal{ width:min(560px, 100%); max-height:90vh; overflow:auto; background:#fff; border:3px solid var(--ink); border-radius:24px; }
   .modal-head{ display:flex; justify-content:space-between; padding:14px 18px; background:var(--yellow); border-bottom:3px solid var(--ink); border-radius:21px 21px 0 0; }
   .modal-body{ padding:16px 18px; display:flex; flex-direction:column; gap:14px; }
-  .field{ display:flex; flex-direction:column; gap:7px; }
+  .field{ display:flex; flex-direction:column; gap:7px; text-align:left; }
   .field-label{ font-size:.8rem; font-weight:900; color:#2E6B7A; }
   .field input[type=text], .field input[type=url], .field textarea{ font-family:inherit; font-size:.92rem; font-weight:700; color:var(--ink); padding:11px 13px; border-radius:12px; border:2.5px solid rgba(14,76,92,.45); background:#F7FEFF; }
   .field input[type=file]{ font-size:.8rem; padding:9px; border-radius:12px; border:2.5px dashed rgba(14,76,92,.45); background:#F7FEFF; }
@@ -73,10 +73,10 @@
   .battle-score-box .score { font-size: 1.5rem; font-weight: 900; color: #E53935; }
   .battle-score-box.me { border-color: #E53935; background: #FFFDE7; }
   .image-card{ background:#E1F5FE; border:3px solid var(--ink); border-radius:22px; padding:10px; margin-bottom:14px; display:flex; justify-content:center; box-shadow:0 6px 0 var(--ink); }
-  #battleImage{ display:block; width:100%; max-width:400px; height:auto; border-radius:14px; background:#fff; border:2px dashed rgba(14,76,92,.25); }
+  .image-card img{ display:block; width:100%; max-width:400px; height:auto; border-radius:14px; background:#fff; border:2px dashed rgba(14,76,92,.25); }
   .answer-row{ display:flex; gap:10px; flex-wrap:wrap; }
-  #battleAnswerInput{ flex:1 1 180px; min-width:0; padding:14px 16px; font-size:1rem; font-weight:800; color:var(--ink); font-family:inherit; border-radius:14px; border:3px solid var(--ink); background:#fff; }
-  #battleAnswerInput:disabled{ background:#ECEFF1; color:#78909C; }
+  .answer-row input{ flex:1 1 180px; min-width:0; padding:14px 16px; font-size:1rem; font-weight:800; color:var(--ink); font-family:inherit; border-radius:14px; border:3px solid var(--ink); background:#fff; }
+  .answer-row input:disabled{ background:#ECEFF1; color:#78909C; }
   .feedback{ display:none; margin-top:14px; border-radius:16px; padding:14px 16px; border:3px solid; }
   .feedback.show{ display:block; }
   .feedback.ok{ background:#E8F5E9; border-color:#2E7D32; }
@@ -98,6 +98,23 @@
   #statusBox.ok { background: #E8F5E9; color: #2E7D32; }
   #statusBox.err { background: #FFEBEE; color: #C62828; }
   #statusBox.info { background: #FFFDE7; color: #7A6A00; }
+
+  /* 角色選擇按鈕 */
+  .role-btn{ padding: 22px 36px !important; font-size: 1.05rem !important; }
+  /* 監控面板 */
+  .monitor-panel{ background:#fff; border:3px solid var(--ink); border-radius:18px; padding:18px; box-shadow:0 4px 0 var(--ink); }
+  .submit-count{ text-align:center; font-size:1.3rem; font-weight:900; color:#E53935; margin:10px 0; }
+  /* 公布答案頁：玩家答案卡 */
+  .reveal-card{ display:flex; align-items:center; gap:12px; background:#F7FEFF; border:2.5px solid rgba(14,76,92,.35); border-radius:14px; padding:12px; margin-bottom:10px; flex-wrap:wrap; }
+  .reveal-card .who{ font-weight:900; font-size:1rem; min-width:80px; }
+  .reveal-card .ans{ flex:1 1 120px; color:var(--ink-soft); font-weight:800; word-break:break-word; }
+  .reveal-card .ans .empty{ color:#B0BEC5; font-style:italic; }
+  .score-ctrl{ display:flex; align-items:center; gap:6px; }
+  .score-ctrl button{ width:36px; height:36px; border-radius:50%; border:3px solid var(--ink); background:var(--yellow); font-weight:900; font-size:1.1rem; cursor:pointer; box-shadow:0 3px 0 var(--ink); line-height:1; }
+  .score-ctrl button:active{ transform:translateY(3px); box-shadow:none; }
+  .score-ctrl input{ width:56px; text-align:center; font-size:1.1rem; font-weight:900; padding:5px; border-radius:10px; border:2.5px solid var(--ink); background:#fff; color:#E53935; }
+  .score-ctrl .score-display{ font-size:1.5rem; font-weight:900; color:#E53935; min-width:50px; text-align:center; }
+  .my-badge{ background:#FFF176; border-radius:999px; padding:2px 10px; font-size:.75rem; font-weight:900; margin-left:6px; }
 </style>
 </head>
 <body>
@@ -105,7 +122,7 @@
 <div class="app">
   <header class="topbar">
     <h1>🧽 梗圖猜謎大亂鬥 🍔</h1>
-    <p class="sub">自己出題，和朋友即時連線對戰！</p>
+    <p class="sub">主持人出題計分，玩家即時搶答！</p>
   </header>
 
   <nav class="tabs">
@@ -114,43 +131,117 @@
   </nav>
 
   <main>
+    <!-- ============ 多人對戰 ============ -->
     <section id="view-multiplayer" class="view active">
-      <div id="lobbyView" class="empty-state">
-        <h2 style="margin-top:0;">👥 多人對戰大廳</h2>
-        <p>輸入你的暱稱，建立房間或加入朋友的房間！</p>
-        <div style="margin: 15px 0;">
-          <input type="text" id="playerNameInput" placeholder="請輸入你的暱稱" maxlength="8" style="width: 80%; max-width: 300px; padding: 12px; font-size: 1rem; border: 3px solid var(--ink); border-radius: 14px; font-weight: 800; text-align: center;" />
-        </div>
-        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
-          <button class="btn primary" id="createRoomBtn" type="button">➕ 建立房間</button>
-          <button class="btn aqua" id="joinRoomBtn" type="button">🔑 加入房間</button>
-        </div>
-        <div id="statusBox" style="display:none;"></div>
-        <div id="roomInfo" style="margin-top:20px; display:none;">
-          <p style="font-size:0.85rem; color:#4E7C88;">房間號碼：</p>
-          <h3 id="roomCodeDisplay" style="font-size:2.2rem; letter-spacing:4px; color:#E53935;">----</h3>
-          <p id="roomStatus" style="font-weight:900; color:#4E7C88;">等待玩家加入中...</p>
-          <div id="lobbyPlayerList" class="player-list"></div>
-          <button class="btn primary" id="startBattleBtn" type="button" style="margin-top:15px; display:none;">🚀 開始對戰</button>
+
+      <!-- 1. 角色選擇 -->
+      <div id="roleSelectView" class="empty-state">
+        <h2 style="margin-top:0;">選擇你的角色</h2>
+        <p>主持人負責出題與評分，玩家負責答題</p>
+        <div style="display:flex; gap:15px; justify-content:center; margin-top:20px; flex-wrap:wrap;">
+          <button class="btn primary role-btn" id="chooseHostBtn" type="button">🎤 我是主持人</button>
+          <button class="btn aqua role-btn" id="choosePlayerBtn" type="button">🎮 我是玩家</button>
         </div>
       </div>
 
+      <!-- 2. 主持人設定 -->
+      <div id="hostSetupView" class="empty-state" hidden>
+        <h2 style="margin-top:0;">🎤 主持人</h2>
+        <div id="hostBeforeCreate">
+          <p>點擊下方按鈕建立房間，取得房間號碼後給玩家</p>
+          <button class="btn primary" id="createRoomBtn" type="button" style="margin-top:15px;">➕ 建立房間</button>
+        </div>
+        <div id="hostRoomInfo" hidden>
+          <p style="font-size:0.9rem; color:#4E7C88;">請把這組號碼給玩家：</p>
+          <h3 id="hostRoomCode" style="font-size:2.6rem; letter-spacing:6px; color:#E53935; margin:10px 0;">-----</h3>
+          <p id="hostRoomStatus" style="font-weight:900; color:#4E7C88;">等待玩家加入...</p>
+          <div id="hostLobbyPlayers" class="player-list"></div>
+          <button class="btn primary" id="hostStartBtn" type="button" style="margin-top:15px;" disabled>🚀 開始遊戲</button>
+        </div>
+      </div>
+
+      <!-- 3. 玩家設定 -->
+      <div id="playerSetupView" class="empty-state" hidden>
+        <h2 style="margin-top:0;">🎮 玩家</h2>
+        <div class="field">
+          <span class="field-label">你的暱稱</span>
+          <input type="text" id="playerNameInput" placeholder="例如：海綿寶寶" maxlength="8" style="width:100%; padding:12px; font-size:1rem; border:3px solid var(--ink); border-radius:14px; font-weight:800;" />
+        </div>
+        <div class="field" style="margin-top:12px;">
+          <span class="field-label">房間號碼</span>
+          <input type="text" id="playerRoomInput" placeholder="請輸入 5 位數房間號碼" maxlength="5" style="width:100%; padding:12px; font-size:1.2rem; border:3px solid var(--ink); border-radius:14px; font-weight:900; text-align:center; letter-spacing:4px; text-transform:uppercase;" />
+        </div>
+        <button class="btn primary full" id="joinRoomBtn" type="button" style="margin-top:15px;">🔑 加入房間</button>
+        <div id="statusBox" style="display:none;"></div>
+      </div>
+
+      <!-- 4. 玩家等待畫面 -->
+      <div id="playerWaitingView" class="empty-state" hidden>
+        <h2 style="margin-top:0;">⏳ 已加入房間</h2>
+        <p id="playerWaitingMsg">等待主持人開始遊戲...</p>
+        <div style="font-size:0.85rem; color:#4E7C88; margin-top:10px;">房間號碼：<span id="playerRoomCodeShow" style="font-weight:900; color:#E53935; letter-spacing:3px;"></span></div>
+      </div>
+
+      <!-- 5. 答題畫面 -->
       <div id="battleView" hidden>
         <div class="battle-scores" id="battleScores"></div>
-        <div class="battle-status" id="battleStatus">準備開始...</div>
-        <div class="timer-bar" id="timerDisplay">⏱ 60 <span>秒</span></div>
+        <div class="battle-status" id="battleStatus"></div>
+
         <div class="image-card"><img id="battleImage" alt="題目圖片" /></div>
-        <form id="battleAnswerForm" class="answer-row" autocomplete="off">
-          <input id="battleAnswerInput" type="text" placeholder="輸入你的答案…" />
-          <button id="battleSubmitBtn" class="btn primary" type="submit">送出</button>
-        </form>
-        <div id="battleFeedback" class="feedback"></div>
-        <button id="nextBattleBtn" class="btn primary full" type="button" hidden>下一題 ▶</button>
+
+        <!-- 玩家作答區 -->
+        <div id="playerAnswerArea" hidden>
+          <div class="timer-bar" id="playerTimerDisplay">⏱ 60 <span>秒</span></div>
+          <form id="playerAnswerForm" class="answer-row" autocomplete="off">
+            <input id="playerAnswerInput" type="text" placeholder="輸入你的答案…" />
+            <button id="playerSubmitBtn" class="btn primary" type="submit">送出</button>
+          </form>
+          <div id="playerAnswerStatus" class="feedback"></div>
+        </div>
+
+        <!-- 主持人監控區 -->
+        <div id="hostMonitorArea" hidden>
+          <div class="monitor-panel">
+            <h3 style="margin-top:0; text-align:center;">📊 監控面板</h3>
+            <p class="submit-count">已提交：<span id="submittedCount">0</span> / <span id="totalCount">0</span></p>
+            <div id="hostPlayerAnswers" style="margin:15px 0; max-height:280px; overflow-y:auto;"></div>
+            <button class="btn primary full" id="hostRevealBtn" type="button" style="margin-top:15px;">📢 結束作答並公布答案</button>
+          </div>
+        </div>
       </div>
 
+      <!-- 6. 公布答案畫面（全體） -->
+      <div id="revealView" hidden>
+        <div class="image-card"><img id="revealImage" alt="題目圖片" /></div>
+
+        <div style="background:#E8F5E9; border:3px solid #2E7D32; border-radius:18px; padding:18px; margin-bottom:15px;">
+          <div style="font-size:0.85rem; font-weight:900; color:#2E7D32; margin-bottom:5px;">✅ 標準答案</div>
+          <div id="revealAnswer" style="font-size:1.3rem; font-weight:900; color:#0E4C5C;"></div>
+        </div>
+
+        <div id="revealExplanationWrap" style="background:#FFFDE7; border:3px dashed #E8D24B; border-radius:18px; padding:18px; margin-bottom:15px;" hidden>
+          <div style="font-size:0.85rem; font-weight:900; color:#7A6A00; margin-bottom:5px;">💡 梗圖解說</div>
+          <div id="revealExplanation" style="font-weight:800; color:#0E4C5C; line-height:1.6;"></div>
+        </div>
+
+        <div style="background:#fff; border:3px solid var(--ink); border-radius:18px; padding:18px; box-shadow:0 4px 0 var(--ink);">
+          <h3 style="margin-top:0;">📝 所有人的答案</h3>
+          <div id="revealPlayerList"></div>
+          <p id="hostHintText" style="font-size:0.78rem; color:#8FAEB8; margin:10px 0 0;" hidden>💡 主持人可用 +/- 或輸入框直接調整分數（0~10 分）</p>
+        </div>
+
+        <div id="hostRevealControls" style="display:flex; gap:10px; justify-content:center; margin-top:20px; flex-wrap:wrap;" hidden>
+          <button class="btn primary" id="hostNextBtn" type="button">下一題 ▶</button>
+          <button class="btn danger" id="hostFinishBtn" type="button">🏁 結束遊戲</button>
+        </div>
+      </div>
+
+      <!-- 7. 遊戲結果 -->
       <div id="battleResult" class="result-card" hidden></div>
+
     </section>
 
+    <!-- ============ 管理題庫 ============ -->
     <section id="view-manage" class="view">
       <div class="toolbar">
         <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
@@ -165,6 +256,7 @@
   </main>
 </div>
 
+<!-- 編輯 Modal -->
 <div class="modal-backdrop" id="modalBackdrop" hidden>
   <div class="modal">
     <div class="modal-head">
@@ -205,7 +297,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyD1wowbwxt56vCI5jwfV7jmqYgnB9mdzr4",
@@ -221,8 +313,6 @@
   const db = getDatabase(app);
   const questionsRef = ref(db, 'global_questions');
 
-  const QUESTION_TIME = 60000; // 每題 60 秒
-
   const $ = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
   const uid = () => 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -236,6 +326,7 @@
   }
   function setStatus(msg, type) {
     const box = $('#statusBox');
+    if (!box) return;
     if (!msg) { box.style.display = 'none'; return; }
     box.style.display = 'block';
     box.className = type || 'info';
@@ -246,7 +337,7 @@
     $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
   }
 
-  /* ===== 題庫管理 ===== */
+  /* ================= 題庫管理（保持不變） ================= */
   let questions = [];
   let editingId = null;
   let tempImage = '';
@@ -266,10 +357,7 @@
       const data = {};
       questions.forEach(q => { data[q.id] = q; });
       await set(questionsRef, data);
-    } catch (err) {
-      console.error('儲存題庫失敗:', err);
-      toast('⚠️ 儲存失敗：' + err.message);
-    }
+    } catch (err) { toast('⚠️ 儲存失敗：' + err.message); }
   }
   function renderManageList() {
     const list = $('#questionList');
@@ -331,314 +419,449 @@
     reader.readAsText(file);
   }
 
-  /* ===== 多人對戰 ===== */
-  let currentRoomCode = null, myPlayerId = null, myName = '玩家';
-  let roomListener = null, timerInterval = null;
-  let currentQuestionIndex = -1, currentQuestionData = null;
-  let hasAnsweredThisRound = false, battleQuestions = [], currentPlayers = {};
-  let timerTriggered = false; // 避免重複觸發時間到
+  /* ================= 多人對戰（角色版） ================= */
+  let myRole = null;              // 'host' | 'player'
+  let myPlayerId = null;
+  let myName = '玩家';
+  let currentRoomCode = null;
+  let roomListener = null;
+  let currentPlayers = {};
+  let currentQuestions = [];
+  let currentQuestionIndex = -1;
+  let currentQuestionData = null;
+  let hasAnsweredThisRound = false;
+  let timerInterval = null;
+  let questionStartTime = 0;
 
+  function getPid(prefix) {
+    if (!myPlayerId) myPlayerId = (prefix || 'p_') + Math.random().toString(36).slice(2, 11);
+    return myPlayerId;
+  }
   function genCode() {
     const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
     let s = ''; for (let i = 0; i < 5; i++) s += c[Math.floor(Math.random() * c.length)];
     return s;
   }
-  function getPid() { if (!myPlayerId) myPlayerId = 'p_' + Math.random().toString(36).slice(2, 11); return myPlayerId; }
-  function getPname() { const n = $('#playerNameInput').value.trim(); if (n) myName = n; return myName; }
 
+  /* ===== 角色選擇 ===== */
+  $('#chooseHostBtn').addEventListener('click', () => {
+    myRole = 'host';
+    myPlayerId = 'host_' + Math.random().toString(36).slice(2, 11);
+    myName = '主持人';
+    $('#roleSelectView').hidden = true;
+    $('#hostSetupView').hidden = false;
+    $('#playerSetupView').hidden = true;
+    $('#playerWaitingView').hidden = true;
+  });
+  $('#choosePlayerBtn').addEventListener('click', () => {
+    myRole = 'player';
+    myPlayerId = 'p_' + Math.random().toString(36).slice(2, 11);
+    $('#roleSelectView').hidden = true;
+    $('#hostSetupView').hidden = true;
+    $('#playerSetupView').hidden = false;
+    $('#playerWaitingView').hidden = true;
+  });
+
+  /* ===== 主持人建立房間 ===== */
   $('#createRoomBtn').addEventListener('click', async () => {
-    const name = getPname();
-    if (!name) { alert('請先輸入你的暱稱！'); return; }
-    setStatus('正在建立房間...', 'info');
     const code = genCode();
-    const pid = getPid();
-    const roomRef = ref(db, 'rooms/' + code);
     try {
-      await set(roomRef, {
-        createdAt: Date.now(), status: 'waiting', currentQuestion: 0, questionStartTime: 0,
-        players: { [pid]: { name, joinedAt: Date.now(), score: 0, answered: false } }
+      await set(ref(db, 'rooms/' + code), {
+        createdAt: Date.now(),
+        status: 'lobby',
+        hostId: myPlayerId,
+        currentQuestion: 0,
+        questionStartTime: 0,
+        questions: [],
+        players: {}
       });
       currentRoomCode = code;
-      $('#roomCodeDisplay').textContent = code;
-      $('#roomInfo').style.display = 'block';
-      $('#createRoomBtn').disabled = true;
-      $('#joinRoomBtn').disabled = true;
-      setStatus('✅ 房間已建立！把上面的號碼給朋友。', 'ok');
-      $('#roomStatus').textContent = '等待玩家加入中...';
-      $('#startBattleBtn').style.display = 'none';
-      listenToRoom(roomRef);
+      $('#hostRoomCode').textContent = code;
+      $('#hostBeforeCreate').hidden = true;
+      $('#hostRoomInfo').hidden = false;
+      listenToRoom();
     } catch (err) {
-      console.error('建立房間失敗:', err);
-      setStatus('❌ 建立房間失敗：' + err.message + '（請確認 Firebase 規則已設為 true）', 'err');
+      alert('建立房間失敗：' + err.message);
     }
   });
 
+  /* ===== 玩家加入房間 ===== */
   $('#joinRoomBtn').addEventListener('click', async () => {
-    const name = getPname();
-    if (!name) { alert('請先輸入你的暱稱！'); return; }
-    const code = prompt('請輸入 5 位數房間號碼：');
-    if (!code) return;
-    setStatus('正在加入房間...', 'info');
-    const upper = code.toUpperCase();
-    const roomRef = ref(db, 'rooms/' + upper);
+    const name = $('#playerNameInput').value.trim();
+    const code = $('#playerRoomInput').value.trim().toUpperCase();
+    if (!name) { setStatus('請輸入暱稱', 'err'); return; }
+    if (!code || code.length !== 5) { setStatus('請輸入 5 位數房間號碼', 'err'); return; }
+    setStatus('加入中...', 'info');
     try {
-      const snap = await get(roomRef);
-      if (!snap.exists()) { setStatus('❌ 找不到房間 ' + upper, 'err'); return; }
+      const snap = await get(ref(db, 'rooms/' + code));
+      if (!snap.exists()) { setStatus('❌ 找不到房間 ' + code, 'err'); return; }
       const data = snap.val();
       const cnt = data.players ? Object.keys(data.players).length : 0;
       if (cnt >= 12) { setStatus('❌ 房間已滿（上限 12 人）', 'err'); return; }
-      const pid = getPid();
-      await update(ref(db, 'rooms/' + upper + '/players'), {
-        [pid]: { name, joinedAt: Date.now(), score: 0, answered: false }
+      myName = name;
+      currentRoomCode = code;
+      await update(ref(db, 'rooms/' + code + '/players/' + myPlayerId), {
+        name: myName,
+        joinedAt: Date.now(),
+        roundScores: {},
+        total: 0
       });
-      currentRoomCode = upper;
-      $('#roomCodeDisplay').textContent = upper;
-      $('#roomInfo').style.display = 'block';
-      $('#createRoomBtn').disabled = true;
-      $('#joinRoomBtn').disabled = true;
-      setStatus('✅ 成功加入房間！', 'ok');
-      $('#roomStatus').textContent = '等待其他玩家...';
-      $('#startBattleBtn').style.display = 'none';
-      listenToRoom(roomRef);
+      setStatus('✅ 已加入房間！', 'ok');
+      $('#playerSetupView').hidden = true;
+      $('#playerWaitingView').hidden = false;
+      $('#playerRoomCodeShow').textContent = code;
+      listenToRoom();
     } catch (err) {
-      console.error('加入房間失敗:', err);
       setStatus('❌ 加入失敗：' + err.message, 'err');
     }
   });
 
-  function listenToRoom(roomRef) {
+  /* ===== 監聽房間 ===== */
+  function listenToRoom() {
     if (roomListener) roomListener();
+    const roomRef = ref(db, 'rooms/' + currentRoomCode);
     roomListener = onValue(roomRef, (snap) => {
       const data = snap.val();
       if (!data) return;
       currentPlayers = data.players || {};
 
-      // 等待大廳
-      if (data.status === 'waiting') {
-        $('#lobbyView').hidden = false; $('#battleView').hidden = true; $('#battleResult').hidden = true;
-        const n = Object.keys(currentPlayers).length;
-        $('#roomStatus').textContent = '目前 ' + n + ' 人（上限 12 人）';
-        $('#startBattleBtn').style.display = 'inline-block';
-        $('#lobbyPlayerList').innerHTML = Object.values(currentPlayers).map(p => '<span class="player-tag">' + escapeHtml(p.name) + '</span>').join('');
-      }
-
-      // 對戰中
-      if (data.status === 'playing' || data.status === 'showing_answer') {
-        $('#lobbyView').hidden = true; $('#battleView').hidden = false; $('#battleResult').hidden = true;
-        renderScores(currentPlayers);
-        if (data.questions && data.questions.length) battleQuestions = data.questions;
-
-        // 進入新題目
-        if (data.currentQuestion !== currentQuestionIndex && data.currentQuestion < battleQuestions.length) {
-          currentQuestionIndex = data.currentQuestion;
-          currentQuestionData = battleQuestions[currentQuestionIndex];
-          if (!currentQuestionData) return;
-          hasAnsweredThisRound = false;
-          timerTriggered = false;
-          $('#battleAnswerInput').value = ''; $('#battleAnswerInput').disabled = false;
-          $('#battleSubmitBtn').disabled = false;
-          $('#battleFeedback').className = 'feedback'; $('#battleFeedback').innerHTML = '';
-          $('#nextBattleBtn').hidden = true;
-          $('#battleImage').src = currentQuestionData.image;
-          $('#battleStatus').textContent = '第 ' + (currentQuestionIndex + 1) + ' / ' + battleQuestions.length + ' 題';
-          $('#timerDisplay').innerHTML = '⏱ 60 <span>秒</span>';
-
-          if (timerInterval) clearInterval(timerInterval);
-          const startTime = data.questionStartTime || Date.now();
-          const endTime = startTime + QUESTION_TIME;
-          timerInterval = setInterval(() => {
-            const left = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
-            $('#timerDisplay').innerHTML = '⏱ ' + left + ' <span>秒</span>';
-            if (left <= 0) {
-              clearInterval(timerInterval);
-              $('#timerDisplay').textContent = '⏱ 時間到！';
-              $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
-              // 時間到 → 若還在 playing，自動進入公布答案
-              if (!timerTriggered) {
-                timerTriggered = true;
-                get(ref(db, 'rooms/' + currentRoomCode)).then(s => {
-                  if (s.exists() && s.val().status === 'playing') {
-                    update(ref(db, 'rooms/' + currentRoomCode), { status: 'showing_answer' });
-                  }
-                });
-              }
-            }
-          }, 200);
-        }
-
-        // 公布答案
-        if (data.status === 'showing_answer') {
-          if (timerInterval) clearInterval(timerInterval);
-          $('#timerDisplay').textContent = '⏱ 時間到！';
-          $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
-          if (currentQuestionData) {
-            $('#battleFeedback').className = 'feedback show ok';
-            $('#battleFeedback').innerHTML = '<div class="fb-head">📢 正確答案</div><div class="fb-line">' + escapeHtml(currentQuestionData.answers.join(' / ')) + '</div>' + (currentQuestionData.explanation ? '<div class="fb-line"><span class="tag">解說</span>' + escapeHtml(currentQuestionData.explanation) + '</div>' : '');
-          }
-          $('#nextBattleBtn').hidden = false;
-          $('#nextBattleBtn').textContent = (currentQuestionIndex + 1 >= battleQuestions.length) ? '🏁 查看結果' : '下一題 ▶';
-        }
-      }
-
-      // 遊戲結束
-      if (data.status === 'finished') {
-        if (timerInterval) clearInterval(timerInterval);
-        $('#lobbyView').hidden = true; $('#battleView').hidden = true; $('#battleResult').hidden = false;
-        const sorted = Object.entries(currentPlayers).map(([id, p]) => ({ id, ...p })).sort((a, b) => b.score - a.score);
-        const me = currentPlayers[myPlayerId];
-        const myScore = me ? me.score : 0;
-        const myRank = sorted.findIndex(p => p.id === myPlayerId) + 1;
-        let html = '<h2 class="result-title">🏁 大亂鬥結束！</h2>';
-        html += '<div class="result-score">' + myScore + '<span>分</span></div>';
-        html += '<p class="result-line">你的排名：第 ' + myRank + ' 名 / 共 ' + sorted.length + ' 人</p>';
-        html += '<div style="text-align:left; max-width:320px; margin:15px auto;">';
-        sorted.forEach((p, i) => {
-          const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '🏅';
-          const bg = p.id === myPlayerId ? '#FFFDE7' : 'transparent';
-          html += '<div style="display:flex; justify-content:space-between; padding:5px 10px; font-weight:800; background:' + bg + '; border-radius:8px;"><span>' + medal + ' ' + escapeHtml(p.name) + '</span><span>' + p.score + ' 分</span></div>';
-        });
-        html += '</div><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳（保留房間）</button></div>';
-        $('#battleResult').innerHTML = html;
-
-        $('#backToLobbyBtn').addEventListener('click', async () => {
-          if (!currentRoomCode) return;
-          try {
-            // 重置房間狀態為 waiting，玩家分數歸零、答題狀態歸零
-            const updates = {};
-            updates['rooms/' + currentRoomCode + '/status'] = 'waiting';
-            updates['rooms/' + currentRoomCode + '/currentQuestion'] = 0;
-            updates['rooms/' + currentRoomCode + '/questionStartTime'] = 0;
-            updates['rooms/' + currentRoomCode + '/questions'] = null;
-            const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
-            const players = pSnap.val() || {};
-            Object.keys(players).forEach(id => {
-              updates['rooms/' + currentRoomCode + '/players/' + id + '/score'] = 0;
-              updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false;
-            });
-            await update(ref(db), updates);
-            // 本地重置
-            currentQuestionIndex = -1;
-            battleQuestions = [];
-            hasAnsweredThisRound = false;
-            timerTriggered = false;
-            $('#battleResult').hidden = true;
-            $('#lobbyView').hidden = false;
-            $('#battleView').hidden = true;
-            setStatus('✅ 已回到大廳，可以再玩一場！', 'ok');
-          } catch (err) {
-            console.error('回大廳失敗:', err);
-            setStatus('❌ 回大廳失敗：' + err.message, 'err');
-          }
-        });
-      }
+      if (data.status === 'lobby') renderLobby(data);
+      else if (data.status === 'playing') renderPlaying(data);
+      else if (data.status === 'revealing') renderRevealing(data);
+      else if (data.status === 'finished') renderFinished(data);
     });
   }
 
-  function renderScores(players) {
-    $('#battleScores').innerHTML = Object.entries(players).map(([id, p]) => {
-      const isMe = id === myPlayerId;
-      return '<div class="battle-score-box' + (isMe ? ' me' : '') + '"><div class="name">' + (isMe ? '🧑 ' : '') + escapeHtml(p.name) + '</div><div class="score">' + p.score + '</div></div>';
-    }).join('');
+  function showOnly(id) {
+    ['roleSelectView', 'hostSetupView', 'playerSetupView', 'playerWaitingView',
+     'battleView', 'revealView', 'battleResult'].forEach(v => {
+      const el = document.getElementById(v);
+      if (el) el.hidden = (v !== id);
+    });
   }
 
-  $('#startBattleBtn').addEventListener('click', async () => {
+  /* ===== 大廳 ===== */
+  function renderLobby(data) {
+    if (myRole === 'host') {
+      showOnly('hostSetupView');
+      const list = Object.values(currentPlayers);
+      $('#hostRoomStatus').textContent = '目前 ' + list.length + ' 位玩家（上限 12 人）';
+      $('#hostLobbyPlayers').innerHTML = list.length
+        ? list.map(p => '<span class="player-tag">' + escapeHtml(p.name) + '</span>').join('')
+        : '<p style="color:#8FAEB8; font-size:.85rem;">還沒有玩家加入…</p>';
+      $('#hostStartBtn').disabled = list.length < 1;
+    } else {
+      showOnly('playerWaitingView');
+      const cnt = Object.keys(currentPlayers).length;
+      $('#playerWaitingMsg').textContent = '等待主持人開始遊戲...（目前 ' + cnt + ' 人）';
+    }
+  }
+
+  /* ===== 主持人：開始遊戲 ===== */
+  $('#hostStartBtn').addEventListener('click', async () => {
     if (!currentRoomCode) return;
     try {
       const snap = await get(questionsRef);
-      if (!snap.exists()) { setStatus('❌ 雲端題庫是空的，請先到「管理題庫」新增題目', 'err'); return; }
-      const data = snap.val();
-      let list = Object.values(data).filter(q => q && q.image && q.answers && q.answers.length);
-      if (!list.length) { setStatus('❌ 雲端題庫是空的', 'err'); return; }
-      for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
-      timerTriggered = false;
-      await update(ref(db, 'rooms/' + currentRoomCode), {
-        status: 'playing', currentQuestion: 0, questionStartTime: Date.now(), questions: list
-      });
-    } catch (err) { setStatus('❌ 開始失敗：' + err.message, 'err'); }
-  });
+      if (!snap.exists()) { alert('雲端題庫是空的！請先到「管理題庫」新增題目'); return; }
+      const arr = Object.values(snap.val()).filter(q => q && q.image && q.answers && q.answers.length);
+      if (!arr.length) { alert('雲端題庫是空的！'); return; }
+      for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; }
 
-  /* ===== 嚴格的答案比對（0 ~ 10 分） ===== */
-  function normalize(str) {
-    return String(str == null ? '' : str)
-      .toLowerCase()
-      .replace(/\s+/g, '')
-      .replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
-  }
-  function calcScore(input, answers) {
-    const n = normalize(input);
-    if (!n) return 0;
-    let best = 0;
-    for (const a of answers) {
-      const na = normalize(a);
-      if (!na) continue;
-      let sim = 0;
-      if (n === na) {
-        // 完全吻合 → 10 分
-        sim = 1;
-      } else if (n.includes(na) && n.length <= na.length * 2) {
-        // 輸入包含完整答案，且長度不超過答案 2 倍 → 9 分
-        sim = 0.9;
-      } else if (na.includes(n) && n.length >= na.length * 0.6) {
-        // 輸入是答案的一部分，且長度至少為答案的 60% → 6~9 分
-        sim = 0.6 + 0.3 * (n.length / na.length);
-      }
-      // 其他狀況一律 0 分
-      if (sim > best) best = sim;
-    }
-    return Math.round(10 * best);
-  }
-
-  $('#battleAnswerForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!currentRoomCode || hasAnsweredThisRound || $('#battleAnswerInput').disabled) return;
-    const val = $('#battleAnswerInput').value.trim();
-    if (!val) return;
-    hasAnsweredThisRound = true;
-    $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
-
-    const gained = calcScore(val, currentQuestionData.answers);
-    const scoreRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId + '/score');
-    const snap = await get(scoreRef);
-    const cur = snap.val() || 0;
-    await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId), { score: cur + gained, answered: true });
-
-    const fb = $('#battleFeedback');
-    if (gained >= 10) {
-      fb.className = 'feedback show ok';
-      fb.innerHTML = '<div class="fb-head">🎉 完全正確！+10 分</div>';
-    } else if (gained > 0) {
-      fb.className = 'feedback show ok';
-      fb.innerHTML = '<div class="fb-head">🟡 部分正確！+' + gained + ' 分</div><div class="fb-line"><span class="tag">相似度</span>與答案約 ' + (gained * 10) + '% 吻合</div>';
-    } else {
-      fb.className = 'feedback show no';
-      fb.innerHTML = '<div class="fb-head">❌ 答錯了（0 分）</div>';
-    }
-
-    // 所有人都答題 → 提前公布答案
-    const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
-    const players = pSnap.val();
-    if (Object.values(players).every(p => p.answered)) {
-      await update(ref(db, 'rooms/' + currentRoomCode), { status: 'showing_answer' });
-    }
-  });
-
-  $('#nextBattleBtn').addEventListener('click', async () => {
-    if (!currentRoomCode) return;
-    const next = currentQuestionIndex + 1;
-    if (next >= battleQuestions.length) {
-      await update(ref(db, 'rooms/' + currentRoomCode), { status: 'finished' });
-    } else {
+      // 重置所有玩家分數
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
-      updates['rooms/' + currentRoomCode + '/currentQuestion'] = next;
+      updates['rooms/' + currentRoomCode + '/currentQuestion'] = 0;
       updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now();
-      const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
-      Object.keys(pSnap.val()).forEach(id => { updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false; });
+      updates['rooms/' + currentRoomCode + '/questions'] = arr;
+      const pIds = Object.keys(currentPlayers);
+      pIds.forEach(id => {
+        updates['rooms/' + currentRoomCode + '/players/' + id + '/roundScores'] = {};
+        updates['rooms/' + currentRoomCode + '/players/' + id + '/total'] = 0;
+        updates['rooms/' + currentRoomCode + '/players/' + id + '/currentAnswer'] = '';
+      });
       await update(ref(db), updates);
+    } catch (err) { alert('開始失敗：' + err.message); }
+  });
+
+  /* ===== 答題階段 ===== */
+  function renderPlaying(data) {
+    showOnly('battleView');
+    currentQuestions = data.questions || [];
+    questionStartTime = data.questionStartTime || Date.now();
+
+    // 進入新題目
+    if (data.currentQuestion !== currentQuestionIndex) {
+      currentQuestionIndex = data.currentQuestion;
+      currentQuestionData = currentQuestions[currentQuestionIndex];
+      if (!currentQuestionData) return;
+      hasAnsweredThisRound = false;
+      $('#battleImage').src = currentQuestionData.image;
+      $('#battleStatus').textContent = '第 ' + (currentQuestionIndex + 1) + ' / ' + currentQuestions.length + ' 題';
+
+      if (myRole === 'player') {
+        $('#playerAnswerInput').value = '';
+        $('#playerAnswerInput').disabled = false;
+        $('#playerSubmitBtn').disabled = false;
+        $('#playerAnswerStatus').className = 'feedback';
+        $('#playerAnswerStatus').innerHTML = '';
+      }
+    }
+
+    // 分數板
+    renderScores(currentPlayers);
+
+    // 角色分流
+    if (myRole === 'player') {
+      $('#playerAnswerArea').hidden = false;
+      $('#hostMonitorArea').hidden = true;
+
+      // 玩家倒數
+      if (timerInterval) clearInterval(timerInterval);
+      const endTime = questionStartTime + 60000;
+      const tick = () => {
+        const left = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+        $('#playerTimerDisplay').innerHTML = '⏱ ' + left + ' <span>秒</span>';
+        if (left <= 0) {
+          clearInterval(timerInterval);
+          $('#playerTimerDisplay').textContent = '⏱ 時間到！';
+          $('#playerAnswerInput').disabled = true;
+          $('#playerSubmitBtn').disabled = true;
+        }
+      };
+      tick();
+      timerInterval = setInterval(tick, 300);
+
+    } else {
+      // 主持人：監控
+      $('#playerAnswerArea').hidden = true;
+      $('#hostMonitorArea').hidden = false;
+
+      const list = Object.entries(currentPlayers);
+      const submitted = list.filter(([_, p]) => p.currentAnswer && p.currentAnswer.trim()).length;
+      $('#submittedCount').textContent = submitted;
+      $('#totalCount').textContent = list.length;
+
+      $('#hostPlayerAnswers').innerHTML = list.map(([id, p]) => {
+        const hasAns = p.currentAnswer && p.currentAnswer.trim();
+        return '<div style="display:flex; justify-content:space-between; padding:8px 12px; margin-bottom:6px; background:' + (hasAns ? '#E8F5E9' : '#F5F5F5') + '; border-radius:10px; font-weight:800;">' +
+          '<span>' + escapeHtml(p.name) + '</span>' +
+          '<span style="color:' + (hasAns ? '#2E7D32' : '#B0BEC5') + ';">' + (hasAns ? '✅ 已送出' : '⏳ 尚未送出') + '</span>' +
+          '</div>';
+      }).join('');
+    }
+  }
+
+  /* ===== 玩家送出答案 ===== */
+  $('#playerAnswerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!currentRoomCode || myRole !== 'player') return;
+    if (hasAnsweredThisRound) return;
+    const val = $('#playerAnswerInput').value.trim();
+    if (!val) return;
+    hasAnsweredThisRound = true;
+    $('#playerAnswerInput').disabled = true;
+    $('#playerSubmitBtn').disabled = true;
+
+    try {
+      await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId), {
+        currentAnswer: val
+      });
+      const st = $('#playerAnswerStatus');
+      st.className = 'feedback show ok';
+      st.innerHTML = '<div class="fb-head">✅ 已送出！</div><div class="fb-line">等待主持人公布答案…</div>';
+    } catch (err) {
+      const st = $('#playerAnswerStatus');
+      st.className = 'feedback show no';
+      st.innerHTML = '<div class="fb-head">❌ 送出失敗</div><div class="fb-line">' + escapeHtml(err.message) + '</div>';
     }
   });
 
-  /* ===== 事件綁定 ===== */
+  /* ===== 主持人：公布答案 ===== */
+  $('#hostRevealBtn').addEventListener('click', async () => {
+    if (!currentRoomCode || myRole !== 'host') return;
+    try {
+      await update(ref(db, 'rooms/' + currentRoomCode), { status: 'revealing' });
+    } catch (err) { alert('公布失敗：' + err.message); }
+  });
+
+  /* ===== 公布答案階段 ===== */
+  function renderRevealing(data) {
+    showOnly('revealView');
+    currentQuestions = data.questions || [];
+    currentQuestionIndex = data.currentQuestion;
+    currentQuestionData = currentQuestions[currentQuestionIndex];
+    if (!currentQuestionData) return;
+
+    $('#revealImage').src = currentQuestionData.image;
+    $('#revealAnswer').textContent = currentQuestionData.answers.join(' / ');
+
+    if (currentQuestionData.explanation) {
+      $('#revealExplanationWrap').hidden = false;
+      $('#revealExplanation').textContent = currentQuestionData.explanation;
+    } else {
+      $('#revealExplanationWrap').hidden = true;
+    }
+
+    // 玩家答案 + 分數
+    const list = Object.entries(currentPlayers);
+    $('#revealPlayerList').innerHTML = list.map(([id, p]) => {
+      const myAnswer = p.currentAnswer || '';
+      const score = (p.roundScores && p.roundScores[currentQuestionIndex]) || 0;
+      const isMe = id === myPlayerId;
+      const ctrl = myRole === 'host'
+        ? '<div class="score-ctrl" data-pid="' + id + '">' +
+            '<button type="button" data-act="minus">−</button>' +
+            '<input type="number" min="0" max="10" value="' + score + '" data-act="input" />' +
+            '<button type="button" data-act="plus">+</button>' +
+            '<span style="font-weight:900; color:#4E7C88;">分</span>' +
+          '</div>'
+        : '<div class="score-ctrl"><span class="score-display">' + score + '</span><span style="font-weight:900; color:#4E7C88;">分</span></div>';
+      return '<div class="reveal-card">' +
+        '<div class="who">' + escapeHtml(p.name) + (isMe ? '<span class="my-badge">你</span>' : '') + '</div>' +
+        '<div class="ans">' + (myAnswer ? '「' + escapeHtml(myAnswer) + '」' : '<span class="empty">（未作答）</span>') + '</div>' +
+        ctrl +
+      '</div>';
+    }).join('');
+
+    // 主持人控制
+    if (myRole === 'host') {
+      $('#hostRevealControls').hidden = false;
+      $('#hostHintText').hidden = false;
+      const isLast = (currentQuestionIndex + 1 >= currentQuestions.length);
+      $('#hostNextBtn').textContent = isLast ? '🏁 查看結果' : '下一題 ▶';
+    } else {
+      $('#hostRevealControls').hidden = true;
+      $('#hostHintText').hidden = true;
+    }
+  }
+
+  /* ===== 主持人調整分數（事件代理） ===== */
+  $('#revealPlayerList').addEventListener('click', async (e) => {
+    if (myRole !== 'host') return;
+    const btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    const wrapper = btn.closest('.score-ctrl');
+    const pid = wrapper.dataset.pid;
+    const input = wrapper.querySelector('input');
+    let val = parseInt(input.value, 10) || 0;
+    if (btn.dataset.act === 'plus') val = Math.min(10, val + 1);
+    else if (btn.dataset.act === 'minus') val = Math.max(0, val - 1);
+    input.value = val;
+    await saveRoundScore(pid, currentQuestionIndex, val);
+  });
+  $('#revealPlayerList').addEventListener('change', async (e) => {
+    if (myRole !== 'host') return;
+    const input = e.target.closest('input[data-act="input"]');
+    if (!input) return;
+    const wrapper = input.closest('.score-ctrl');
+    const pid = wrapper.dataset.pid;
+    let val = parseInt(input.value, 10);
+    if (isNaN(val)) val = 0;
+    val = Math.max(0, Math.min(10, val));
+    input.value = val;
+    await saveRoundScore(pid, currentQuestionIndex, val);
+  });
+
+  async function saveRoundScore(pid, roundIdx, score) {
+    try {
+      const pRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + pid);
+      const snap = await get(pRef);
+      const p = snap.val() || {};
+      const roundScores = p.roundScores || {};
+      roundScores[roundIdx] = score;
+      const total = Object.values(roundScores).reduce((a, b) => a + (Number(b) || 0), 0);
+      await update(pRef, { roundScores, total });
+    } catch (err) { console.error('儲存分數失敗:', err); }
+  }
+
+  /* ===== 主持人：下一題 / 結束 ===== */
+  $('#hostNextBtn').addEventListener('click', async () => {
+    if (!currentRoomCode || myRole !== 'host') return;
+    const next = currentQuestionIndex + 1;
+    try {
+      if (next >= currentQuestions.length) {
+        await update(ref(db, 'rooms/' + currentRoomCode), { status: 'finished' });
+      } else {
+        const updates = {};
+        updates['rooms/' + currentRoomCode + '/status'] = 'playing';
+        updates['rooms/' + currentRoomCode + '/currentQuestion'] = next;
+        updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now();
+        Object.keys(currentPlayers).forEach(id => {
+          updates['rooms/' + currentRoomCode + '/players/' + id + '/currentAnswer'] = '';
+        });
+        await update(ref(db), updates);
+      }
+    } catch (err) { alert('操作失敗：' + err.message); }
+  });
+
+  $('#hostFinishBtn').addEventListener('click', async () => {
+    if (!currentRoomCode || myRole !== 'host') return;
+    if (!confirm('確定要結束遊戲嗎？')) return;
+    try {
+      await update(ref(db, 'rooms/' + currentRoomCode), { status: 'finished' });
+    } catch (err) { alert('結束失敗：' + err.message); }
+  });
+
+  /* ===== 遊戲結束 ===== */
+  function renderFinished(data) {
+    showOnly('battleResult');
+    const sorted = Object.entries(currentPlayers)
+      .map(([id, p]) => ({ id, ...p, total: p.total || 0 }))
+      .sort((a, b) => b.total - a.total);
+
+    const me = currentPlayers[myPlayerId];
+    const myTotal = me ? (me.total || 0) : 0;
+    const myRank = sorted.findIndex(p => p.id === myPlayerId) + 1;
+
+    let html = '<h2 class="result-title">🏁 遊戲結束！</h2>';
+    html += '<div class="result-score">' + myTotal + '<span>分</span></div>';
+    if (myRank > 0) {
+      html += '<p class="result-line">你的排名：第 ' + myRank + ' 名 / 共 ' + sorted.length + ' 人</p>';
+    }
+    html += '<div style="text-align:left; max-width:360px; margin:15px auto;">';
+    sorted.forEach((p, i) => {
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '🏅';
+      const bg = p.id === myPlayerId ? '#FFFDE7' : 'transparent';
+      html += '<div style="display:flex; justify-content:space-between; padding:8px 12px; font-weight:800; background:' + bg + '; border-radius:8px;"><span>' + medal + ' ' + escapeHtml(p.name) + '</span><span>' + p.total + ' 分</span></div>';
+    });
+    html += '</div>';
+
+    if (myRole === 'host') {
+      html += '<div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳（保留房間）</button></div>';
+    } else {
+      html += '<p style="color:#4E7C88; font-weight:800; font-size:.9rem;">等待主持人開啟下一場…</p>';
+    }
+    $('#battleResult').innerHTML = html;
+
+    if (myRole === 'host') {
+      $('#backToLobbyBtn').addEventListener('click', async () => {
+        if (!currentRoomCode) return;
+        try {
+          const updates = {};
+          updates['rooms/' + currentRoomCode + '/status'] = 'lobby';
+          updates['rooms/' + currentRoomCode + '/currentQuestion'] = 0;
+          updates['rooms/' + currentRoomCode + '/questionStartTime'] = 0;
+          updates['rooms/' + currentRoomCode + '/questions'] = [];
+          Object.keys(currentPlayers).forEach(id => {
+            updates['rooms/' + currentRoomCode + '/players/' + id + '/roundScores'] = {};
+            updates['rooms/' + currentRoomCode + '/players/' + id + '/total'] = 0;
+            updates['rooms/' + currentRoomCode + '/players/' + id + '/currentAnswer'] = '';
+          });
+          await update(ref(db), updates);
+        } catch (err) { alert('回大廳失敗：' + err.message); }
+      });
+    }
+  }
+
+  /* ===== 分數板 ===== */
+  function renderScores(players) {
+    $('#battleScores').innerHTML = Object.entries(players).map(([id, p]) => {
+      const isMe = id === myPlayerId;
+      return '<div class="battle-score-box' + (isMe ? ' me' : '') + '"><div class="name">' + (isMe ? '🧑 ' : '') + escapeHtml(p.name) + '</div><div class="score">' + (p.total || 0) + '</div></div>';
+    }).join('');
+  }
+
+  /* ===== 事件綁定（題庫） ===== */
   $$('.tab').forEach(t => t.addEventListener('click', () => switchView(t.dataset.view)));
   $('#addBtn').addEventListener('click', () => openModal(null));
   $('#exportBtn').addEventListener('click', exportJSON);
@@ -675,7 +898,7 @@
 
   /* ===== 啟動 ===== */
   loadQuestions();
-  console.log('✅ 遊戲已啟動，每題時間：' + (QUESTION_TIME / 1000) + ' 秒');
+  console.log('✅ 遊戲已啟動（主持人 / 玩家 雙角色版本）');
 </script>
 </body>
 </html>
