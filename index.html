@@ -270,7 +270,6 @@
   <main>
     <!-- ============ 遊戲畫面 ============ -->
     <section id="view-game" class="view active">
-
       <div id="gamePlay">
         <div class="hud">
           <div class="hud-item"><span class="hud-label">分數</span><span class="hud-value" id="score">0</span></div>
@@ -307,21 +306,6 @@
 
     <!-- ============ 管理題庫 ============ -->
     <section id="view-manage" class="view">
-         <!-- ============ 多人對戰大廳 ============ -->
-    <section id="view-multiplayer" class="view">
-      <div class="empty-state">
-        <p>點擊下方按鈕建立房間，或加入朋友的房間！</p>
-        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
-          <button class="btn primary" id="createRoomBtn" type="button">➕ 建立房間</button>
-          <button class="btn aqua" id="joinRoomBtn" type="button">🔑 加入房間</button>
-        </div>
-        <div id="roomInfo" style="margin-top:20px; display:none;">
-          <p style="font-size:0.85rem; color:#4E7C88;">把這組房間號碼給朋友：</p>
-          <h3 id="roomCodeDisplay" style="font-size:2.2rem; letter-spacing:4px; color:#E53935;">----</h3>
-          <p style="font-weight:900; color:#4E7C88;">等待對手加入中...</p>
-        </div>
-      </div>
-    </section>
       <div class="toolbar">
         <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
         <button class="btn" id="exportBtn" type="button">⬇️ 匯出 JSON</button>
@@ -330,6 +314,24 @@
         <input type="file" id="importInput" accept=".json,application/json" hidden />
       </div>
       <div id="questionList" class="q-list"></div>
+    </section>
+
+    <!-- ============ 多人對戰大廳 ============ -->
+    <section id="view-multiplayer" class="view">
+      <div class="empty-state">
+        <h2 style="margin-top:0; color:var(--ink);">👥 多人對戰大廳</h2>
+        <p>點擊下方按鈕建立房間，或加入朋友的房間！</p>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
+          <button class="btn primary" id="createRoomBtn" type="button">➕ 建立房間</button>
+          <button class="btn aqua" id="joinRoomBtn" type="button">🔑 加入房間</button>
+        </div>
+        <div id="roomInfo" style="margin-top:20px; display:none;">
+          <p style="font-size:0.85rem; color:#4E7C88;">把這組房間號碼給朋友：</p>
+          <h3 id="roomCodeDisplay" style="font-size:2.2rem; letter-spacing:4px; color:#E53935;">----</h3>
+          <p id="roomStatus" style="font-weight:900; color:#4E7C88;">等待對手加入中...</p>
+          <button class="btn primary" id="startBattleBtn" type="button" style="margin-top:15px; display:none;">🚀 開始對戰</button>
+        </div>
+      </div>
     </section>
   </main>
 </div>
@@ -403,7 +405,6 @@
       .replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
   }
 
-  /** 支援多個允許答案：完全吻合 或 輸入包含關鍵字 都算對 */
   function checkAnswer(input, answers) {
     const n = normalize(input);
     if (!n) return false;
@@ -415,7 +416,7 @@
   }
 
   /* =========================================================
-     預設題庫（用 SVG 現場畫出角色，完全離線可用）
+     預設題庫
   ========================================================= */
   const svgURI  = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
   const wrapSvg = inner =>
@@ -452,7 +453,7 @@
       )),
       answers: ['海綿寶寶', '海綿', 'spongebob'],
       hint: '黃色方形、住在鳳梨屋，最愛蟹堡王',
-      explanation: '海綿寶寶（SpongeBob SquarePants）是比奇堡的招牌角色，蟹堡王的王牌廚師，個性樂觀到有點傻氣。'
+      explanation: '海綿寶寶（SpongeBob SquarePants）是比奇堡的招牌角色，蟹堡王的王牌廚師。'
     },
     {
       id: 'default-2',
@@ -507,7 +508,7 @@
       )),
       answers: ['蟹老闆', '蟹老板', 'mr. krabs', 'krabs', '螃蟹', '蟹阿金'],
       hint: '紅色的大螃蟹，蟹堡王的老闆，最愛錢',
-      explanation: '蟹老闆（Mr. Krabs）視錢如命，名言是「錢、錢、錢！」，是皮老闆永遠的宿敵。'
+      explanation: '蟹老闆（Mr. Krabs）視錢如命，名言是「錢、錢、錢！」。'
     },
     {
       id: 'default-5',
@@ -525,7 +526,7 @@
       )),
       answers: ['珊迪', 'sandy', '松鼠'],
       hint: '來自德州的松鼠，穿著潛水頭盔',
-      explanation: '珊迪（Sandy Cheeks）是比奇堡唯一的陸地生物，擅長空手道與科學研究。'
+      explanation: '珊迪（Sandy Cheeks）是比奇堡唯一的陸地生物。'
     },
     {
       id: 'default-6',
@@ -541,7 +542,7 @@
       )),
       answers: ['皮老闆', '皮老板', 'plankton', '浮游生物'],
       hint: '綠色的小浮游生物，只有一隻眼睛，一直想偷蟹堡秘方',
-      explanation: '皮老闆（Plankton）是海之霸餐廳的老闆，一生志業就是偷到蟹堡王秘方。'
+      explanation: '皮老闆（Plankton）是海之霸餐廳的老闆。'
     }
   ];
 
@@ -570,16 +571,13 @@
   ========================================================= */
   function normalizeQuestion(raw) {
     if (!raw || typeof raw !== 'object') return null;
-
     let image = typeof raw.image === 'string' ? raw.image.trim() : '';
     if (!image) return null;
-
     let answers = raw.answers;
     if (typeof answers === 'string') answers = answers.split(/[,，、]/);
     if (!Array.isArray(answers)) return null;
     answers = answers.map(a => String(a).trim()).filter(Boolean);
     if (!answers.length) return null;
-
     return {
       id: raw.id || uid(),
       image: image,
@@ -1124,24 +1122,134 @@
   }
 })();
 </script>
-   <!-- Firebase 連線設定 -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyD1wowbwxt56vCI5jwfV7jmqYgnB9mdzr4",
-      authDomain: "spongebob-battl.firebaseapp.com",
-      databaseURL: "https://spongebob-battl-default-rtdb.firebaseio.com",
-      projectId: "spongebob-battl",
-      storageBucket: "spongebob-battl.firebasestorage.app",
-      messagingSenderId: "863029367726",
-      appId: "1:863029367726:web:37e6c3555f3f153998ee3f"
-    };
+<!-- =========================================================
+     Firebase 多人對戰邏輯
+========================================================= -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, set, get, onValue, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    window.firebaseDB = db;
-  </script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyD1wowbwxt56vCI5jwfV7jmqYgnB9mdzr4",
+    authDomain: "spongebob-battl.firebaseapp.com",
+    databaseURL: "https://spongebob-battl-default-rtdb.firebaseio.com",
+    projectId: "spongebob-battl",
+    storageBucket: "spongebob-battl.firebasestorage.app",
+    messagingSenderId: "863029367726",
+    appId: "1:863029367726:web:37e6c3555f3f153998ee3f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  // 暴露給全域，方便主遊戲腳本使用
+  window.firebaseDB = db;
+
+  const roomCodeDisplay = document.getElementById('roomCodeDisplay');
+  const roomInfo = document.getElementById('roomInfo');
+  const roomStatus = document.getElementById('roomStatus');
+  const createRoomBtn = document.getElementById('createRoomBtn');
+  const joinRoomBtn = document.getElementById('joinRoomBtn');
+  const startBattleBtn = document.getElementById('startBattleBtn');
+
+  let currentRoomCode = null;
+  let currentRole = null;
+
+  // 產生隨機 5 位數房間碼
+  function generateRoomCode() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = '';
+    for (let i = 0; i < 5; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
+
+  // 建立房間
+  createRoomBtn.addEventListener('click', async () => {
+    const code = generateRoomCode();
+    const roomRef = ref(db, 'rooms/' + code);
+    try {
+      await set(roomRef, {
+        createdAt: Date.now(),
+        status: 'waiting',
+        players: { host: { joinedAt: Date.now(), score: 0 } }
+      });
+      currentRoomCode = code;
+      currentRole = 'host';
+      roomCodeDisplay.textContent = code;
+      roomInfo.style.display = 'block';
+      createRoomBtn.disabled = true;
+      joinRoomBtn.disabled = true;
+      roomStatus.textContent = '等待對手加入中...';
+      startBattleBtn.style.display = 'none';
+
+      // 監聽房間變化
+      onValue(roomRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data || !data.players) return;
+        const playerCount = Object.keys(data.players).length;
+        if (playerCount >= 2) {
+          roomStatus.textContent = '✅ 對手已加入！可以開始對戰了！';
+          startBattleBtn.style.display = 'inline-block';
+        } else {
+          roomStatus.textContent = '等待對手加入中...';
+          startBattleBtn.style.display = 'none';
+        }
+      });
+    } catch (err) {
+      alert('建立房間失敗：' + err.message);
+    }
+  });
+
+  // 加入房間
+  joinRoomBtn.addEventListener('click', async () => {
+    const code = prompt('請輸入 5 位數房間號碼：');
+    if (!code) return;
+    const upperCode = code.toUpperCase();
+    const roomRef = ref(db, 'rooms/' + upperCode);
+    try {
+      const snapshot = await get(roomRef);
+      if (!snapshot.exists()) {
+        alert('找不到這個房間，請確認號碼是否正確。');
+        return;
+      }
+      const data = snapshot.val();
+      if (data.players && Object.keys(data.players).length >= 2) {
+        alert('這個房間已經滿了！');
+        return;
+      }
+      await update(ref(db, 'rooms/' + upperCode + '/players'), {
+        guest: { joinedAt: Date.now(), score: 0 }
+      });
+      currentRoomCode = upperCode;
+      currentRole = 'guest';
+      roomCodeDisplay.textContent = upperCode;
+      roomInfo.style.display = 'block';
+      roomStatus.textContent = '✅ 成功加入房間！等待房主開始...';
+      createRoomBtn.disabled = true;
+      joinRoomBtn.disabled = true;
+      startBattleBtn.style.display = 'none';
+    } catch (err) {
+      alert('加入房間失敗：' + err.message);
+    }
+  });
+
+  // 開始對戰（目前先讓雙方跳轉到遊戲頁面，實際對戰邏輯可以後續擴充）
+  startBattleBtn.addEventListener('click', () => {
+    if (!currentRoomCode) return;
+    // 更新房間狀態為 playing
+    update(ref(db, 'rooms/' + currentRoomCode), {
+      status: 'playing'
+    });
+    // 切換到遊戲分頁
+    document.querySelector('.tab[data-view="game"]').click();
+    // 提示使用者
+    alert('對戰開始！目前是各自獨立答題，分數會同步到雲端，之後可以擴充成真正的即時對戰。');
+  });
+
+})();
+</script>
 </body>
 </html>
