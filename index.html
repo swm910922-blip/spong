@@ -264,6 +264,7 @@
   <nav class="tabs">
     <button class="tab active" data-view="game" type="button">🎮 開始遊戲</button>
     <button class="tab" data-view="manage" type="button">🛠 管理題庫</button>
+    <button class="tab" data-view="multiplayer" type="button">👥 多人對戰</button>
   </nav>
 
   <main>
@@ -306,6 +307,21 @@
 
     <!-- ============ 管理題庫 ============ -->
     <section id="view-manage" class="view">
+         <!-- ============ 多人對戰大廳 ============ -->
+    <section id="view-multiplayer" class="view">
+      <div class="empty-state">
+        <p>點擊下方按鈕建立房間，或加入朋友的房間！</p>
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:15px; flex-wrap:wrap;">
+          <button class="btn primary" id="createRoomBtn" type="button">➕ 建立房間</button>
+          <button class="btn aqua" id="joinRoomBtn" type="button">🔑 加入房間</button>
+        </div>
+        <div id="roomInfo" style="margin-top:20px; display:none;">
+          <p style="font-size:0.85rem; color:#4E7C88;">把這組房間號碼給朋友：</p>
+          <h3 id="roomCodeDisplay" style="font-size:2.2rem; letter-spacing:4px; color:#E53935;">----</h3>
+          <p style="font-weight:900; color:#4E7C88;">等待對手加入中...</p>
+        </div>
+      </div>
+    </section>
       <div class="toolbar">
         <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
         <button class="btn" id="exportBtn" type="button">⬇️ 匯出 JSON</button>
