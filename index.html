@@ -265,13 +265,23 @@
     </div>
     <div class="modal-body">
       <div class="field">
-        <span class="field-label">題目圖片</span>
+              <div class="field">
+        <span class="field-label">📷 題目圖片（出題時顯示）</span>
         <div class="preview-box" id="previewBox">
           <img id="previewImg" alt="預覽" hidden />
           <span id="previewPlaceholder">尚未選擇圖片</span>
         </div>
         <input type="file" id="fileInput" accept="image/*" />
         <input type="url" id="urlInput" placeholder="或輸入圖片網址 https://…" />
+      </div>
+      <div class="field">
+        <span class="field-label">🎯 答案圖片（公布答案時顯示，可留空）</span>
+        <div class="preview-box" id="answerPreviewBox">
+          <img id="answerPreviewImg" alt="預覽" hidden />
+          <span id="answerPreviewPlaceholder">尚未選擇圖片（留空則顯示題目圖）</span>
+        </div>
+        <input type="file" id="answerFileInput" accept="image/*" />
+        <input type="url" id="answerUrlInput" placeholder="或輸入圖片網址 https://…" />
       </div>
       <div class="field">
         <span class="field-label">正確答案（多個用逗號分隔）</span>
@@ -340,8 +350,8 @@
   /* ================= 題庫管理（保持不變） ================= */
   let questions = [];
   let editingId = null;
-  let tempImage = '';
-
+   let tempImage = '';
+  let tempAnswerImage = '';
   async function loadQuestions() {
     try {
       const snap = await get(questionsRef);
@@ -366,20 +376,36 @@
       '<div class="q-item"><img src="' + escapeHtml(q.image) + '" alt="" /><div class="q-info"><div class="q-idx">第 ' + (i+1) + ' 題</div><div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' + (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') + '</div><div class="q-actions"><button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button><button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button></div></div>'
     ).join('');
   }
-  function setPreview(src) {
+ function setPreview(src) {
     tempImage = src || '';
     const img = $('#previewImg'), ph = $('#previewPlaceholder');
     if (tempImage) { img.src = tempImage; img.hidden = false; ph.hidden = true; }
     else { img.hidden = true; img.removeAttribute('src'); ph.hidden = false; }
   }
-  function openModal(id) {
+  function setAnswerPreview(src) {
+    tempAnswerImage = src || '';
+    const img = $('#answerPreviewImg'), ph = $('#answerPreviewPlaceholder');
+    if (tempAnswerImage) { img.src = tempAnswerImage; img.hidden = false; ph.hidden = true; }
+    else { img.hidden = true; img.removeAttribute('src'); ph.hidden = false; }
+  }
+    function openModal(id) {
     editingId = id || null;
     $('#modalTitle').textContent = id ? '編輯題目' : '新增題目';
     $('#fileInput').value = ''; $('#urlInput').value = ''; $('#answersInput').value = ''; $('#hintInput').value = ''; $('#explainInput').value = '';
+    $('#answerFileInput').value = ''; $('#answerUrlInput').value = '';
     if (id) {
       const q = questions.find(x => x.id === id);
-      if (q) { setPreview(q.image); $('#answersInput').value = q.answers.join(', '); $('#hintInput').value = q.hint || ''; $('#explainInput').value = q.explanation || ''; }
-    } else setPreview('');
+      if (q) {
+        setPreview(q.image);
+        setAnswerPreview(q.answerImage || '');
+        $('#answersInput').value = q.answers.join(', ');
+        $('#hintInput').value = q.hint || '';
+        $('#explainInput').value = q.explanation || '';
+      }
+    } else {
+      setPreview('');
+      setAnswerPreview('');
+    }
     $('#modalBackdrop').hidden = false; document.body.style.overflow = 'hidden';
   }
   function closeModal() { $('#modalBackdrop').hidden = true; document.body.style.overflow = ''; editingId = null; }
@@ -387,7 +413,7 @@
     const answers = $('#answersInput').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
     if (!tempImage) { toast('請先選擇圖片或輸入圖片網址'); return; }
     if (!answers.length) { toast('請至少輸入一個正確答案'); return; }
-    const data = { id: editingId || uid(), image: tempImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
+       const data = { id: editingId || uid(), image: tempImage, answerImage: tempAnswerImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
     if (editingId) { const i = questions.findIndex(q => q.id === editingId); if (i > -1) questions[i] = data; else questions.push(data); }
     else questions.push(data);
     await saveQuestions();
@@ -710,7 +736,7 @@
     currentQuestionData = currentQuestions[currentQuestionIndex];
     if (!currentQuestionData) return;
 
-    $('#revealImage').src = currentQuestionData.image;
+    $('#revealImage').src = currentQuestionData.answerImage || currentQuestionData.image;
     $('#revealAnswer').textContent = currentQuestionData.answers.join(' / ');
 
     if (currentQuestionData.explanation) {
@@ -909,9 +935,19 @@
     r.onload = ev => { setPreview(ev.target.result); $('#urlInput').value = ''; };
     r.readAsDataURL(f);
   });
-  $('#urlInput').addEventListener('input', e => {
+    $('#urlInput').addEventListener('input', e => {
     const v = e.target.value.trim();
     if (v) { $('#fileInput').value = ''; setPreview(v); } else setPreview('');
+  });
+  $('#answerFileInput').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f || !f.type.startsWith('image/')) { toast('請選擇圖片'); return; }
+    const r = new FileReader();
+    r.onload = ev => { setAnswerPreview(ev.target.result); $('#answerUrlInput').value = ''; };
+    r.readAsDataURL(f);
+  });
+  $('#answerUrlInput').addEventListener('input', e => {
+    const v = e.target.value.trim();
+    if (v) { $('#answerFileInput').value = ''; setAnswerPreview(v); } else setAnswerPreview('');
   });
   /* ===== 自動評分（答案相似度 0~10 分） ===== */
   function normalize(str) {
