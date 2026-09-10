@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>🧽 海綿寶寶梗圖猜謎 🍔</title>
+<title>🧽 梗圖猜謎 🍔</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   [hidden] { display: none !important; }
@@ -45,51 +45,6 @@
   .view.active{ display:block; animation:fade .25s ease; }
   @keyframes fade{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
 
-  .hud{ display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
-  .hud-item{ flex:1 1 90px; background:#fff; border:3px solid var(--ink); border-radius:16px; padding:8px 10px; text-align:center; box-shadow:0 4px 0 var(--ink); }
-  .hud-label{ display:block; font-size:.68rem; font-weight:800; letter-spacing:.08em; color:var(--ink-soft); }
-  .hud-value{ display:block; font-size:1.15rem; font-weight:900; line-height:1.3; }
-
-  .image-card{ background:#E1F5FE; border:3px solid var(--ink); border-radius:22px; padding:10px; margin-bottom:14px; display:flex; justify-content:center; box-shadow:0 6px 0 var(--ink); }
-  #quizImage{ display:block; width:100%; max-width:400px; height:auto; border-radius:14px; background:#fff; border:2px dashed rgba(14,76,92,.25); }
-
-  .hint-row{ margin-bottom:14px; }
-  .hint-text{ display:none; margin:10px 0 0; padding:12px 14px; font-weight:800; font-size:.9rem; background:#FFFDE7; border:3px dashed #E8D24B; border-radius:14px; color:#7A6A00; }
-  .hint-text.show{ display:block; animation:fade .2s ease; }
-
-  .answer-row{ display:flex; gap:10px; flex-wrap:wrap; }
-  #answerInput{ flex:1 1 180px; min-width:0; padding:14px 16px; font-size:1rem; font-weight:800; color:var(--ink); font-family:inherit; border-radius:14px; border:3px solid var(--ink); background:#fff; }
-  #answerInput:focus{ outline:none; box-shadow:0 0 0 5px rgba(128,222,234,.75); }
-  #answerInput:disabled{ background:#ECEFF1; color:#78909C; }
-
-  .btn{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px 20px; cursor:pointer; box-shadow:0 4px 0 var(--ink); transition:transform .08s, box-shadow .08s, background .15s; }
-  .btn:active{ transform:translateY(4px); box-shadow:0 0 0 var(--ink); }
-  .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:0 4px 0 var(--ink); }
-  .btn.primary{ background:var(--yellow); }
-  .btn.aqua{ background:var(--aqua); }
-  .btn.danger{ background:#FFCDD2; }
-  .btn.full{ width:100%; margin-top:14px; }
-  .btn.small{ padding:8px 13px; font-size:.85rem; border-radius:12px; box-shadow:0 3px 0 var(--ink); }
-
-  .feedback{ display:none; margin-top:14px; border-radius:16px; padding:14px 16px; border:3px solid; }
-  .feedback.show{ display:block; animation:pop .25s ease; }
-  .feedback.ok{ background:#E8F5E9; border-color:#2E7D32; }
-  .feedback.no{ background:#FFEBEE; border-color:#C62828; }
-  @keyframes pop{ from{ transform:scale(.96); opacity:0; } to{ transform:scale(1); opacity:1; } }
-  .fb-head{ font-size:1.05rem; font-weight:900; margin-bottom:8px; }
-  .feedback.ok .fb-head{ color:#2E7D32; }
-  .feedback.no .fb-head{ color:#C62828; }
-  .fb-line{ font-size:.9rem; font-weight:700; margin:6px 0; line-height:1.6; }
-  .fb-line .tag{ display:inline-block; font-size:.7rem; font-weight:900; padding:2px 8px; margin-right:6px; background:rgba(14,76,92,.12); border-radius:999px; vertical-align:middle; }
-
-  .result-card{ background:#fff; border:3px solid var(--ink); border-radius:24px; padding:26px 20px; text-align:center; box-shadow:0 6px 0 var(--ink); }
-  .result-title{ margin:0 0 10px; font-size:1.3rem; }
-  .result-score{ font-size:3rem; font-weight:900; line-height:1; color:#E53935; text-shadow:2px 2px 0 #FFCDD2; }
-  .result-score span{ font-size:1.05rem; margin-left:4px; color:var(--ink-soft); text-shadow:none; }
-  .result-line{ margin:14px 0 6px; font-weight:800; color:var(--ink-soft); }
-  .result-comment{ margin:0 0 20px; font-weight:900; font-size:1.02rem; }
-  .result-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-
   .empty-state{ background:#fff; border:3px solid var(--ink); border-radius:22px; padding:30px 20px; text-align:center; box-shadow:0 6px 0 var(--ink); }
   .empty-state p{ font-weight:800; margin:0 0 16px; color:var(--ink-soft); }
 
@@ -102,6 +57,15 @@
   .q-ans{ font-weight:900; font-size:.95rem; }
   .q-hint{ font-size:.74rem; color:var(--ink-soft); }
   .q-actions{ display:flex; gap:8px; }
+
+  .btn{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px 20px; cursor:pointer; box-shadow:0 4px 0 var(--ink); transition:transform .08s, box-shadow .08s, background .15s; }
+  .btn:active{ transform:translateY(4px); box-shadow:0 0 0 var(--ink); }
+  .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:0 4px 0 var(--ink); }
+  .btn.primary{ background:var(--yellow); }
+  .btn.aqua{ background:var(--aqua); }
+  .btn.danger{ background:#FFCDD2; }
+  .btn.full{ width:100%; margin-top:14px; }
+  .btn.small{ padding:8px 13px; font-size:.85rem; border-radius:12px; box-shadow:0 3px 0 var(--ink); }
 
   .modal-backdrop{ position:fixed; inset:0; z-index:100; padding:16px; background:rgba(10,50,60,.55); display:flex; align-items:center; justify-content:center; }
   .modal{ width:min(560px, 100%); max-height:90vh; overflow:auto; background:#fff; border:3px solid var(--ink); border-radius:24px; }
@@ -129,6 +93,33 @@
   .battle-score-box .name { font-size: 0.8rem; color: var(--ink-soft); font-weight: 800; }
   .battle-score-box .score { font-size: 1.8rem; font-weight: 900; color: #E53935; }
 
+  .image-card{ background:#E1F5FE; border:3px solid var(--ink); border-radius:22px; padding:10px; margin-bottom:14px; display:flex; justify-content:center; box-shadow:0 6px 0 var(--ink); }
+  #battleImage{ display:block; width:100%; max-width:400px; height:auto; border-radius:14px; background:#fff; border:2px dashed rgba(14,76,92,.25); }
+
+  .answer-row{ display:flex; gap:10px; flex-wrap:wrap; }
+  #battleAnswerInput{ flex:1 1 180px; min-width:0; padding:14px 16px; font-size:1rem; font-weight:800; color:var(--ink); font-family:inherit; border-radius:14px; border:3px solid var(--ink); background:#fff; }
+  #battleAnswerInput:focus{ outline:none; box-shadow:0 0 0 5px rgba(128,222,234,.75); }
+  #battleAnswerInput:disabled{ background:#ECEFF1; color:#78909C; }
+
+  .feedback{ display:none; margin-top:14px; border-radius:16px; padding:14px 16px; border:3px solid; }
+  .feedback.show{ display:block; animation:pop .25s ease; }
+  .feedback.ok{ background:#E8F5E9; border-color:#2E7D32; }
+  .feedback.no{ background:#FFEBEE; border-color:#C62828; }
+  @keyframes pop{ from{ transform:scale(.96); opacity:0; } to{ transform:scale(1); opacity:1; } }
+  .fb-head{ font-size:1.05rem; font-weight:900; margin-bottom:8px; }
+  .feedback.ok .fb-head{ color:#2E7D32; }
+  .feedback.no .fb-head{ color:#C62828; }
+  .fb-line{ font-size:.9rem; font-weight:700; margin:6px 0; line-height:1.6; }
+  .fb-line .tag{ display:inline-block; font-size:.7rem; font-weight:900; padding:2px 8px; margin-right:6px; background:rgba(14,76,92,.12); border-radius:999px; vertical-align:middle; }
+
+  .result-card{ background:#fff; border:3px solid var(--ink); border-radius:24px; padding:26px 20px; text-align:center; box-shadow:0 6px 0 var(--ink); }
+  .result-title{ margin:0 0 10px; font-size:1.3rem; }
+  .result-score{ font-size:3rem; font-weight:900; line-height:1; color:#E53935; text-shadow:2px 2px 0 #FFCDD2; }
+  .result-score span{ font-size:1.05rem; margin-left:4px; color:var(--ink-soft); text-shadow:none; }
+  .result-line{ margin:14px 0 6px; font-weight:800; color:var(--ink-soft); }
+  .result-comment{ margin:0 0 20px; font-weight:900; font-size:1.02rem; }
+  .result-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
   @media (max-width:480px){
     body{ padding:12px 10px 60px; }
     .btn{ padding:11px 16px; font-size:.9rem; }
@@ -140,56 +131,18 @@
 
 <div class="app">
   <header class="topbar">
-    <h1>🧽 海綿寶寶梗圖猜謎 🍔</h1>
-    <p class="sub">看圖打字回答，考驗你的比奇堡知識！</p>
+    <h1>🧽 梗圖猜謎 🍔</h1>
+    <p class="sub">自己出題，和朋友即時連線對戰！</p>
   </header>
 
   <nav class="tabs">
-    <button class="tab active" data-view="game" type="button">🎮 單人遊戲</button>
+    <button class="tab active" data-view="multiplayer" type="button">👥 多人對戰</button>
     <button class="tab" data-view="manage" type="button">🛠 管理題庫</button>
-    <button class="tab" data-view="multiplayer" type="button">👥 多人對戰</button>
   </nav>
 
   <main>
-    <!-- ============ 單人遊戲 ============ -->
-    <section id="view-game" class="view active">
-      <div id="gamePlay">
-        <div class="hud">
-          <div class="hud-item"><span class="hud-label">分數</span><span class="hud-value" id="score">0</span></div>
-          <div class="hud-item"><span class="hud-label">進度</span><span class="hud-value" id="progress">0 / 0</span></div>
-        </div>
-        <div class="image-card"><img id="quizImage" alt="題目圖片" /></div>
-        <div class="hint-row">
-          <button id="hintBtn" class="btn small aqua" type="button">💡 看提示（答對 -5 分）</button>
-          <p id="hintText" class="hint-text"></p>
-        </div>
-        <form id="answerForm" class="answer-row" autocomplete="off">
-          <input id="answerInput" type="text" placeholder="輸入你的答案…" />
-          <button id="submitBtn" class="btn primary" type="submit">送出</button>
-        </form>
-        <div id="feedback" class="feedback"></div>
-        <button id="nextBtn" class="btn primary full" type="button" hidden>下一題 ▶</button>
-      </div>
-      <div id="gameEmpty" class="empty-state" hidden>
-        <p>題庫目前是空的！請先到「管理題庫」新增題目。</p>
-      </div>
-      <div id="gameResult" class="result-card" hidden></div>
-    </section>
-
-    <!-- ============ 管理題庫 ============ -->
-    <section id="view-manage" class="view">
-      <div class="toolbar">
-        <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
-        <button class="btn" id="exportBtn" type="button">⬇️ 匯出 JSON</button>
-        <button class="btn" id="importBtn" type="button">⬆️ 匯入 JSON</button>
-        <button class="btn danger" id="resetBtn" type="button">♻️ 重設預設題庫</button>
-        <input type="file" id="importInput" accept=".json,application/json" hidden />
-      </div>
-      <div id="questionList" class="q-list"></div>
-    </section>
-
     <!-- ============ 多人對戰 ============ -->
-    <section id="view-multiplayer" class="view">
+    <section id="view-multiplayer" class="view active">
       <!-- 大廳 -->
       <div id="lobbyView" class="empty-state">
         <h2 style="margin-top:0;">👥 多人對戰大廳</h2>
@@ -225,6 +178,18 @@
 
       <!-- 對戰結果 -->
       <div id="battleResult" class="result-card" hidden></div>
+    </section>
+
+    <!-- ============ 管理題庫 ============ -->
+    <section id="view-manage" class="view">
+      <div class="toolbar">
+        <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
+        <button class="btn" id="exportBtn" type="button">⬇️ 匯出 JSON</button>
+        <button class="btn" id="importBtn" type="button">⬆️ 匯入 JSON</button>
+        <button class="btn danger" id="clearAllBtn" type="button">🗑 清空題庫</button>
+        <input type="file" id="importInput" accept=".json,application/json" hidden />
+      </div>
+      <div id="questionList" class="q-list"></div>
     </section>
   </main>
 </div>
@@ -280,35 +245,6 @@
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
   }
-  function normalize(str) {
-    return String(str == null ? '' : str).toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
-  }
-  function checkAnswer(input, answers) {
-    const n = normalize(input);
-    if (!n) return false;
-    return answers.some(a => { const na = normalize(a); return na && (n === na || n.includes(na)); });
-  }
-
-  const svgURI  = svg => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-  const wrapSvg = inner => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">${inner}</svg>`;
-  function starPoints(cx, cy, outer, inner, n = 5) {
-    const pts = [];
-    for (let i = 0; i < n * 2; i++) {
-      const r = i % 2 === 0 ? outer : inner;
-      const a = -Math.PI / 2 + (i * Math.PI) / n;
-      pts.push((cx + r * Math.cos(a)).toFixed(1) + ',' + (cy + r * Math.sin(a)).toFixed(1));
-    }
-    return pts.join(' ');
-  }
-
-  const DEFAULT_QUESTIONS = [
-    { id:'default-1', image:svgURI(wrapSvg('<rect width="400" height="400" fill="#B3E5FC"/><rect x="100" y="55" width="200" height="290" rx="28" fill="#FFF176" stroke="#E8D24B" stroke-width="7"/><ellipse cx="150" cy="115" rx="17" ry="13" fill="#F0DC55"/><ellipse cx="256" cy="100" rx="13" ry="10" fill="#F0DC55"/><ellipse cx="132" cy="235" rx="19" ry="14" fill="#F0DC55"/><ellipse cx="268" cy="250" rx="15" ry="12" fill="#F0DC55"/><ellipse cx="200" cy="308" rx="23" ry="15" fill="#F0DC55"/><circle cx="166" cy="163" r="27" fill="#fff" stroke="#3A3A3A" stroke-width="4"/><circle cx="236" cy="163" r="27" fill="#fff" stroke="#3A3A3A" stroke-width="4"/><circle cx="166" cy="163" r="11" fill="#4FC3F7"/><circle cx="236" cy="163" r="11" fill="#4FC3F7"/><circle cx="166" cy="163" r="5" fill="#111"/><circle cx="236" cy="163" r="5" fill="#111"/><path d="M162 222 q38 36 76 0" fill="#fff" stroke="#3A3A3A" stroke-width="5" stroke-linejoin="round"/>')), answers:['海綿寶寶','海綿','spongebob'], hint:'黃色方形、住在鳳梨屋', explanation:'海綿寶寶是比奇堡的招牌角色。' },
-    { id:'default-2', image:svgURI(wrapSvg('<rect width="400" height="400" fill="#B2EBF2"/><polygon points="'+starPoints(200, 205, 158, 76)+'" fill="#FF8A80" stroke="#EF6C5E" stroke-width="6" stroke-linejoin="round"/><ellipse cx="178" cy="155" rx="17" ry="21" fill="#fff" stroke="#3A3A3A" stroke-width="4"/><ellipse cx="222" cy="155" rx="17" ry="21" fill="#fff" stroke="#3A3A3A" stroke-width="4"/><circle cx="178" cy="159" r="8" fill="#111"/><circle cx="222" cy="159" r="8" fill="#111"/><path d="M180 205 q20 22 40 0" fill="none" stroke="#3A3A3A" stroke-width="5" stroke-linecap="round"/>')), answers:['派大星','派翠克','patrick','海星'], hint:'粉紅色的海星', explanation:'派大星住在石頭底下。' },
-    { id:'default-3', image:svgURI(wrapSvg('<rect width="400" height="400" fill="#B2EBF2"/><path d="M148 268 q-14 62 2 92" stroke="#79CBC4" stroke-width="30" fill="none" stroke-linecap="round"/><path d="M200 278 q0 60 0 88" stroke="#79CBC4" stroke-width="30" fill="none" stroke-linecap="round"/><path d="M252 268 q14 62 -2 92" stroke="#79CBC4" stroke-width="30" fill="none" stroke-linecap="round"/><ellipse cx="200" cy="175" rx="95" ry="105" fill="#79CBC4" stroke="#4FA8A0" stroke-width="6"/><path d="M200 185 q-18 62 0 78 q18 -16 0 -78 z" fill="#A7E3DD" stroke="#4FA8A0" stroke-width="4"/><ellipse cx="158" cy="148" rx="26" ry="31" fill="#fff" stroke="#3A3A3A" stroke-width="4"/><ellipse cx="242" cy="148" rx="26" ry="31" fill="#fff" stroke="#3A3A3A" stroke-width="4"/><circle cx="158" cy="154" r="10" fill="#111"/><circle cx="242" cy="154" r="10" fill="#111"/><path d="M132 114 q26 -14 52 -2" fill="none" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round"/><path d="M216 112 q26 -12 52 2" fill="none" stroke="#3A3A3A" stroke-width="6" stroke-linecap="round"/><path d="M172 258 q28 16 56 0" fill="none" stroke="#3A3A3A" stroke-width="5" stroke-linecap="round"/>')), answers:['章魚哥','squidward','烏賊'], hint:'青色大鼻子，蟹堡王收銀員', explanation:'章魚哥是海綿寶寶的鄰居兼同事。' },
-    { id:'default-4', image:svgURI(wrapSvg('<rect width="400" height="400" fill="#B3E5FC"/><path d="M165 180 L150 100" stroke="#E53935" stroke-width="14" stroke-linecap="round"/><path d="M235 180 L250 100" stroke="#E53935" stroke-width="14" stroke-linecap="round"/><circle cx="150" cy="88" r="32" fill="#fff" stroke="#E53935" stroke-width="6"/><circle cx="250" cy="88" r="32" fill="#fff" stroke="#E53935" stroke-width="6"/><circle cx="150" cy="90" r="13" fill="#111"/><circle cx="250" cy="90" r="13" fill="#111"/><ellipse cx="82" cy="272" rx="42" ry="30" fill="#E53935" stroke="#B71C1C" stroke-width="5"/><ellipse cx="318" cy="272" rx="42" ry="30" fill="#E53935" stroke="#B71C1C" stroke-width="5"/><ellipse cx="200" cy="255" rx="112" ry="98" fill="#E53935" stroke="#B71C1C" stroke-width="6"/><path d="M162 282 q38 42 76 0" fill="none" stroke="#7F1010" stroke-width="7" stroke-linecap="round"/>')), answers:['蟹老闆','蟹老板','mr. krabs','krabs','螃蟹'], hint:'紅色的大螃蟹，最愛錢', explanation:'蟹老闆視錢如命。' },
-    { id:'default-5', image:svgURI(wrapSvg('<rect width="400" height="400" fill="#FFF9C4"/><circle cx="200" cy="208" r="132" fill="#E1F5FE" stroke="#B0BEC5" stroke-width="9"/><circle cx="200" cy="218" r="100" fill="#D9A06B"/><circle cx="163" cy="193" r="21" fill="#fff" stroke="#6D4C41" stroke-width="4"/><circle cx="237" cy="193" r="21" fill="#fff" stroke="#6D4C41" stroke-width="4"/><circle cx="163" cy="196" r="9" fill="#111"/><circle cx="237" cy="196" r="9" fill="#111"/><path d="M172 258 q28 26 56 0" fill="none" stroke="#6D4C41" stroke-width="6" stroke-linecap="round"/><circle cx="200" cy="102" r="18" fill="#FF8A80"/><circle cx="200" cy="102" r="7" fill="#FFD54F"/>')), answers:['珊迪','sandy','松鼠'], hint:'來自德州的松鼠', explanation:'珊迪是比奇堡唯一的陸地生物。' },
-    { id:'default-6', image:svgURI(wrapSvg('<rect width="400" height="400" fill="#B2EBF2"/><line x1="200" y1="130" x2="200" y2="62" stroke="#558B2F" stroke-width="9" stroke-linecap="round"/><circle cx="200" cy="54" r="13" fill="#8BC34A"/><ellipse cx="200" cy="235" rx="95" ry="105" fill="#8BC34A" stroke="#558B2F" stroke-width="7"/><circle cx="200" cy="198" r="45" fill="#fff" stroke="#33691E" stroke-width="5"/><circle cx="200" cy="198" r="19" fill="#E53935"/><circle cx="200" cy="198" r="9" fill="#111"/><path d="M170 278 q30 22 60 0" fill="none" stroke="#33691E" stroke-width="6" stroke-linecap="round"/>')), answers:['皮老闆','皮老板','plankton','浮游生物'], hint:'綠色的小浮游生物', explanation:'皮老闆一生志業就是偷蟹堡秘方。' }
-  ];
 
   const STORAGE_KEY = 'spongebob_meme_quiz_v1';
   let questions = [];
@@ -327,85 +263,29 @@
     if (!answers.length) return null;
     return { id: raw.id || uid(), image, answers, hint: raw.hint ? String(raw.hint) : '', explanation: raw.explanation ? String(raw.explanation) : '' };
   }
+
   function loadQuestions() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) { const data = JSON.parse(raw); if (Array.isArray(data)) { const c = data.map(normalizeQuestion).filter(Boolean); if (c.length) return c; } }
+      if (raw) { const data = JSON.parse(raw); if (Array.isArray(data)) { return data.map(normalizeQuestion).filter(Boolean); } }
     } catch (e) { console.warn(e); }
-    return DEFAULT_QUESTIONS.map(q => ({...q, answers:[...q.answers]}));
+    return [];
   }
+
   function saveQuestions() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(questions)); return true; }
     catch (e) { toast('⚠️ 儲存失敗！圖片可能太大'); return false; }
   }
+
   function toast(msg) {
     const el = $('#toast'); el.textContent = msg; el.classList.add('show');
     clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2300);
   }
+
   function switchView(name) {
     $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
     $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  /* ========== 單人遊戲邏輯 ========== */
-  const game = { order: [], idx: 0, score: 0, correctCount: 0, answered: false, hintUsed: false };
-  function currentQuestion() { return questions[game.order[game.idx]]; }
-  function updateHUD() {
-    $('#score').textContent = game.score;
-    $('#progress').textContent = game.order.length ? Math.min(game.idx + 1, game.order.length) + ' / ' + game.order.length : '0 / 0';
-  }
-  function startGame() {
-    if (!questions.length) { $('#gamePlay').hidden = true; $('#gameResult').hidden = true; $('#gameEmpty').hidden = false; game.order = []; game.idx = 0; game.score = 0; game.correctCount = 0; updateHUD(); return; }
-    $('#gameEmpty').hidden = true; $('#gameResult').hidden = true; $('#gamePlay').hidden = false;
-    game.order = questions.map((_, i) => i);
-    for (let i = game.order.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [game.order[i], game.order[j]] = [game.order[j], game.order[i]]; }
-    game.idx = 0; game.score = 0; game.correctCount = 0; renderQuestion();
-  }
-  function renderQuestion() {
-    const q = currentQuestion(); if (!q) { startGame(); return; }
-    game.answered = false; game.hintUsed = false;
-    $('#quizImage').src = q.image;
-    $('#hintText').textContent = ''; $('#hintText').classList.remove('show');
-    $('#hintBtn').disabled = false; $('#hintBtn').textContent = '💡 看提示（答對 -5 分）';
-    $('#feedback').className = 'feedback'; $('#feedback').innerHTML = '';
-    const input = $('#answerInput'); input.value = ''; input.disabled = false;
-    $('#submitBtn').disabled = false; $('#nextBtn').hidden = true;
-    updateHUD();
-    if (window.innerWidth > 760) input.focus();
-  }
-  function submitAnswer(e) {
-    if (e) e.preventDefault(); if (game.answered) return;
-    const q = currentQuestion(); if (!q) return;
-    const input = $('#answerInput'); const val = input.value;
-    if (!val.trim()) { input.focus(); return; }
-    game.answered = true;
-    const ok = checkAnswer(val, q.answers);
-    let gain = 0;
-    if (ok) { gain = game.hintUsed ? 5 : 10; game.score += gain; game.correctCount++; }
-    input.disabled = true; $('#submitBtn').disabled = true; $('#hintBtn').disabled = true;
-    const fb = $('#feedback'); fb.className = 'feedback show ' + (ok ? 'ok' : 'no');
-    fb.innerHTML = '<div class="fb-head">' + (ok ? '🎉 答對了！' : '❌ 答錯了') + '</div>' +
-      '<div class="fb-line"><span class="tag">標準答案</span>' + escapeHtml(q.answers.join(' / ')) + '</div>' +
-      (q.explanation ? '<div class="fb-line"><span class="tag">解說</span>' + escapeHtml(q.explanation) + '</div>' : '') +
-      '<div class="fb-gain' + (ok ? '' : ' lose') + '">' + (ok ? '+' + gain + ' 分' : '這題 0 分') + '</div>';
-    const next = $('#nextBtn'); next.hidden = false;
-    next.textContent = (game.idx + 1 >= game.order.length) ? '🏁 查看結果' : '下一題 ▶';
-    updateHUD();
-  }
-  function nextQuestion() {
-    if (game.idx + 1 >= game.order.length) { showResult(); return; }
-    game.idx++; renderQuestion();
-  }
-  function showResult() {
-    $('#gamePlay').hidden = true;
-    const total = game.order.length; const correct = game.correctCount; const rate = total ? Math.round((correct / total) * 100) : 0;
-    let comment = rate === 100 ? '🏆 完美！' : rate >= 80 ? '🌟 太厲害了！' : rate >= 60 ? '👍 不錯喔！' : '😅 別灰心！';
-    const box = $('#gameResult');
-    box.innerHTML = '<h2 class="result-title">🏁 挑戰完成！</h2><div class="result-score">' + game.score + '<span>分</span></div><p class="result-line">答對 ' + correct + ' / ' + total + ' 題（正確率 ' + rate + '%）</p><p class="result-comment">' + comment + '</p><div class="result-actions"><button class="btn primary" id="replayBtn" type="button">🔁 再玩一次</button></div>';
-    box.hidden = false;
-    $('#replayBtn').addEventListener('click', startGame);
-    updateHUD();
   }
 
   /* ========== 管理題庫 ========== */
@@ -414,12 +294,14 @@
     if (!questions.length) { list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>'; return; }
     list.innerHTML = questions.map((q, i) => '<div class="q-item"><img src="' + escapeHtml(q.image) + '" alt="" /><div class="q-info"><div class="q-idx">第 ' + (i + 1) + ' 題</div><div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' + (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') + '</div><div class="q-actions"><button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button><button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button></div></div>').join('');
   }
+
   function setPreview(src) {
     tempImage = src || '';
     const img = $('#previewImg'); const ph = $('#previewPlaceholder');
     if (tempImage) { img.src = tempImage; img.hidden = false; ph.hidden = true; }
     else { img.hidden = true; img.removeAttribute('src'); ph.hidden = false; }
   }
+
   function openModal(id) {
     editingId = id || null;
     $('#modalTitle').textContent = id ? '編輯題目' : '新增題目';
@@ -428,7 +310,9 @@
     else setPreview('');
     $('#modalBackdrop').hidden = false; document.body.style.overflow = 'hidden';
   }
+
   function closeModal() { $('#modalBackdrop').hidden = true; document.body.style.overflow = ''; editingId = null; }
+
   function saveQuestion() {
     const answers = $('#answersInput').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
     if (!tempImage) { toast('請先選擇圖片或輸入圖片網址'); return; }
@@ -436,15 +320,17 @@
     const data = { id: editingId || uid(), image: tempImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
     if (editingId) { const i = questions.findIndex(q => q.id === editingId); if (i > -1) questions[i] = data; else questions.push(data); }
     else questions.push(data);
-    saveQuestions(); renderManageList(); closeModal(); toast(editingId ? '✅ 題目已更新！' : '✅ 題目已新增！'); startGame();
+    saveQuestions(); renderManageList(); closeModal(); toast(editingId ? '✅ 題目已更新！' : '✅ 題目已新增！');
   }
+
   function exportJSON() {
     if (!questions.length) { toast('題庫是空的'); return; }
     const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob); const a = document.createElement('a');
-    a.href = url; a.download = 'spongebob-quiz.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    a.href = url; a.download = 'my-quiz.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 1000); toast('📦 已匯出 ' + questions.length + ' 題');
   }
+
   function importJSON(file) {
     const reader = new FileReader();
     reader.onload = () => {
@@ -454,33 +340,23 @@
         const cleaned = data.map(normalizeQuestion).filter(Boolean);
         if (!cleaned.length) throw new Error('找不到有效題目');
         if (!confirm('即將匯入 ' + cleaned.length + ' 題，並覆蓋目前的題庫，確定嗎？')) return;
-        questions = cleaned; saveQuestions(); renderManageList(); startGame(); toast('📥 匯入成功！');
+        questions = cleaned; saveQuestions(); renderManageList(); toast('📥 匯入成功！');
       } catch (e) { alert('匯入失敗：' + e.message); }
     };
     reader.readAsText(file);
   }
-  function resetBank() {
-    if (!confirm('確定要重設為預設題庫嗎？')) return;
-    questions = DEFAULT_QUESTIONS.map(q => ({...q, answers:[...q.answers]}));
-    saveQuestions(); renderManageList(); startGame(); toast('♻️ 已重設');
+
+  function clearAll() {
+    if (!confirm('確定要清空所有題目嗎？此動作無法復原。')) return;
+    questions = []; saveQuestions(); renderManageList(); toast('🗑 已清空題庫');
   }
 
   /* ========== 事件綁定 ========== */
   function bindEvents() {
     $$('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
-    $('#answerForm').addEventListener('submit', submitAnswer);
-    $('#nextBtn').addEventListener('click', nextQuestion);
-    $('#hintBtn').addEventListener('click', () => {
-      if (game.answered) return;
-      const q = currentQuestion(); if (!q) return;
-      game.hintUsed = true;
-      $('#hintText').textContent = q.hint ? '💡 ' + q.hint : '這題沒有提示啦 QQ';
-      $('#hintText').classList.add('show');
-      $('#hintBtn').disabled = true; $('#hintBtn').textContent = '💡 提示已使用（答對 -5 分）';
-    });
     $('#addBtn').addEventListener('click', () => openModal(null));
     $('#exportBtn').addEventListener('click', exportJSON);
-    $('#resetBtn').addEventListener('click', resetBank);
+    $('#clearAllBtn').addEventListener('click', clearAll);
     $('#importBtn').addEventListener('click', () => $('#importInput').click());
     $('#importInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ''; });
     $('#questionList').addEventListener('click', e => {
@@ -489,7 +365,7 @@
       if (btn.dataset.act === 'edit') openModal(id);
       if (btn.dataset.act === 'del') {
         if (!confirm('確定要刪除嗎？')) return;
-        questions = questions.filter(x => x.id !== id); saveQuestions(); renderManageList(); startGame(); toast('🗑 已刪除');
+        questions = questions.filter(x => x.id !== id); saveQuestions(); renderManageList(); toast('🗑 已刪除');
       }
     });
     $('#closeModalBtn').addEventListener('click', closeModal);
@@ -509,8 +385,11 @@
   }
 
   function init() {
-    questions = loadQuestions(); renderManageList(); bindEvents(); startGame();
+    questions = loadQuestions();
+    renderManageList();
+    bindEvents();
   }
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
 </script>
@@ -535,10 +414,9 @@
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  // 從主腳本拿題庫
-  const getQuestions = () => {
+  function getQuestions() {
     try { return JSON.parse(localStorage.getItem('spongebob_meme_quiz_v1')) || []; } catch(e) { return []; }
-  };
+  }
 
   const $ = sel => document.querySelector(sel);
   const lobbyView = $('#lobbyView');
@@ -562,7 +440,7 @@
   const opponentBattleScore = $('#opponentBattleScore');
 
   let currentRoomCode = null;
-  let currentRole = null; // 'host' or 'guest'
+  let currentRole = null;
   let roomListener = null;
   let timerInterval = null;
   let currentQuestionIndex = -1;
@@ -633,12 +511,12 @@
       const data = snapshot.val();
       if (!data) return;
 
-      // 更新大廳狀態
       if (data.status === 'waiting') {
         const count = data.players ? Object.keys(data.players).length : 0;
         if (count >= 2) {
           roomStatus.textContent = '✅ 對手已加入！可以開始對戰了！';
-          if (currentRole === 'host') startBattleBtn.style.display = 'inline-block';
+          // 關鍵修正：不管是誰，只要滿 2 人就顯示按鈕
+          startBattleBtn.style.display = 'inline-block';
         } else {
           roomStatus.textContent = '等待對手加入中...';
           startBattleBtn.style.display = 'none';
@@ -648,26 +526,30 @@
         battleResult.hidden = true;
       }
 
-      // 遊戲開始
       if (data.status === 'playing') {
         lobbyView.hidden = true;
         battleView.hidden = false;
         battleResult.hidden = true;
 
-        // 更新分數
         if (data.players) {
           myBattleScore.textContent = data.players[currentRole] ? data.players[currentRole].score : 0;
           const oppRole = currentRole === 'host' ? 'guest' : 'host';
           opponentBattleScore.textContent = data.players[oppRole] ? data.players[oppRole].score : 0;
         }
 
-        // 題目切換
+        // 從雲端讀取題目
+        if (data.questions && data.questions.length) {
+          battleQuestions = data.questions;
+        } else if (!battleQuestions.length) {
+          // 如果雲端沒有，嘗試從本地讀取
+          battleQuestions = getQuestions();
+        }
+
         if (data.currentQuestion !== currentQuestionIndex && data.currentQuestion < battleQuestions.length) {
           currentQuestionIndex = data.currentQuestion;
           currentQuestionData = battleQuestions[currentQuestionIndex];
           if (!currentQuestionData) return;
 
-          // 重置答題狀態
           hasAnsweredThisRound = false;
           battleAnswerInput.value = '';
           battleAnswerInput.disabled = false;
@@ -676,15 +558,11 @@
           battleFeedback.innerHTML = '';
           nextBattleBtn.hidden = true;
 
-          // 顯示題目
           battleImage.src = currentQuestionData.image;
           battleStatus.textContent = '第 ' + (currentQuestionIndex + 1) + ' / ' + battleQuestions.length + ' 題';
           timerDisplay.textContent = '⏱ 15 秒';
 
-          // 清除舊的計時器
           if (timerInterval) clearInterval(timerInterval);
-
-          // 倒數計時
           const startTime = data.questionStartTime || Date.now();
           const endTime = startTime + 15000;
           timerInterval = setInterval(() => {
@@ -700,7 +578,6 @@
           }, 200);
         }
 
-        // 如果時間到，顯示答案
         if (data.status === 'showing_answer') {
           if (timerInterval) clearInterval(timerInterval);
           timerDisplay.textContent = '⏱ 時間到！';
@@ -710,13 +587,11 @@
             battleFeedback.className = 'feedback show ok';
             battleFeedback.innerHTML = '<div class="fb-head">📢 正確答案</div><div class="fb-line">' + currentQuestionData.answers.join(' / ') + '</div>' + (currentQuestionData.explanation ? '<div class="fb-line"><span class="tag">解說</span>' + currentQuestionData.explanation + '</div>' : '');
           }
-          if (currentRole === 'host') {
-            nextBattleBtn.hidden = false;
-            nextBattleBtn.textContent = (currentQuestionIndex + 1 >= battleQuestions.length) ? '🏁 查看結果' : '下一題 ▶';
-          }
+          // 任何人都可以點下一題（不限房主）
+          nextBattleBtn.hidden = false;
+          nextBattleBtn.textContent = (currentQuestionIndex + 1 >= battleQuestions.length) ? '🏁 查看結果' : '下一題 ▶';
         }
 
-        // 遊戲結束
         if (data.status === 'finished') {
           if (timerInterval) clearInterval(timerInterval);
           lobbyView.hidden = true;
@@ -728,14 +603,12 @@
           let resultText = myScore > oppScore ? '🏆 你贏了！' : myScore < oppScore ? '😢 你輸了...' : '🤝 平手！';
           battleResult.innerHTML = '<h2 class="result-title">🏁 對戰結束</h2><div class="result-score">' + myScore + '<span>分</span></div><p class="result-line">對手：' + oppScore + ' 分</p><p class="result-comment">' + resultText + '</p><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳</button></div>';
           $('#backToLobbyBtn').addEventListener('click', () => {
-            // 清理並重新載入
             if (roomListener) roomListener();
             if (timerInterval) clearInterval(timerInterval);
             lobbyView.hidden = false; battleView.hidden = true; battleResult.hidden = true;
             createRoomBtn.disabled = false; joinRoomBtn.disabled = false;
             roomInfo.style.display = 'none'; startBattleBtn.style.display = 'none';
             currentRoomCode = null; currentRole = null; currentQuestionIndex = -1;
-            // 刪除房間
             if (currentRoomCode) remove(ref(db, 'rooms/' + currentRoomCode));
           });
         }
@@ -743,20 +616,20 @@
     });
   }
 
-  // 開始對戰（房主）
+  // 開始對戰（不限房主）
   startBattleBtn.addEventListener('click', async () => {
-    if (!currentRoomCode || currentRole !== 'host') return;
-    battleQuestions = getQuestions();
-    if (!battleQuestions.length) { alert('題庫是空的！請先到「管理題庫」新增題目。'); return; }
-    // 洗牌
-    for (let i = battleQuestions.length - 1; i > 0; i--) {
+    if (!currentRoomCode) return;
+    const localQuestions = getQuestions();
+    if (!localQuestions.length) { alert('題庫是空的！請先到「管理題庫」新增題目。'); return; }
+    for (let i = localQuestions.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [battleQuestions[i], battleQuestions[j]] = [battleQuestions[j], battleQuestions[i]];
+      [localQuestions[i], localQuestions[j]] = [localQuestions[j], localQuestions[i]];
     }
     await update(ref(db, 'rooms/' + currentRoomCode), {
       status: 'playing',
       currentQuestion: 0,
-      questionStartTime: Date.now() + 3000 // 3 秒後開始
+      questionStartTime: Date.now() + 3000,
+      questions: localQuestions
     });
   });
 
@@ -770,11 +643,9 @@
     battleAnswerInput.disabled = true;
     battleSubmitBtn.disabled = true;
 
-    // 檢查答案
     const ok = checkAnswer(val, currentQuestionData.answers);
     if (ok) {
       const myScoreRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + currentRole + '/score');
-      // 用 transaction 避免競爭條件（簡化起見，直接讀取後更新）
       const snapshot = await get(myScoreRef);
       const currentScore = snapshot.val() || 0;
       await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + currentRole), {
@@ -788,24 +659,21 @@
       battleFeedback.innerHTML = '<div class="fb-head">❌ 答錯了</div>';
     }
 
-    // 檢查雙方是否都答題了
     const roomSnapshot = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
     const players = roomSnapshot.val();
     const allAnswered = Object.values(players).every(p => p.answered);
-    if (allAnswered && currentRole === 'host') {
-      // 雙方都答題，提前結束本回合
+    if (allAnswered) {
       await update(ref(db, 'rooms/' + currentRoomCode), { status: 'showing_answer' });
     }
   });
 
-  // 下一題（房主）
+  // 下一題
   nextBattleBtn.addEventListener('click', async () => {
-    if (!currentRoomCode || currentRole !== 'host') return;
+    if (!currentRoomCode) return;
     const nextIdx = currentQuestionIndex + 1;
     if (nextIdx >= battleQuestions.length) {
       await update(ref(db, 'rooms/' + currentRoomCode), { status: 'finished' });
     } else {
-      // 重置雙方答題狀態
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
       updates['rooms/' + currentRoomCode + '/currentQuestion'] = nextIdx;
@@ -816,7 +684,6 @@
     }
   });
 
-  // 答案比對函式（與主腳本相同邏輯）
   function normalize(str) {
     return String(str == null ? '' : str).toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
   }
