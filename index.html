@@ -9,38 +9,32 @@
   [hidden] { display: none !important; }
   :root{
     --yellow:#FFF176; --pink:#FF8A80; --aqua:#80DEEA;
-    --ink:#0E4C5C; --ink-soft:#4E7C88; --shadow:0 5px 0 var(--ink);
+    --ink:#0E4C5C; --ink-soft:#4E7C88;
   }
-  html{ -webkit-text-size-adjust:100%; }
   body{
     margin:0; min-height:100vh; color:var(--ink);
-    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,sans-serif;
     background-color:#DFF6FA;
     background-image:
       radial-gradient(circle, rgba(255,241,118,.85) 9px, transparent 10px),
       radial-gradient(circle, rgba(255,138,128,.42) 6px, transparent 7px),
       radial-gradient(circle, rgba(128,222,234,.60) 11px, transparent 12px);
     background-size:150px 150px, 110px 110px, 190px 190px;
-    background-position:0 0, 60px 80px, 100px 40px;
     padding:16px 14px 70px;
   }
   .app{ max-width:1000px; margin:0 auto; }
   .topbar{ text-align:center; margin:6px 0 16px; }
-  .topbar h1{ margin:0 0 6px; font-size:clamp(1.35rem, 5vw, 2.1rem); color:var(--ink); text-shadow:2px 2px 0 #fff, 5px 5px 0 rgba(255,138,128,.55); }
+  .topbar h1{ margin:0 0 6px; font-size:clamp(1.35rem, 5vw, 2.1rem); text-shadow:2px 2px 0 #fff, 5px 5px 0 rgba(255,138,128,.55); }
   .topbar .sub{ margin:0; font-size:.85rem; font-weight:700; color:var(--ink-soft); }
-
   .tabs{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:18px; }
-  .tab{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:999px; padding:10px 22px; cursor:pointer; box-shadow:var(--shadow); transition:background .15s, transform .08s, box-shadow .08s; }
+  .tab{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:999px; padding:10px 22px; cursor:pointer; box-shadow:0 5px 0 var(--ink); }
   .tab.active{ background:var(--yellow); }
   .tab:active{ transform:translateY(4px); box-shadow:0 1px 0 var(--ink); }
-
   .view{ display:none; }
   .view.active{ display:block; animation:fade .25s ease; }
   @keyframes fade{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
-
   .empty-state{ background:#fff; border:3px solid var(--ink); border-radius:22px; padding:30px 20px; text-align:center; box-shadow:0 6px 0 var(--ink); }
   .empty-state p{ font-weight:800; margin:0 0 16px; color:var(--ink-soft); }
-
   .toolbar{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
   .q-list{ display:flex; flex-direction:column; gap:12px; }
   .q-item{ display:flex; gap:12px; align-items:center; background:#fff; border:3px solid var(--ink); border-radius:18px; padding:10px; box-shadow:0 4px 0 var(--ink); }
@@ -50,81 +44,63 @@
   .q-ans{ font-weight:900; font-size:.95rem; }
   .q-hint{ font-size:.74rem; color:var(--ink-soft); }
   .q-actions{ display:flex; gap:8px; }
-
-  .btn{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px 20px; cursor:pointer; box-shadow:0 4px 0 var(--ink); transition:transform .08s, box-shadow .08s, background .15s; }
+  .btn{ font-family:inherit; font-size:.95rem; font-weight:900; color:var(--ink); background:#fff; border:3px solid var(--ink); border-radius:14px; padding:12px 20px; cursor:pointer; box-shadow:0 4px 0 var(--ink); }
   .btn:active{ transform:translateY(4px); box-shadow:0 0 0 var(--ink); }
-  .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:0 4px 0 var(--ink); }
+  .btn:disabled{ opacity:.45; cursor:not-allowed; }
   .btn.primary{ background:var(--yellow); }
   .btn.aqua{ background:var(--aqua); }
   .btn.danger{ background:#FFCDD2; }
   .btn.full{ width:100%; margin-top:14px; }
-  .btn.small{ padding:8px 13px; font-size:.85rem; border-radius:12px; box-shadow:0 3px 0 var(--ink); }
-
+  .btn.small{ padding:8px 13px; font-size:.85rem; border-radius:12px; }
   .modal-backdrop{ position:fixed; inset:0; z-index:100; padding:16px; background:rgba(10,50,60,.55); display:flex; align-items:center; justify-content:center; }
   .modal{ width:min(560px, 100%); max-height:90vh; overflow:auto; background:#fff; border:3px solid var(--ink); border-radius:24px; }
-  .modal-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 18px; background:var(--yellow); border-bottom:3px solid var(--ink); border-radius:21px 21px 0 0; }
+  .modal-head{ display:flex; justify-content:space-between; padding:14px 18px; background:var(--yellow); border-bottom:3px solid var(--ink); border-radius:21px 21px 0 0; }
   .modal-body{ padding:16px 18px; display:flex; flex-direction:column; gap:14px; }
   .field{ display:flex; flex-direction:column; gap:7px; }
   .field-label{ font-size:.8rem; font-weight:900; color:#2E6B7A; }
   .field input[type=text], .field input[type=url], .field textarea{ font-family:inherit; font-size:.92rem; font-weight:700; color:var(--ink); padding:11px 13px; border-radius:12px; border:2.5px solid rgba(14,76,92,.45); background:#F7FEFF; }
   .field input[type=file]{ font-size:.8rem; padding:9px; border-radius:12px; border:2.5px dashed rgba(14,76,92,.45); background:#F7FEFF; }
-  .preview-box{ width:100%; height:172px; border-radius:14px; overflow:hidden; border:2.5px dashed rgba(14,76,92,.35); background:#E1F5FE; display:flex; align-items:center; justify-content:center; }
+  .preview-box{ width:100%; height:172px; border-radius:14px; border:2.5px dashed rgba(14,76,92,.35); background:#E1F5FE; display:flex; align-items:center; justify-content:center; overflow:hidden; }
   .preview-box img{ max-width:100%; max-height:100%; object-fit:contain; }
   #previewPlaceholder{ color:#8FAEB8; font-size:.82rem; font-weight:800; }
   .modal-foot{ display:flex; gap:10px; justify-content:flex-end; padding:14px 18px; border-top:3px solid rgba(14,76,92,.14); }
   .icon-btn{ border:none; background:transparent; font-size:1.1rem; font-weight:900; color:var(--ink); cursor:pointer; padding:4px 9px; border-radius:9px; }
-
   .toast{ position:fixed; left:50%; bottom:26px; z-index:300; transform:translateX(-50%) translateY(16px); background:var(--ink); color:#fff; font-weight:900; font-size:.88rem; padding:12px 22px; border-radius:999px; max-width:90vw; text-align:center; opacity:0; pointer-events:none; transition:opacity .25s, transform .25s; }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-
   .timer-bar{ margin: 10px 0; text-align: center; font-size: 1.6rem; font-weight: 900; color: #E53935; }
   .timer-bar span { font-size: 0.9rem; color: var(--ink-soft); }
-
   .battle-status { text-align: center; margin: 10px 0; font-weight: 900; color: #4E7C88; }
   .battle-scores { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 15px; }
   .battle-score-box { background: #fff; border: 3px solid var(--ink); border-radius: 14px; padding: 6px 12px; text-align: center; min-width: 80px; }
   .battle-score-box .name { font-size: 0.75rem; color: var(--ink-soft); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
   .battle-score-box .score { font-size: 1.5rem; font-weight: 900; color: #E53935; }
   .battle-score-box.me { border-color: #E53935; background: #FFFDE7; }
-
   .image-card{ background:#E1F5FE; border:3px solid var(--ink); border-radius:22px; padding:10px; margin-bottom:14px; display:flex; justify-content:center; box-shadow:0 6px 0 var(--ink); }
   #battleImage{ display:block; width:100%; max-width:400px; height:auto; border-radius:14px; background:#fff; border:2px dashed rgba(14,76,92,.25); }
-
   .answer-row{ display:flex; gap:10px; flex-wrap:wrap; }
   #battleAnswerInput{ flex:1 1 180px; min-width:0; padding:14px 16px; font-size:1rem; font-weight:800; color:var(--ink); font-family:inherit; border-radius:14px; border:3px solid var(--ink); background:#fff; }
-  #battleAnswerInput:focus{ outline:none; box-shadow:0 0 0 5px rgba(128,222,234,.75); }
   #battleAnswerInput:disabled{ background:#ECEFF1; color:#78909C; }
-
   .feedback{ display:none; margin-top:14px; border-radius:16px; padding:14px 16px; border:3px solid; }
-  .feedback.show{ display:block; animation:pop .25s ease; }
+  .feedback.show{ display:block; }
   .feedback.ok{ background:#E8F5E9; border-color:#2E7D32; }
   .feedback.no{ background:#FFEBEE; border-color:#C62828; }
-  @keyframes pop{ from{ transform:scale(.96); opacity:0; } to{ transform:scale(1); opacity:1; } }
   .fb-head{ font-size:1.05rem; font-weight:900; margin-bottom:8px; }
   .feedback.ok .fb-head{ color:#2E7D32; }
   .feedback.no .fb-head{ color:#C62828; }
   .fb-line{ font-size:.9rem; font-weight:700; margin:6px 0; line-height:1.6; }
-  .fb-line .tag{ display:inline-block; font-size:.7rem; font-weight:900; padding:2px 8px; margin-right:6px; background:rgba(14,76,92,.12); border-radius:999px; vertical-align:middle; }
-
+  .fb-line .tag{ display:inline-block; font-size:.7rem; font-weight:900; padding:2px 8px; margin-right:6px; background:rgba(14,76,92,.12); border-radius:999px; }
   .result-card{ background:#fff; border:3px solid var(--ink); border-radius:24px; padding:26px 20px; text-align:center; box-shadow:0 6px 0 var(--ink); }
   .result-title{ margin:0 0 10px; font-size:1.3rem; }
-  .result-score{ font-size:3rem; font-weight:900; line-height:1; color:#E53935; text-shadow:2px 2px 0 #FFCDD2; }
-  .result-score span{ font-size:1.05rem; margin-left:4px; color:var(--ink-soft); text-shadow:none; }
+  .result-score{ font-size:3rem; font-weight:900; line-height:1; color:#E53935; }
+  .result-score span{ font-size:1.05rem; margin-left:4px; color:var(--ink-soft); }
   .result-line{ margin:14px 0 6px; font-weight:800; color:var(--ink-soft); }
-  .result-comment{ margin:0 0 20px; font-weight:900; font-size:1.02rem; }
   .result-actions{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-
   .player-list { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 15px 0; }
   .player-tag { background: #fff; border: 2px solid var(--ink); border-radius: 999px; padding: 4px 12px; font-weight: 900; font-size: 0.85rem; }
-  .player-tag.ready { background: var(--yellow); }
-
-  @media (max-width:480px){
-    body{ padding:12px 10px 60px; }
-    .btn{ padding:11px 16px; font-size:.9rem; }
-    .preview-box{ height:140px; }
-    .battle-score-box { padding: 4px 8px; min-width: 60px; }
-    .battle-score-box .score { font-size: 1.2rem; }
-  }
+  #statusBox { margin-top: 10px; padding: 10px; border-radius: 10px; font-size: 0.85rem; font-weight: 800; }
+  #statusBox.ok { background: #E8F5E9; color: #2E7D32; }
+  #statusBox.err { background: #FFEBEE; color: #C62828; }
+  #statusBox.info { background: #FFFDE7; color: #7A6A00; }
 </style>
 </head>
 <body>
@@ -132,7 +108,7 @@
 <div class="app">
   <header class="topbar">
     <h1>🧽 梗圖猜謎大亂鬥 🍔</h1>
-    <p class="sub">自己出題，和朋友即時連線對戰！（支援 6-12 人）</p>
+    <p class="sub">自己出題，和朋友即時連線對戰！</p>
   </header>
 
   <nav class="tabs">
@@ -141,7 +117,6 @@
   </nav>
 
   <main>
-    <!-- ============ 多人對戰 ============ -->
     <section id="view-multiplayer" class="view active">
       <div id="lobbyView" class="empty-state">
         <h2 style="margin-top:0;">👥 多人對戰大廳</h2>
@@ -153,6 +128,7 @@
           <button class="btn primary" id="createRoomBtn" type="button">➕ 建立房間</button>
           <button class="btn aqua" id="joinRoomBtn" type="button">🔑 加入房間</button>
         </div>
+        <div id="statusBox" style="display:none;"></div>
         <div id="roomInfo" style="margin-top:20px; display:none;">
           <p style="font-size:0.85rem; color:#4E7C88;">房間號碼：</p>
           <h3 id="roomCodeDisplay" style="font-size:2.2rem; letter-spacing:4px; color:#E53935;">----</h3>
@@ -178,7 +154,6 @@
       <div id="battleResult" class="result-card" hidden></div>
     </section>
 
-    <!-- ============ 管理題庫 ============ -->
     <section id="view-manage" class="view">
       <div class="toolbar">
         <button class="btn primary" id="addBtn" type="button">➕ 新增題目</button>
@@ -193,7 +168,6 @@
   </main>
 </div>
 
-<!-- ============ 編輯 Modal ============ -->
 <div class="modal-backdrop" id="modalBackdrop" hidden>
   <div class="modal">
     <div class="modal-head">
@@ -232,216 +206,6 @@
 
 <div id="toast" class="toast"></div>
 
-<script>
-(function () {
-  'use strict';
-  const $  = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
-  const uid = () => 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-
-  function escapeHtml(str) {
-    return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-  }
-
-  let questions = [];
-  let editingId = null;
-  let tempImage = '';
-  let toastTimer = null;
-  let dbRef = null;
-  let db = null;
-
-  window.addEventListener('firebase-ready', (e) => {
-    db = e.detail.db;
-    dbRef = e.detail.ref;
-    loadQuestionsFromCloud();
-  });
-
-  function toast(msg) {
-    const el = $('#toast'); el.textContent = msg; el.classList.add('show');
-    clearTimeout(toastTimer); toastTimer = setTimeout(() => el.classList.remove('show'), 2300);
-  }
-
-  function switchView(name) {
-    $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
-    $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  async function loadQuestionsFromCloud() {
-    if (!db || !dbRef) return;
-    try {
-      const snapshot = await dbRef.get();
-      if (snapshot.exists()) {
-        const data = snapshot.val();
-        questions = Object.values(data).map(normalizeQuestion).filter(Boolean);
-      } else { questions = []; }
-      renderManageList();
-    } catch (err) {
-      console.error('讀取雲端題庫失敗:', err);
-      toast('⚠️ 無法讀取雲端題庫，請檢查網路或 Firebase 權限');
-    }
-  }
-
-  async function saveQuestionsToCloud() {
-    if (!db || !dbRef) return;
-    try {
-      const data = {};
-      questions.forEach(q => { data[q.id] = q; });
-      await dbRef.set(data);
-    } catch (err) {
-      console.error('儲存雲端題庫失敗:', err);
-      toast('⚠️ 儲存失敗！圖片可能太大，建議改用圖片網址');
-    }
-  }
-
-  function normalizeQuestion(raw) {
-    if (!raw || typeof raw !== 'object') return null;
-    let image = typeof raw.image === 'string' ? raw.image.trim() : '';
-    if (!image) return null;
-    let answers = raw.answers;
-    if (typeof answers === 'string') answers = answers.split(/[,，、]/);
-    if (!Array.isArray(answers)) return null;
-    answers = answers.map(a => String(a).trim()).filter(Boolean);
-    if (!answers.length) return null;
-    return { id: raw.id || uid(), image, answers, hint: raw.hint ? String(raw.hint) : '', explanation: raw.explanation ? String(raw.explanation) : '' };
-  }
-
-  function renderManageList() {
-    const list = $('#questionList');
-    if (!questions.length) {
-      list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>';
-      return;
-    }
-    list.innerHTML = questions.map((q, i) =>
-      '<div class="q-item">' +
-        '<img src="' + escapeHtml(q.image) + '" alt="" />' +
-        '<div class="q-info">' +
-          '<div class="q-idx">第 ' + (i + 1) + ' 題</div>' +
-          '<div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' +
-          (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') +
-        '</div>' +
-        '<div class="q-actions">' +
-          '<button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button>' +
-          '<button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button>' +
-        '</div>' +
-      '</div>'
-    ).join('');
-  }
-
-  function setPreview(src) {
-    tempImage = src || '';
-    const img = $('#previewImg'); const ph = $('#previewPlaceholder');
-    if (tempImage) { img.src = tempImage; img.hidden = false; ph.hidden = true; }
-    else { img.hidden = true; img.removeAttribute('src'); ph.hidden = false; }
-  }
-
-  function openModal(id) {
-    editingId = id || null;
-    $('#modalTitle').textContent = id ? '編輯題目' : '新增題目';
-    $('#fileInput').value = ''; $('#urlInput').value = ''; $('#answersInput').value = ''; $('#hintInput').value = ''; $('#explainInput').value = '';
-    if (id) {
-      const q = questions.find(x => x.id === id);
-      if (q) { setPreview(q.image); $('#answersInput').value = q.answers.join(', '); $('#hintInput').value = q.hint || ''; $('#explainInput').value = q.explanation || ''; }
-    } else setPreview('');
-    $('#modalBackdrop').hidden = false; document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    $('#modalBackdrop').hidden = true; document.body.style.overflow = ''; editingId = null;
-  }
-
-  async function saveQuestion() {
-    const answers = $('#answersInput').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
-    if (!tempImage) { toast('請先選擇圖片或輸入圖片網址'); return; }
-    if (!answers.length) { toast('請至少輸入一個正確答案'); return; }
-    const data = { id: editingId || uid(), image: tempImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
-    if (editingId) {
-      const i = questions.findIndex(q => q.id === editingId);
-      if (i > -1) questions[i] = data; else questions.push(data);
-    } else { questions.push(data); }
-    await saveQuestionsToCloud();
-    renderManageList();
-    closeModal();
-    toast(editingId ? '✅ 題目已更新（雲端）！' : '✅ 題目已新增（雲端）！');
-  }
-
-  function exportJSON() {
-    if (!questions.length) { toast('題庫是空的'); return; }
-    const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob); const a = document.createElement('a');
-    a.href = url; a.download = 'my-quiz.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1000); toast('📦 已匯出 ' + questions.length + ' 題');
-  }
-
-  function importJSON(file) {
-    const reader = new FileReader();
-    reader.onload = async () => {
-      try {
-        const data = JSON.parse(reader.result);
-        if (!Array.isArray(data)) throw new Error('格式錯誤');
-        const cleaned = data.map(normalizeQuestion).filter(Boolean);
-        if (!cleaned.length) throw new Error('找不到有效題目');
-        if (!confirm('即將匯入 ' + cleaned.length + ' 題，並覆蓋目前的題庫，確定嗎？')) return;
-        questions = cleaned;
-        await saveQuestionsToCloud();
-        renderManageList();
-        toast('📥 匯入成功！');
-      } catch (e) { alert('匯入失敗：' + e.message); }
-    };
-    reader.readAsText(file);
-  }
-
-  async function clearAll() {
-    if (!confirm('確定要清空所有題目嗎？此動作無法復原。')) return;
-    questions = [];
-    await saveQuestionsToCloud();
-    renderManageList();
-    toast('🗑 已清空題庫');
-  }
-
-  function bindEvents() {
-    $$('.tab').forEach(tab => tab.addEventListener('click', () => switchView(tab.dataset.view)));
-    $('#addBtn').addEventListener('click', () => openModal(null));
-    $('#exportBtn').addEventListener('click', exportJSON);
-    $('#clearAllBtn').addEventListener('click', clearAll);
-    $('#importBtn').addEventListener('click', () => $('#importInput').click());
-    $('#importInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ''; });
-    $('#questionList').addEventListener('click', async (e) => {
-      const btn = e.target.closest('button[data-act]'); if (!btn) return;
-      const id = btn.dataset.id;
-      if (btn.dataset.act === 'edit') openModal(id);
-      if (btn.dataset.act === 'del') {
-        if (!confirm('確定要刪除嗎？')) return;
-        questions = questions.filter(x => x.id !== id);
-        await saveQuestionsToCloud();
-        renderManageList();
-        toast('🗑 已刪除');
-      }
-    });
-    $('#closeModalBtn').addEventListener('click', closeModal);
-    $('#cancelBtn').addEventListener('click', closeModal);
-    $('#saveBtn').addEventListener('click', saveQuestion);
-    $('#modalBackdrop').addEventListener('click', e => { if (e.target === $('#modalBackdrop')) closeModal(); });
-    $('#fileInput').addEventListener('change', e => {
-      const file = e.target.files[0]; if (!file || !file.type.startsWith('image/')) { toast('請選擇圖片'); return; }
-      const reader = new FileReader();
-      reader.onload = ev => { setPreview(ev.target.result); $('#urlInput').value = ''; };
-      reader.readAsDataURL(file);
-    });
-    $('#urlInput').addEventListener('input', e => {
-      const v = e.target.value.trim();
-      if (v) { $('#fileInput').value = ''; setPreview(v); } else setPreview('');
-    });
-  }
-
-  function init() { bindEvents(); renderManageList(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-})();
-</script>
-
-<!-- ============ Firebase 模組 ============ -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getDatabase, ref, set, get, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -460,126 +224,206 @@
   const db = getDatabase(app);
   const questionsRef = ref(db, 'global_questions');
 
-  window.dispatchEvent(new CustomEvent('firebase-ready', { detail: { db, ref: questionsRef } }));
+  const $ = s => document.querySelector(s);
+  const $$ = s => Array.from(document.querySelectorAll(s));
+  const uid = () => 'q' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 
-  const $ = sel => document.querySelector(sel);
-  const lobbyView = $('#lobbyView');
-  const battleView = $('#battleView');
-  const battleResult = $('#battleResult');
-  const roomInfo = $('#roomInfo');
-  const roomCodeDisplay = $('#roomCodeDisplay');
-  const roomStatus = $('#roomStatus');
-  const lobbyPlayerList = $('#lobbyPlayerList');
-  const createRoomBtn = $('#createRoomBtn');
-  const joinRoomBtn = $('#joinRoomBtn');
-  const startBattleBtn = $('#startBattleBtn');
-  const playerNameInput = $('#playerNameInput');
-  const battleScores = $('#battleScores');
-  const battleImage = $('#battleImage');
-  const battleAnswerInput = $('#battleAnswerInput');
-  const battleSubmitBtn = $('#battleSubmitBtn');
-  const battleAnswerForm = $('#battleAnswerForm');
-  const battleFeedback = $('#battleFeedback');
-  const nextBattleBtn = $('#nextBattleBtn');
-  const timerDisplay = $('#timerDisplay');
-  const battleStatus = $('#battleStatus');
-
-  let currentRoomCode = null;
-  let myPlayerId = null;
-  let myName = '玩家';
-  let roomListener = null;
-  let timerInterval = null;
-  let currentQuestionIndex = -1;
-  let currentQuestionData = null;
-  let hasAnsweredThisRound = false;
-  let battleQuestions = [];
-  let currentPlayers = {};
-
-  function generateRoomCode() {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = ''; for (let i = 0; i < 5; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
-    return code;
+  function escapeHtml(str) {
+    return String(str == null ? '' : str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+  function toast(msg) {
+    const el = $('#toast'); el.textContent = msg; el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2300);
+  }
+  function setStatus(msg, type) {
+    const box = $('#statusBox');
+    if (!msg) { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    box.className = type || 'info';
+    box.textContent = msg;
+  }
+  function switchView(name) {
+    $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.view === name));
+    $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
   }
 
-  function getPlayerId() {
-    if (!myPlayerId) myPlayerId = 'player_' + Math.random().toString(36).substr(2, 9);
-    return myPlayerId;
+  /* ===== 題庫管理 ===== */
+  let questions = [];
+  let editingId = null;
+  let tempImage = '';
+
+  async function loadQuestions() {
+    try {
+      const snap = await get(questionsRef);
+      questions = snap.exists() ? Object.values(snap.val()) : [];
+      renderManageList();
+    } catch (err) {
+      console.error('讀取題庫失敗:', err);
+      toast('⚠️ 讀取題庫失敗：' + err.message);
+    }
+  }
+  async function saveQuestions() {
+    try {
+      const data = {};
+      questions.forEach(q => { data[q.id] = q; });
+      await set(questionsRef, data);
+    } catch (err) {
+      console.error('儲存題庫失敗:', err);
+      toast('⚠️ 儲存失敗：' + err.message);
+    }
+  }
+  function renderManageList() {
+    const list = $('#questionList');
+    if (!questions.length) { list.innerHTML = '<div class="empty-state"><p>題庫是空的，點「➕ 新增題目」開始建立吧！</p></div>'; return; }
+    list.innerHTML = questions.map((q, i) =>
+      '<div class="q-item"><img src="' + escapeHtml(q.image) + '" alt="" /><div class="q-info"><div class="q-idx">第 ' + (i+1) + ' 題</div><div class="q-ans">' + escapeHtml(q.answers.join('、')) + '</div>' + (q.hint ? '<div class="q-hint">💡 ' + escapeHtml(q.hint) + '</div>' : '') + '</div><div class="q-actions"><button class="btn small" type="button" data-act="edit" data-id="' + q.id + '">✏️</button><button class="btn small danger" type="button" data-act="del" data-id="' + q.id + '">🗑</button></div></div>'
+    ).join('');
+  }
+  function setPreview(src) {
+    tempImage = src || '';
+    const img = $('#previewImg'), ph = $('#previewPlaceholder');
+    if (tempImage) { img.src = tempImage; img.hidden = false; ph.hidden = true; }
+    else { img.hidden = true; img.removeAttribute('src'); ph.hidden = false; }
+  }
+  function openModal(id) {
+    editingId = id || null;
+    $('#modalTitle').textContent = id ? '編輯題目' : '新增題目';
+    $('#fileInput').value = ''; $('#urlInput').value = ''; $('#answersInput').value = ''; $('#hintInput').value = ''; $('#explainInput').value = '';
+    if (id) {
+      const q = questions.find(x => x.id === id);
+      if (q) { setPreview(q.image); $('#answersInput').value = q.answers.join(', '); $('#hintInput').value = q.hint || ''; $('#explainInput').value = q.explanation || ''; }
+    } else setPreview('');
+    $('#modalBackdrop').hidden = false; document.body.style.overflow = 'hidden';
+  }
+  function closeModal() { $('#modalBackdrop').hidden = true; document.body.style.overflow = ''; editingId = null; }
+  async function saveQuestion() {
+    const answers = $('#answersInput').value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+    if (!tempImage) { toast('請先選擇圖片或輸入圖片網址'); return; }
+    if (!answers.length) { toast('請至少輸入一個正確答案'); return; }
+    const data = { id: editingId || uid(), image: tempImage, answers, hint: $('#hintInput').value.trim(), explanation: $('#explainInput').value.trim() };
+    if (editingId) { const i = questions.findIndex(q => q.id === editingId); if (i > -1) questions[i] = data; else questions.push(data); }
+    else questions.push(data);
+    await saveQuestions();
+    renderManageList(); closeModal();
+    toast(editingId ? '✅ 題目已更新！' : '✅ 題目已新增！');
+  }
+  function exportJSON() {
+    if (!questions.length) { toast('題庫是空的'); return; }
+    const blob = new Blob([JSON.stringify(questions, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = 'my-quiz.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000); toast('📦 已匯出 ' + questions.length + ' 題');
+  }
+  function importJSON(file) {
+    const reader = new FileReader();
+    reader.onload = async () => {
+      try {
+        const data = JSON.parse(reader.result);
+        if (!Array.isArray(data)) throw new Error('格式錯誤');
+        const cleaned = data.filter(q => q && q.image && Array.isArray(q.answers) && q.answers.length);
+        if (!cleaned.length) throw new Error('找不到有效題目');
+        if (!confirm('即將匯入 ' + cleaned.length + ' 題，並覆蓋目前的題庫，確定嗎？')) return;
+        questions = cleaned;
+        await saveQuestions();
+        renderManageList();
+        toast('📥 匯入成功！');
+      } catch (e) { alert('匯入失敗：' + e.message); }
+    };
+    reader.readAsText(file);
   }
 
-  function getPlayerName() {
-    const name = playerNameInput.value.trim();
-    if (name) myName = name;
-    return myName;
-  }
+  /* ===== 多人對戰 ===== */
+  let currentRoomCode = null, myPlayerId = null, myName = '玩家';
+  let roomListener = null, timerInterval = null;
+  let currentQuestionIndex = -1, currentQuestionData = null;
+  let hasAnsweredThisRound = false, battleQuestions = [], currentPlayers = {};
 
-  createRoomBtn.addEventListener('click', async () => {
-    const name = getPlayerName();
+  function genCode() {
+    const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let s = ''; for (let i = 0; i < 5; i++) s += c[Math.floor(Math.random() * c.length)];
+    return s;
+  }
+  function getPid() { if (!myPlayerId) myPlayerId = 'p_' + Math.random().toString(36).slice(2, 11); return myPlayerId; }
+  function getPname() { const n = $('#playerNameInput').value.trim(); if (n) myName = n; return myName; }
+
+  $('#createRoomBtn').addEventListener('click', async () => {
+    const name = getPname();
     if (!name) { alert('請先輸入你的暱稱！'); return; }
-    const code = generateRoomCode();
-    const playerId = getPlayerId();
+    setStatus('正在建立房間...', 'info');
+    const code = genCode();
+    const pid = getPid();
     const roomRef = ref(db, 'rooms/' + code);
     try {
       await set(roomRef, {
         createdAt: Date.now(), status: 'waiting', currentQuestion: 0, questionStartTime: 0,
-        players: { [playerId]: { name: name, joinedAt: Date.now(), score: 0, answered: false } }
+        players: { [pid]: { name, joinedAt: Date.now(), score: 0, answered: false } }
       });
       currentRoomCode = code;
-      roomCodeDisplay.textContent = code;
-      roomInfo.style.display = 'block';
-      createRoomBtn.disabled = true; joinRoomBtn.disabled = true;
-      roomStatus.textContent = '等待玩家加入中...';
-      startBattleBtn.style.display = 'none';
+      $('#roomCodeDisplay').textContent = code;
+      $('#roomInfo').style.display = 'block';
+      $('#createRoomBtn').disabled = true;
+      $('#joinRoomBtn').disabled = true;
+      setStatus('✅ 房間已建立！把上面的號碼給朋友。', 'ok');
+      $('#roomStatus').textContent = '等待玩家加入中...';
+      $('#startBattleBtn').style.display = 'none';
       listenToRoom(roomRef);
-    } catch (err) { alert('建立房間失敗：' + err.message); }
+    } catch (err) {
+      console.error('建立房間失敗:', err);
+      setStatus('❌ 建立房間失敗：' + err.message + '（請確認 Firebase 規則已設為 true）', 'err');
+    }
   });
 
-  joinRoomBtn.addEventListener('click', async () => {
-    const name = getPlayerName();
+  $('#joinRoomBtn').addEventListener('click', async () => {
+    const name = getPname();
     if (!name) { alert('請先輸入你的暱稱！'); return; }
     const code = prompt('請輸入 5 位數房間號碼：');
     if (!code) return;
-    const upperCode = code.toUpperCase();
-    const roomRef = ref(db, 'rooms/' + upperCode);
+    setStatus('正在加入房間...', 'info');
+    const upper = code.toUpperCase();
+    const roomRef = ref(db, 'rooms/' + upper);
     try {
-      const snapshot = await get(roomRef);
-      if (!snapshot.exists()) { alert('找不到這個房間'); return; }
-      const data = snapshot.val();
-      const playerCount = data.players ? Object.keys(data.players).length : 0;
-      if (playerCount >= 12) { alert('房間已滿（上限 12 人）'); return; }
-
-      const playerId = getPlayerId();
-      await update(ref(db, 'rooms/' + upperCode + '/players'), {
-        [playerId]: { name: name, joinedAt: Date.now(), score: 0, answered: false }
+      const snap = await get(roomRef);
+      if (!snap.exists()) { setStatus('❌ 找不到房間 ' + upper, 'err'); return; }
+      const data = snap.val();
+      const cnt = data.players ? Object.keys(data.players).length : 0;
+      if (cnt >= 12) { setStatus('❌ 房間已滿（上限 12 人）', 'err'); return; }
+      const pid = getPid();
+      await update(ref(db, 'rooms/' + upper + '/players'), {
+        [pid]: { name, joinedAt: Date.now(), score: 0, answered: false }
       });
-      currentRoomCode = upperCode;
-      roomCodeDisplay.textContent = upperCode;
-      roomInfo.style.display = 'block';
-      roomStatus.textContent = '✅ 成功加入！等待開始...';
-      createRoomBtn.disabled = true; joinRoomBtn.disabled = true;
-      startBattleBtn.style.display = 'none';
+      currentRoomCode = upper;
+      $('#roomCodeDisplay').textContent = upper;
+      $('#roomInfo').style.display = 'block';
+      $('#createRoomBtn').disabled = true;
+      $('#joinRoomBtn').disabled = true;
+      setStatus('✅ 成功加入房間！', 'ok');
+      $('#roomStatus').textContent = '等待其他玩家...';
+      $('#startBattleBtn').style.display = 'none';
       listenToRoom(roomRef);
-    } catch (err) { alert('加入房間失敗：' + err.message); }
+    } catch (err) {
+      console.error('加入房間失敗:', err);
+      setStatus('❌ 加入失敗：' + err.message, 'err');
+    }
   });
 
   function listenToRoom(roomRef) {
     if (roomListener) roomListener();
-    roomListener = onValue(roomRef, (snapshot) => {
-      const data = snapshot.val();
+    roomListener = onValue(roomRef, (snap) => {
+      const data = snap.val();
       if (!data) return;
       currentPlayers = data.players || {};
 
       if (data.status === 'waiting') {
-        lobbyView.hidden = false; battleView.hidden = true; battleResult.hidden = true;
-        const playerCount = Object.keys(currentPlayers).length;
-        roomStatus.textContent = '目前 ' + playerCount + ' 人（上限 12 人）';
-        startBattleBtn.style.display = 'inline-block';
-        startBattleBtn.disabled = playerCount < 1;
-        lobbyPlayerList.innerHTML = Object.values(currentPlayers).map(p => '<span class="player-tag">' + p.name + '</span>').join('');
+        $('#lobbyView').hidden = false; $('#battleView').hidden = true; $('#battleResult').hidden = true;
+        const n = Object.keys(currentPlayers).length;
+        $('#roomStatus').textContent = '目前 ' + n + ' 人（上限 12 人）';
+        $('#startBattleBtn').style.display = 'inline-block';
+        $('#lobbyPlayerList').innerHTML = Object.values(currentPlayers).map(p => '<span class="player-tag">' + escapeHtml(p.name) + '</span>').join('');
       }
 
       if (data.status === 'playing' || data.status === 'showing_answer') {
-        lobbyView.hidden = true; battleView.hidden = false; battleResult.hidden = true;
-        renderBattleScores(currentPlayers);
+        $('#lobbyView').hidden = true; $('#battleView').hidden = false; $('#battleResult').hidden = true;
+        renderScores(currentPlayers);
         if (data.questions && data.questions.length) battleQuestions = data.questions;
 
         if (data.currentQuestion !== currentQuestionIndex && data.currentQuestion < battleQuestions.length) {
@@ -587,105 +431,99 @@
           currentQuestionData = battleQuestions[currentQuestionIndex];
           if (!currentQuestionData) return;
           hasAnsweredThisRound = false;
-          battleAnswerInput.value = ''; battleAnswerInput.disabled = false; battleSubmitBtn.disabled = false;
-          battleFeedback.className = 'feedback'; battleFeedback.innerHTML = '';
-          nextBattleBtn.hidden = true;
-          battleImage.src = currentQuestionData.image;
-          battleStatus.textContent = '第 ' + (currentQuestionIndex + 1) + ' / ' + battleQuestions.length + ' 題';
-          timerDisplay.textContent = '⏱ 15 秒';
-
+          $('#battleAnswerInput').value = ''; $('#battleAnswerInput').disabled = false;
+          $('#battleSubmitBtn').disabled = false;
+          $('#battleFeedback').className = 'feedback'; $('#battleFeedback').innerHTML = '';
+          $('#nextBattleBtn').hidden = true;
+          $('#battleImage').src = currentQuestionData.image;
+          $('#battleStatus').textContent = '第 ' + (currentQuestionIndex + 1) + ' / ' + battleQuestions.length + ' 題';
+          $('#timerDisplay').textContent = '⏱ 15 秒';
           if (timerInterval) clearInterval(timerInterval);
-          const startTime = data.questionStartTime || Date.now();
-          const endTime = startTime + 15000;
+          const end = (data.questionStartTime || Date.now()) + 15000;
           timerInterval = setInterval(() => {
-            const left = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
-            timerDisplay.innerHTML = '⏱ ' + left + ' <span>秒</span>';
+            const left = Math.max(0, Math.ceil((end - Date.now()) / 1000));
+            $('#timerDisplay').innerHTML = '⏱ ' + left + ' <span>秒</span>';
             if (left <= 0) {
               clearInterval(timerInterval);
-              timerDisplay.textContent = '⏱ 時間到！';
-              battleAnswerInput.disabled = true; battleSubmitBtn.disabled = true;
+              $('#timerDisplay').textContent = '⏱ 時間到！';
+              $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
             }
           }, 200);
         }
 
         if (data.status === 'showing_answer') {
           if (timerInterval) clearInterval(timerInterval);
-          timerDisplay.textContent = '⏱ 時間到！';
-          battleAnswerInput.disabled = true; battleSubmitBtn.disabled = true;
+          $('#timerDisplay').textContent = '⏱ 時間到！';
+          $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
           if (currentQuestionData) {
-            battleFeedback.className = 'feedback show ok';
-            battleFeedback.innerHTML = '<div class="fb-head">📢 正確答案</div><div class="fb-line">' + currentQuestionData.answers.join(' / ') + '</div>' + (currentQuestionData.explanation ? '<div class="fb-line"><span class="tag">解說</span>' + currentQuestionData.explanation + '</div>' : '');
+            $('#battleFeedback').className = 'feedback show ok';
+            $('#battleFeedback').innerHTML = '<div class="fb-head">📢 正確答案</div><div class="fb-line">' + escapeHtml(currentQuestionData.answers.join(' / ')) + '</div>' + (currentQuestionData.explanation ? '<div class="fb-line"><span class="tag">解說</span>' + escapeHtml(currentQuestionData.explanation) + '</div>' : '');
           }
-          nextBattleBtn.hidden = false;
-          nextBattleBtn.textContent = (currentQuestionIndex + 1 >= battleQuestions.length) ? '🏁 查看結果' : '下一題 ▶';
+          $('#nextBattleBtn').hidden = false;
+          $('#nextBattleBtn').textContent = (currentQuestionIndex + 1 >= battleQuestions.length) ? '🏁 查看結果' : '下一題 ▶';
         }
       }
 
       if (data.status === 'finished') {
         if (timerInterval) clearInterval(timerInterval);
-        lobbyView.hidden = true; battleView.hidden = true; battleResult.hidden = false;
-        const sorted = Object.values(currentPlayers).sort((a, b) => b.score - a.score);
-        const myScore = currentPlayers[myPlayerId] ? currentPlayers[myPlayerId].score : 0;
-        const myRank = sorted.findIndex(p => p.name === myName) + 1;
-
-        let resultHTML = '<h2 class="result-title">🏁 大亂鬥結束！</h2>';
-        resultHTML += '<div class="result-score">' + myScore + '<span>分</span></div>';
-        resultHTML += '<p class="result-line">你的排名：第 ' + myRank + ' 名 / 共 ' + sorted.length + ' 人</p>';
-        resultHTML += '<div style="text-align:left; max-width:300px; margin: 15px auto;">';
+        $('#lobbyView').hidden = true; $('#battleView').hidden = true; $('#battleResult').hidden = false;
+        const sorted = Object.entries(currentPlayers).map(([id, p]) => ({ id, ...p })).sort((a, b) => b.score - a.score);
+        const me = currentPlayers[myPlayerId];
+        const myScore = me ? me.score : 0;
+        const myRank = sorted.findIndex(p => p.id === myPlayerId) + 1;
+        let html = '<h2 class="result-title">🏁 大亂鬥結束！</h2>';
+        html += '<div class="result-score">' + myScore + '<span>分</span></div>';
+        html += '<p class="result-line">你的排名：第 ' + myRank + ' 名 / 共 ' + sorted.length + ' 人</p>';
+        html += '<div style="text-align:left; max-width:320px; margin:15px auto;">';
         sorted.forEach((p, i) => {
           const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '🏅';
-          resultHTML += '<div style="display:flex; justify-content:space-between; padding:5px 10px; font-weight:800; background:' + (p.name === myName ? '#FFFDE7' : 'transparent') + '; border-radius:8px;"><span>' + medal + ' ' + p.name + '</span><span>' + p.score + ' 分</span></div>';
+          const bg = p.id === myPlayerId ? '#FFFDE7' : 'transparent';
+          html += '<div style="display:flex; justify-content:space-between; padding:5px 10px; font-weight:800; background:' + bg + '; border-radius:8px;"><span>' + medal + ' ' + escapeHtml(p.name) + '</span><span>' + p.score + ' 分</span></div>';
         });
-        resultHTML += '</div><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳</button></div>';
-        battleResult.innerHTML = resultHTML;
-
+        html += '</div><div class="result-actions"><button class="btn primary" id="backToLobbyBtn" type="button">🔁 回到大廳</button></div>';
+        $('#battleResult').innerHTML = html;
         $('#backToLobbyBtn').addEventListener('click', () => {
           if (roomListener) roomListener();
           if (timerInterval) clearInterval(timerInterval);
-          lobbyView.hidden = false; battleView.hidden = true; battleResult.hidden = true;
-          createRoomBtn.disabled = false; joinRoomBtn.disabled = false;
-          roomInfo.style.display = 'none'; startBattleBtn.style.display = 'none';
-          currentRoomCode = null; currentQuestionIndex = -1; currentPlayers = {};
+          $('#lobbyView').hidden = false; $('#battleView').hidden = true; $('#battleResult').hidden = true;
+          $('#createRoomBtn').disabled = false; $('#joinRoomBtn').disabled = false;
+          $('#roomInfo').style.display = 'none'; $('#startBattleBtn').style.display = 'none';
+          setStatus('', '');
           if (currentRoomCode) remove(ref(db, 'rooms/' + currentRoomCode));
+          currentRoomCode = null; currentQuestionIndex = -1; currentPlayers = {};
         });
       }
     });
   }
 
-  function renderBattleScores(players) {
-    battleScores.innerHTML = Object.entries(players).map(([id, p]) => {
+  function renderScores(players) {
+    $('#battleScores').innerHTML = Object.entries(players).map(([id, p]) => {
       const isMe = id === myPlayerId;
-      return '<div class="battle-score-box' + (isMe ? ' me' : '') + '"><div class="name">' + (isMe ? '🧑 ' : '') + p.name + '</div><div class="score">' + p.score + '</div></div>';
+      return '<div class="battle-score-box' + (isMe ? ' me' : '') + '"><div class="name">' + (isMe ? '🧑 ' : '') + escapeHtml(p.name) + '</div><div class="score">' + p.score + '</div></div>';
     }).join('');
   }
 
-  startBattleBtn.addEventListener('click', async () => {
+  $('#startBattleBtn').addEventListener('click', async () => {
     if (!currentRoomCode) return;
     try {
-      const snapshot = await questionsRef.get();
-      if (!snapshot.exists()) { alert('雲端題庫是空的！請先到「管理題庫」新增題目。'); return; }
-      const data = snapshot.val();
-      let localQuestions = Object.values(data).map(q => ({
-        id: q.id || 'q' + Date.now(), image: q.image, answers: q.answers, hint: q.hint || '', explanation: q.explanation || ''
-      }));
-      if (!localQuestions.length) { alert('雲端題庫是空的！'); return; }
-      for (let i = localQuestions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [localQuestions[i], localQuestions[j]] = [localQuestions[j], localQuestions[i]];
-      }
+      const snap = await get(questionsRef);
+      if (!snap.exists()) { setStatus('❌ 雲端題庫是空的，請先到「管理題庫」新增題目', 'err'); return; }
+      const data = snap.val();
+      let list = Object.values(data).filter(q => q && q.image && q.answers && q.answers.length);
+      if (!list.length) { setStatus('❌ 雲端題庫是空的', 'err'); return; }
+      for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; }
       await update(ref(db, 'rooms/' + currentRoomCode), {
-        status: 'playing', currentQuestion: 0, questionStartTime: Date.now() + 3000, questions: localQuestions
+        status: 'playing', currentQuestion: 0, questionStartTime: Date.now() + 3000, questions: list
       });
-    } catch (err) { alert('讀取雲端題庫失敗：' + err.message); }
+    } catch (err) { setStatus('❌ 開始失敗：' + err.message, 'err'); }
   });
 
-  // 計算相似度分數 (0~10)
   function calcScore(input, answers) {
     const n = String(input || '').toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
     if (!n) return 0;
     let best = 0;
-    for (const ans of answers) {
-      const na = String(ans || '').toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
+    for (const a of answers) {
+      const na = String(a || '').toLowerCase().replace(/\s+/g, '').replace(/[.,，。！!?？~～、；;：:「」『』()（）\-_/\\]/g, '');
       if (!na) continue;
       let sim = 0;
       if (n === na) sim = 1;
@@ -693,12 +531,9 @@
       else if (na.includes(n)) sim = 0.6 * (n.length / na.length);
       else {
         let lcs = 0;
-        for (let i = 0; i < n.length; i++) {
-          for (let j = 0; j < na.length; j++) {
-            let k = 0;
-            while (i + k < n.length && j + k < na.length && n[i + k] === na[j + k]) k++;
-            if (k > lcs) lcs = k;
-          }
+        for (let i = 0; i < n.length; i++) for (let j = 0; j < na.length; j++) {
+          let k = 0; while (i + k < n.length && j + k < na.length && n[i + k] === na[j + k]) k++;
+          if (k > lcs) lcs = k;
         }
         sim = 0.5 * (lcs / Math.max(n.length, na.length));
       }
@@ -707,55 +542,86 @@
     return Math.round(10 * best);
   }
 
-  battleAnswerForm.addEventListener('submit', async (e) => {
+  $('#battleAnswerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    if (!currentRoomCode || hasAnsweredThisRound || battleAnswerInput.disabled) return;
-    const val = battleAnswerInput.value.trim();
+    if (!currentRoomCode || hasAnsweredThisRound || $('#battleAnswerInput').disabled) return;
+    const val = $('#battleAnswerInput').value.trim();
     if (!val) return;
-    hasAnsweredThisRound = true; battleAnswerInput.disabled = true; battleSubmitBtn.disabled = true;
+    hasAnsweredThisRound = true;
+    $('#battleAnswerInput').disabled = true; $('#battleSubmitBtn').disabled = true;
 
     const gained = calcScore(val, currentQuestionData.answers);
-    const myScoreRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId + '/score');
-    const snapshot = await get(myScoreRef);
-    const currentScore = snapshot.val() || 0;
-    await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId), { score: currentScore + gained, answered: true });
+    const scoreRef = ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId + '/score');
+    const snap = await get(scoreRef);
+    const cur = snap.val() || 0;
+    await update(ref(db, 'rooms/' + currentRoomCode + '/players/' + myPlayerId), { score: cur + gained, answered: true });
 
-    if (gained >= 10) {
-      battleFeedback.className = 'feedback show ok';
-      battleFeedback.innerHTML = '<div class="fb-head">🎉 完全正確！+10 分</div>';
-    } else if (gained > 0) {
-      battleFeedback.className = 'feedback show ok';
-      battleFeedback.innerHTML = '<div class="fb-head">🟡 部分正確！+' + gained + ' 分</div><div class="fb-line"><span class="tag">相似度</span>與答案約 ' + (gained * 10) + '% 吻合</div>';
-    } else {
-      battleFeedback.className = 'feedback show no';
-      battleFeedback.innerHTML = '<div class="fb-head">❌ 答錯了（0 分）</div>';
-    }
+    const fb = $('#battleFeedback');
+    if (gained >= 10) { fb.className = 'feedback show ok'; fb.innerHTML = '<div class="fb-head">🎉 完全正確！+10 分</div>'; }
+    else if (gained > 0) { fb.className = 'feedback show ok'; fb.innerHTML = '<div class="fb-head">🟡 部分正確！+' + gained + ' 分</div><div class="fb-line"><span class="tag">相似度</span>與答案約 ' + (gained * 10) + '% 吻合</div>'; }
+    else { fb.className = 'feedback show no'; fb.innerHTML = '<div class="fb-head">❌ 答錯了（0 分）</div>'; }
 
-    const roomSnapshot = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
-    const players = roomSnapshot.val();
-    const allAnswered = Object.values(players).every(p => p.answered);
-    if (allAnswered) {
+    const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
+    const players = pSnap.val();
+    if (Object.values(players).every(p => p.answered)) {
       await update(ref(db, 'rooms/' + currentRoomCode), { status: 'showing_answer' });
     }
   });
 
-  nextBattleBtn.addEventListener('click', async () => {
+  $('#nextBattleBtn').addEventListener('click', async () => {
     if (!currentRoomCode) return;
-    const nextIdx = currentQuestionIndex + 1;
-    if (nextIdx >= battleQuestions.length) {
+    const next = currentQuestionIndex + 1;
+    if (next >= battleQuestions.length) {
       await update(ref(db, 'rooms/' + currentRoomCode), { status: 'finished' });
     } else {
       const updates = {};
       updates['rooms/' + currentRoomCode + '/status'] = 'playing';
-      updates['rooms/' + currentRoomCode + '/currentQuestion'] = nextIdx;
+      updates['rooms/' + currentRoomCode + '/currentQuestion'] = next;
       updates['rooms/' + currentRoomCode + '/questionStartTime'] = Date.now() + 3000;
-      const playersSnapshot = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
-      const players = playersSnapshot.val();
-      Object.keys(players).forEach(id => { updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false; });
+      const pSnap = await get(ref(db, 'rooms/' + currentRoomCode + '/players'));
+      Object.keys(pSnap.val()).forEach(id => { updates['rooms/' + currentRoomCode + '/players/' + id + '/answered'] = false; });
       await update(ref(db), updates);
     }
   });
-})();
+
+  /* ===== 事件綁定 ===== */
+  $$('.tab').forEach(t => t.addEventListener('click', () => switchView(t.dataset.view)));
+  $('#addBtn').addEventListener('click', () => openModal(null));
+  $('#exportBtn').addEventListener('click', exportJSON);
+  $('#clearAllBtn').addEventListener('click', async () => {
+    if (!confirm('確定要清空所有題目嗎？')) return;
+    questions = []; await saveQuestions(); renderManageList(); toast('🗑 已清空');
+  });
+  $('#importBtn').addEventListener('click', () => $('#importInput').click());
+  $('#importInput').addEventListener('change', e => { const f = e.target.files[0]; if (f) importJSON(f); e.target.value = ''; });
+  $('#questionList').addEventListener('click', async (e) => {
+    const btn = e.target.closest('button[data-act]'); if (!btn) return;
+    const id = btn.dataset.id;
+    if (btn.dataset.act === 'edit') openModal(id);
+    if (btn.dataset.act === 'del') {
+      if (!confirm('確定要刪除嗎？')) return;
+      questions = questions.filter(x => x.id !== id);
+      await saveQuestions(); renderManageList(); toast('🗑 已刪除');
+    }
+  });
+  $('#closeModalBtn').addEventListener('click', closeModal);
+  $('#cancelBtn').addEventListener('click', closeModal);
+  $('#saveBtn').addEventListener('click', saveQuestion);
+  $('#modalBackdrop').addEventListener('click', e => { if (e.target === $('#modalBackdrop')) closeModal(); });
+  $('#fileInput').addEventListener('change', e => {
+    const f = e.target.files[0]; if (!f || !f.type.startsWith('image/')) { toast('請選擇圖片'); return; }
+    const r = new FileReader();
+    r.onload = ev => { setPreview(ev.target.result); $('#urlInput').value = ''; };
+    r.readAsDataURL(f);
+  });
+  $('#urlInput').addEventListener('input', e => {
+    const v = e.target.value.trim();
+    if (v) { $('#fileInput').value = ''; setPreview(v); } else setPreview('');
+  });
+
+  /* ===== 啟動 ===== */
+  loadQuestions();
+  console.log('✅ 遊戲已啟動，Firebase 已連線');
 </script>
 </body>
 </html>
